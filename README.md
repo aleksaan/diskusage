@@ -9,6 +9,11 @@ diskusage is a command line utility for getting information about usage of disk(
 - Calculate size of each folder
 - Print list of (sub)folders with a biggest sizes
 - Set limit to number folders in printing
+- Fast
+
+## Main cons
+- No any dummies protection (also pros)
+- No any intelligents features (also pros)
 
 ## Start on Windows
 
@@ -24,6 +29,14 @@ is set of disk(s) / folder(s) separated by semicolon (required)
 -limit 20
 ```
 is how much max-sized folders you want to see in the results (optional)
+
+For integration with a other systems I recommend create a batch file like this or more complex if you want:
+```cmd
+del results.txt
+diskusage.exe -path "C:/" -limit 20 >> results.txt
+rem pause
+rem see to results.txt
+```
 
 
 
