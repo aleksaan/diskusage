@@ -15,6 +15,10 @@ diskusage is a command line utility for getting information about usage of disk(
 - No any dummies protection (also pros)
 - No any intelligents features (also pros)
 
+## Releases
+
+Releases available as single executable files – just [download latest release](https://github.com/aleksaan/diskusage/releases) for your platform, unpack and run.
+
 ## Start on Windows
 
 ```cmd
