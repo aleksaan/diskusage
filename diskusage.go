@@ -31,53 +31,66 @@ func (a sizeDescSorter) Len() int           { return len(a) }
 func (a sizeDescSorter) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sizeDescSorter) Less(i, j int) bool { return a[i].size > a[j].size }
 
+//входные аргументы
+var argpaths *string     //list of folders to analyze separated by ;
+var arglimit *int        //limit folders in results
+var arglimitdefault = 10 //default value for a arglimit
+//var argmaxunit *string   //max possible size unit in a results presetation (b, Kb, Mb, ...). Has a lower priority than "argfixunit". Must be in sizeUnits.
+var argfixunit *string //fixed size unit in a results presetation (b, Kb, Mb, ...). Has a upper priority than "argmaxunit". Must be in sizeUnits.
+
+//pairs of key and scale power x, when 1024^x is scale of size
+var sizeUnits = map[string]float64{
+	"b":  1,
+	"Kb": 2,
+	"Mb": 3,
+	"Gb": 4,
+	"Tb": 5,
+	"Pb": 6,
+}
+var sortedKeysSizeUnits = []string{"b", "Kb", "Mb", "Gb", "Tb", "Pb"}
+
 //main function
 func main() {
 
 	//start timer for calculating total execution time
 	start := time.Now()
 
-	fmt.Println("Start scanning")
-
-	//read command line arguments
-
-	//paths
-	argpaths := flag.String("path", "", "Folders paths separated by semicolon (required)")
-
-	//limit
-	arglimit := flag.Int("limit", 10, "Limit of printed folders (10 by default)")
-
-	//parse argument
-	flag.Parse()
+	//gets command line arguments
+	var res = parseCLIArguments()
 
 	//check for required argument is exists
-	if *argpaths == "" {
-		flag.PrintDefaults()
+	if !res {
+		fmt.Println("Incorrect arguments! Program is finished.")
 		os.Exit(1)
 	}
 
 	//split paths from inline format to array
 	var paths = strings.Split(*argpaths, ";")
-	fmt.Println("Checking folders:", paths)
-
-	//create
 	var files files
+
+	fmt.Println("Start scanning")
 
 	//loop throught folders and get info about size into &files object
 	for _, p := range paths {
 		getFileInfo(&files, strings.Trim(p, " "))
 	}
 
-	fmt.Printf("List of %d max size folders:\n", *arglimit)
-
 	//sort list of folders by descending size
 	files.sort("size", "desc")
 
-	//print results
+	var maxlen = 0
 	for i, f := range files {
-		//convert unit of size to a comfort for a reporting (b -> Kb, Mb, ...)
-		unit, size := f.getComfortSize()
-		fmt.Printf("%3d.| DIR: %-100s | SIZE: %.2f %s\n", i+1, f.path, size, unit)
+		maxlen = int(math.Max(float64(maxlen), float64(len(f.path))))
+		//break if we up to defined limit
+		if i >= *arglimit-1 {
+			break
+		}
+	}
+	//print results
+	var strfmt = "%3d.| DIR: %-" + fmt.Sprintf("%d", maxlen+5) + "s | SIZE: %.2f %s\n"
+	for i, f := range files {
+		unit, size := f.getSize(*argfixunit)
+		fmt.Printf(strfmt, i+1, f.path, size, unit)
 
 		//break if we up to defined limit
 		if i >= *arglimit-1 {
@@ -91,7 +104,61 @@ func main() {
 	fmt.Printf("Total time: %s", elapsed)
 }
 
-//sorting for files arrays
+//parses input arguments
+func parseCLIArguments() bool {
+	fmt.Println("Parsing input arguments")
+
+	var res = true
+
+	//path - folders paths separated by semicolon (required)
+	argpaths = flag.String("path", "", "Folders paths separated by semicolon (required)")
+	//limit - number of folders printed in a results
+	arglimit = flag.Int("limit", arglimitdefault, fmt.Sprintf("Number of folders printed in a results (%d by default)", arglimitdefault))
+	//maxunit - max unit for a comfort mode representation
+	//argmaxunit = flag.String("maxunit", "Gb", "Max possible size unit for a results represetation. One from {b, Kb, Mb, Gb, Tb, Pb}.")
+	//fixedunit - unit for a fixed mode representation. If argument is that means fixed mode representation is on, else is off
+	argfixunit = flag.String("fixunit", "", "Fixed size unit for a results represetation. Should be one of {b, Kb, Mb, Gb, Tb, Pb}.")
+
+	//parse argument
+	flag.Parse()
+
+	//processing arguments
+	if len(*argpaths) == 0 {
+		fmt.Println("Error! Argument 'path' could not be an empty string")
+		res = false
+	}
+
+	if *arglimit < 1 {
+		fmt.Printf("Argument 'limit' is negative (%d) and has been set to default value (%d)\n", *arglimit, arglimitdefault)
+		*arglimit = arglimitdefault //set to default value
+	}
+
+	//if val, ok := sizeUnits[*argmaxunit]; ok && len(*argmaxunit) > 0 {
+	//	fmt.Println("Argument 'maxunit' is not in allowable range {b, Kb, Mb, Gb, Tb, Pb}")
+	//	res = false
+	//}
+
+	if _, ok := sizeUnits[*argfixunit]; !ok && len(*argfixunit) > 0 {
+		fmt.Println("Error! Argument 'fixunit' is not in allowable range {b, Kb, Mb, Gb, Tb, Pb}")
+		res = false
+	}
+
+	if res && len(*argfixunit) > 0 {
+		fmt.Printf("Results will be represented with fixed units style in '%s'\n", *argfixunit)
+	}
+
+	//prints arguments
+	if res {
+		fmt.Println("Input arguments:")
+		fmt.Printf("   path: %s\n", *argpaths)
+		fmt.Printf("   limit: %d\n", *arglimit)
+		fmt.Printf("   fixunit: %s\n", *argfixunit)
+	}
+
+	return res
+}
+
+//sorts files array
 func (f files) sort(by string, order string) {
 	switch {
 	case by == "size" && order == "desc":
@@ -102,37 +169,28 @@ func (f files) sort(by string, order string) {
 	}
 }
 
-var unitsOfSize = []string{"b", "Kb", "Mb", "Gb", "Tb", "Pb"}
+//converts size to ident dimension
+func (f file) getSize(fixunit string) (string, float64) {
 
-//get unit correlated to a power of 1024
-func getUnitByPowerOf1024(power float64) string {
-	p := math.Min(power, float64(len(unitsOfSize)))
-	return unitsOfSize[int(p-1)]
-}
-
-//get unit correlated to a power of 1024
-/* func getSizeByUnit(size float64, unit string) float64 {
-	return unitsOfSize[int(p-1)]
-} */
-
-//convert size to ident dimension
-func (f file) getComfortSize() (string, float64) {
-	var power float64 = 1    //=1 by default
-	var maxpower float64 = 4 //Mb
 	var size = float64(f.size)
+	var unit string
+	var power float64
 
-	//calculate more comfortable scale
-	for power = 2; power <= maxpower; power++ {
-		if size < math.Pow(1024, power-1) {
-			break //breaks on power which is one more bigger than needed
+	if len(fixunit) > 0 {
+		unit = fixunit
+		power = sizeUnits[fixunit]
+	} else {
+		for _, unit = range sortedKeysSizeUnits {
+			power = sizeUnits[unit]
+			if size < math.Pow(1024, power) {
+				break
+			}
 		}
 	}
-
-	//return unit & size in units
-	return getUnitByPowerOf1024(power - 1), size / math.Pow(1024, power-2)
+	return unit, size / math.Pow(1024, power-1)
 }
 
-//calcs dir size
+//calculates dir size
 func getFileInfo(files *files, path string) (*file, error) {
 	size := int64(0)
 
