@@ -22,7 +22,7 @@ Releases available as single executable files – just [download latest release]
 ## Start on Windows
 
 ```cmd
-diskusage.exe -path "C:/Temp; D:/" -limit 20
+diskusage.exe -path "C:/Temp; D:/" -limit 20 -fixunit "Gb"
 ```
 where:
 ```cmd
@@ -33,6 +33,10 @@ is set of disk(s) / folder(s) separated by semicolon (required)
 -limit 20
 ```
 is how much max-sized folders you want to see in the results (optional)
+```cmd 
+-fixunit "Gb"
+```
+is a fixed unit of dir-size for a results (optional). If this parameter doesn't set then you get dynamic-scaled results in a more comfort units for each folder. You can use "fixunit" in case you want to compare sizes afterward.
 
 For integration with a other systems I recommend create a batch file like this or more complex if you want:
 ```cmd
