@@ -1,3 +1,5 @@
+ [![cover.run](https://cover.run/go/github.com/aleksaan/diskusage.svg?style=flat&tag=golang-1.10)](https://cover.run/go?tag=golang-1.10&repo=github.com%2Faleksaan%2Fdiskusage) 
+ 
 # diskusage 
 diskusage is a command line utility for getting information about usage of disk(s) or folder(s) space.
 
