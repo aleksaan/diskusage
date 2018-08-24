@@ -3,7 +3,6 @@
 # diskusage 
 diskusage is a command line utility for getting information about usage of disk(s) or folder(s) space.
 ```cmd
-Parsing input arguments
 Input arguments:
    path: C:/Windows; D:/Programs
    limit: 10
