@@ -2,7 +2,26 @@
  
 # diskusage 
 diskusage is a command line utility for getting information about usage of disk(s) or folder(s) space.
-
+```cmd
+Parsing input arguments
+Input arguments:
+   path: C:/Windows; D:/Programs
+   limit: 10
+   fixunit: 
+Start scanning
+  1.| DIR: C:/Windows                                                               | SIZE: 51.13 Gb
+  2.| DIR: C:/Windows/winsxs                                                        | SIZE: 26.74 Gb
+  3.| DIR: C:/Windows/System32                                                      | SIZE: 12.25 Gb
+  4.| DIR: C:/Windows/System32/DriverStore                                          | SIZE: 8.55 Gb
+  5.| DIR: C:/Windows/System32/DriverStore/FileRepository                           | SIZE: 8.55 Gb
+  6.| DIR: D:/Programs                                                              | SIZE: 5.06 Gb
+  7.| DIR: D:/Programs/DVD9_Office_Select_Edition_2016_W32_RuEn_MLF_SPecialiST      | SIZE: 4.90 Gb
+  8.| DIR: C:/Windows/Installer                                                     | SIZE: 3.62 Gb
+  9.| DIR: C:/Windows/SysWOW64                                                      | SIZE: 2.28 Gb
+ 10.| DIR: C:/Windows/assembly                                                      | SIZE: 1.92 Gb
+Finish scanning
+Total time: 34.0898503s
+``` 
 ## Features
 - A primitive tool for getting usage of disk(s) / folder(s) space
 - Command line environment only
