@@ -1,9 +1,8 @@
  [![cover.run](https://cover.run/go/github.com/aleksaan/diskusage.svg?style=flat&tag=golang-1.10)](https://cover.run/go?tag=golang-1.10&repo=github.com%2Faleksaan%2Fdiskusage) 
  
 # diskusage 
-diskusage is a command line utility for getting information about usage of disk(s) or folder(s) space.
+diskusage is a command line utility for calculating folders sizes.
 ```cmd
-Parsing input arguments
 Arguments:
    path: d:/go; d:/Books
    limit: 20
@@ -30,7 +29,7 @@ Total time: 272.0156ms
 - Supports both folders and disks as arguments
 - Recursive pass through subfolders
 - Calculate size of each folder
-- Analyze for a nedeed depth of subfolders
+- Analyze on defined depth of subfolders
 - Set limit how much folders will be printed in a results
 - Fast
 
@@ -47,12 +46,12 @@ Releases available as single executable files – just [download latest release]
 ```cmd
 diskusage.exe -path "c:/somedir"
 ```
-if you want to get 20 biggest directories in a d:/somedir
+if you want to get 20 biggest directories in c:/somedir
 
 ```cmd
 diskusage.exe -path "c:/somedir" -depth 1
 ```
-if you want to get only d:/somedir size
+if you want to get only c:/somedir size
 
 ```cmd
 diskusage.exe -path "c:/somedir; d:/otherdir"
