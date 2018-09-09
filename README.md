@@ -80,7 +80,7 @@ is how much biggest folders will be printed in the results (optional)
 ```cmd 
 -fixunit "Gb"
 ```
-you can shoose unit style to representing folder sizes. It can be fixed or dynamic-scaled.
+you can choose unit style to representing folder sizes. It can be fixed or dynamic-scaled.
 You can use "fixunit" in case you want to compare sizes afterward (optional).
 ```cmd 
 -depth "2"
