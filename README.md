@@ -69,7 +69,7 @@ if you want to get 20 biggest directories across c:/somedir and d:/otherdir with
 
 where:
 ```cmd
--path "C:/Temp; D:/"
+-path "c:/somedir; d:/otherdir"
 ``` 
 is list of disk(s) / folder(s) separated by semicolon (required)
 ```cmd 
@@ -82,7 +82,7 @@ is how much biggest folders will be printed in the results (optional)
 you can choose unit style to representing folder sizes. It can be fixed or dynamic-scaled.
 You can use "fixunit" in case you want to compare sizes afterward (optional).
 ```cmd 
--depth "2"
+-depth 3
 ```
 is depth of subfolders to analyze (optional)
 
