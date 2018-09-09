@@ -15,6 +15,7 @@ type file struct {
 	path  string
 	size  int64
 	isdir bool
+	depth int
 }
 
 type files []file
@@ -32,10 +33,14 @@ func (a sizeDescSorter) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a sizeDescSorter) Less(i, j int) bool { return a[i].size > a[j].size }
 
 //входные аргументы
-var argpaths *string     //list of folders to analyze separated by ;
-var arglimit *int        //limit folders in results
-var arglimitdefault = 10 //default value for a arglimit
-//var argmaxunit *string   //max possible size unit in a results presetation (b, Kb, Mb, ...). Has a lower priority than "argfixunit". Must be in sizeUnits.
+var argpaths *string //list of folders to analyze separated by ;
+
+var arglimit *int          //limit folders in results
+const arglimitdefault = 10 //default value for a arglimit
+
+var depth *int         //depth of subfolders in results (-1 - all, 1 - only current, 2 and more - 2 and more)
+const depthdefault = 1 //default depth in results
+
 var argfixunit *string //fixed size unit in a results presetation (b, Kb, Mb, ...). Has a upper priority than "argmaxunit". Must be in sizeUnits.
 
 //pairs of key and scale power x, when 1024^x is scale of size
@@ -49,6 +54,7 @@ var sizeUnits = map[string]float64{
 }
 var sortedKeysSizeUnits = []string{"b", "Kb", "Mb", "Gb", "Tb", "Pb"}
 
+//-----------------------------------------------------------------------------------------
 //main function
 func main() {
 
@@ -72,29 +78,37 @@ func main() {
 
 	//loop throught folders and get info about size into &files object
 	for _, p := range paths {
-		getFileInfo(&files, strings.Trim(p, " "))
+		getFileInfo(&files, strings.Trim(p, " "), 1)
 	}
 
 	//sort list of folders by descending size
 	files.sort("size", "desc")
 
 	var maxlen = 0
-	for i, f := range files {
-		maxlen = int(math.Max(float64(maxlen), float64(len(f.path))))
-		//break if we up to defined limit
-		if i >= *arglimit-1 {
-			break
+	var c = 0
+	for _, f := range files {
+		if f.depth <= *depth {
+			c++
+			maxlen = int(math.Max(float64(maxlen), float64(len(f.path))))
+			//break if we up to defined limit
+			if c+1 >= *arglimit-1 {
+				break
+			}
 		}
 	}
 	//print results
-	var strfmt = "%3d.| DIR: %-" + fmt.Sprintf("%d", maxlen+5) + "s | SIZE: %.2f %s\n"
-	for i, f := range files {
+	var strfmt = "%3d.| DIR: %-" + fmt.Sprintf("%d", maxlen+2) + "s | SIZE: %6.2f %-4s | DEPTH: %d \n"
+	c = 0
+	for _, f := range files {
 		unit, size := f.getSize(*argfixunit)
-		fmt.Printf(strfmt, i+1, f.path, size, unit)
+		if f.depth <= *depth {
+			c++
+			fmt.Printf(strfmt, c, f.path, size, unit, f.depth)
 
-		//break if we up to defined limit
-		if i >= *arglimit-1 {
-			break
+			//break if we up to defined limit
+			if c+1 >= *arglimit-1 {
+				break
+			}
 		}
 	}
 
@@ -104,6 +118,7 @@ func main() {
 	fmt.Printf("Total time: %s", elapsed)
 }
 
+//-----------------------------------------------------------------------------------------
 //parses input arguments
 func parseCLIArguments() bool {
 	fmt.Println("Parsing input arguments")
@@ -119,6 +134,8 @@ func parseCLIArguments() bool {
 	//fixedunit - unit for a fixed mode representation. If argument is that means fixed mode representation is on, else is off
 	argfixunit = flag.String("fixunit", "", "Fixed size unit for a results represetation. Should be one of {b, Kb, Mb, Gb, Tb, Pb}.")
 
+	depth = flag.Int("depth", depthdefault, "Depth of subfolders.")
+
 	//parse argument
 	flag.Parse()
 
@@ -133,11 +150,6 @@ func parseCLIArguments() bool {
 		*arglimit = arglimitdefault //set to default value
 	}
 
-	//if val, ok := sizeUnits[*argmaxunit]; ok && len(*argmaxunit) > 0 {
-	//	fmt.Println("Argument 'maxunit' is not in allowable range {b, Kb, Mb, Gb, Tb, Pb}")
-	//	res = false
-	//}
-
 	if _, ok := sizeUnits[*argfixunit]; !ok && len(*argfixunit) > 0 {
 		fmt.Println("Error! Argument 'fixunit' is not in allowable range {b, Kb, Mb, Gb, Tb, Pb}")
 		res = false
@@ -149,15 +161,19 @@ func parseCLIArguments() bool {
 
 	//prints arguments
 	if res {
-		fmt.Println("Input arguments:")
+		fmt.Println("Arguments:")
 		fmt.Printf("   path: %s\n", *argpaths)
 		fmt.Printf("   limit: %d\n", *arglimit)
 		fmt.Printf("   fixunit: %s\n", *argfixunit)
+		fmt.Printf("   depth: %d\n", *depth)
 	}
 
 	return res
 }
 
+//-----------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
 //sorts files array
 func (f files) sort(by string, order string) {
 	switch {
@@ -169,6 +185,7 @@ func (f files) sort(by string, order string) {
 	}
 }
 
+//-----------------------------------------------------------------------------------------
 //converts size to ident dimension
 func (f file) getSize(fixunit string) (string, float64) {
 
@@ -190,8 +207,9 @@ func (f file) getSize(fixunit string) (string, float64) {
 	return unit, size / math.Pow(1024, power-1)
 }
 
+//-----------------------------------------------------------------------------------------
 //calculates dir size
-func getFileInfo(files *files, path string) (*file, error) {
+func getFileInfo(files *files, path string, depth int) (*file, error) {
 	size := int64(0)
 
 	//if file or folder is not accessible then return nil
@@ -211,14 +229,14 @@ func getFileInfo(files *files, path string) (*file, error) {
 
 	//calc total size throught folder content
 	for _, f := range fs {
-		cf, err := getFileInfo(files, path+"/"+f.Name())
+		cf, err := getFileInfo(files, path+"/"+f.Name(), depth+1)
 		if err == nil {
 			size = size + cf.size
 		}
 	}
 
 	//generate object
-	f := file{path: path, size: size, isdir: true}
+	f := file{path: path, size: size, isdir: true, depth: depth}
 
 	//append to a global list
 	*files = append(*files, f)

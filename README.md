@@ -3,32 +3,35 @@
 # diskusage 
 diskusage is a command line utility for getting information about usage of disk(s) or folder(s) space.
 ```cmd
-Input arguments:
-   path: C:/Windows; D:/Programs
-   limit: 10
+Parsing input arguments
+Arguments:
+   path: d:/go; d:/Books
+   limit: 20
    fixunit: 
+   depth: 2
 Start scanning
-  1.| DIR: C:/Windows                                                               | SIZE: 51.13 Gb
-  2.| DIR: C:/Windows/winsxs                                                        | SIZE: 26.74 Gb
-  3.| DIR: C:/Windows/System32                                                      | SIZE: 12.25 Gb
-  4.| DIR: C:/Windows/System32/DriverStore                                          | SIZE: 8.55 Gb
-  5.| DIR: C:/Windows/System32/DriverStore/FileRepository                           | SIZE: 8.55 Gb
-  6.| DIR: D:/Programs                                                              | SIZE: 5.06 Gb
-  7.| DIR: D:/Programs/DVD9_Office_Select_Edition_2016_W32_RuEn_MLF_SPecialiST      | SIZE: 4.90 Gb
-  8.| DIR: C:/Windows/Installer                                                     | SIZE: 3.62 Gb
-  9.| DIR: C:/Windows/SysWOW64                                                      | SIZE: 2.28 Gb
- 10.| DIR: C:/Windows/assembly                                                      | SIZE: 1.92 Gb
+  1.| DIR: d:/go            | SIZE: 325.72 Mb   | DEPTH: 1 
+  2.| DIR: d:/go/pkg        | SIZE: 212.88 Mb   | DEPTH: 2 
+  3.| DIR: d:/go/src        | SIZE:  62.57 Mb   | DEPTH: 2 
+  4.| DIR: d:/go/bin        | SIZE:  30.44 Mb   | DEPTH: 2 
+  5.| DIR: d:/Books/Chess   | SIZE:  14.01 Mb   | DEPTH: 2 
+  6.| DIR: d:/Books         | SIZE:  14.01 Mb   | DEPTH: 1 
+  7.| DIR: d:/go/api        | SIZE:   6.41 Mb   | DEPTH: 2 
+  8.| DIR: d:/go/test       | SIZE:   5.11 Mb   | DEPTH: 2 
+  9.| DIR: d:/go/doc        | SIZE:   4.00 Mb   | DEPTH: 2 
+ 10.| DIR: d:/go/misc       | SIZE:   3.82 Mb   | DEPTH: 2 
+ 11.| DIR: d:/go/lib        | SIZE: 358.25 Kb   | DEPTH: 2 
 Finish scanning
-Total time: 34.0898503s
-``` 
+Total time: 272.0156ms
+```
 ## Features
-- A primitive tool for getting usage of disk(s) / folder(s) space
+- A primitive tool for getting folder(s) sizes
 - Command line environment only
-- Supports both folders and disks in arguments
-- Recursive pass through folders tree on defined disk(s) / folders(s)
+- Supports both folders and disks as arguments
+- Recursive pass through subfolders
 - Calculate size of each folder
-- Print list of (sub)folders with a biggest sizes
-- Set limit to number folders in printing
+- Analyze for a nedeed depth of subfolders
+- Set limit how much folders will be printed in a results
 - Fast
 
 ## Main cons
@@ -39,11 +42,32 @@ Total time: 34.0898503s
 
 Releases available as single executable files – just [download latest release](https://github.com/aleksaan/diskusage/releases) for your platform, unpack and run.
 
-## Start on Windows
+## Start on Windows - simple usage
 
 ```cmd
-diskusage.exe -path "C:/Temp; D:/" -limit 20 -fixunit "Gb"
+diskusage.exe -path "c:/somedir"
 ```
+if you want to get 20 biggest directories in a d:/somedir
+
+```cmd
+diskusage.exe -path "c:/somedir" -depth 1
+```
+if you want to get only d:/somedir size
+
+```cmd
+diskusage.exe -path "c:/somedir; d:/otherdir"
+```
+if you want to calculate size each of them
+
+
+## Start on Windows - advanced usage
+
+```cmd
+diskusage.exe -path "c:/somedir; d:/otherdir" -limit 20 -fixunit "Gb" -depth 3
+```
+if you want to get 20 biggest directories across c:/somedir and d:/otherdir with a three subfolder's levels depth. All results will be represented in Gb.
+
+
 where:
 ```cmd
 -path "C:/Temp; D:/"
@@ -57,13 +81,16 @@ is how much max-sized folders you want to see in the results (optional)
 -fixunit "Gb"
 ```
 is a fixed unit of dir-size for a results (optional). If this parameter doesn't set then you get dynamic-scaled results in a more comfort units for each folder. You can use "fixunit" in case you want to compare sizes afterward.
+```cmd 
+-depth "2"
+```
+is depth of subfolders to analyze (optional)
 
-For integration with a other systems I recommend create a batch file like this or more complex if you want:
+
+For integration with a other systems I recommend create a batch file like this:
 ```cmd
 del results.txt
-diskusage.exe -path "C:/" -limit 20 >> results.txt
-rem pause
-rem see to results.txt
+diskusage.exe -path "c:/somedir" > results.txt
 ```
 
 
