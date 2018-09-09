@@ -72,15 +72,16 @@ where:
 ```cmd
 -path "C:/Temp; D:/"
 ``` 
-is set of disk(s) / folder(s) separated by semicolon (required)
+is list of disk(s) / folder(s) separated by semicolon (required)
 ```cmd 
 -limit 20
 ```
-is how much max-sized folders you want to see in the results (optional)
+is how much biggest folders will be printed in the results (optional)
 ```cmd 
 -fixunit "Gb"
 ```
-is a fixed unit of dir-size for a results (optional). If this parameter doesn't set then you get dynamic-scaled results in a more comfort units for each folder. You can use "fixunit" in case you want to compare sizes afterward.
+you can shoose unit style to representing folder sizes. It can be fixed or dynamic-scaled.
+You can use "fixunit" in case you want to compare sizes afterward (optional).
 ```cmd 
 -depth "2"
 ```
