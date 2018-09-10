@@ -46,12 +46,12 @@ Releases available as single executable files – just [download latest release]
 ```cmd
 diskusage.exe -path "c:/somedir"
 ```
-if you want to get 20 biggest directories in c:/somedir
+if you want to get only c:/somedir size
 
 ```cmd
-diskusage.exe -path "c:/somedir" -depth 1
+diskusage.exe -path "c:/somedir" -depth 2
 ```
-if you want to get only c:/somedir size
+if you want to get sizes of (sub)folders inside c:/somedir
 
 ```cmd
 diskusage.exe -path "c:/somedir; d:/otherdir"
