@@ -7,6 +7,7 @@ import (
 	"math"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -121,7 +122,6 @@ func main() {
 //-----------------------------------------------------------------------------------------
 //parses input arguments
 func parseCLIArguments() bool {
-	fmt.Println("Parsing input arguments")
 
 	var res = true
 
@@ -140,6 +140,9 @@ func parseCLIArguments() bool {
 	flag.Parse()
 
 	//processing arguments
+	*argpaths = strconv.Quote(*argpaths)
+	*argpaths = strings.Replace(*argpaths, "\\", "/", -1)
+	*argpaths, _ = strconv.Unquote(*argpaths)
 	if len(*argpaths) == 0 {
 		fmt.Println("Error! Argument 'path' could not be an empty string")
 		res = false
@@ -162,7 +165,7 @@ func parseCLIArguments() bool {
 	//prints arguments
 	if res {
 		fmt.Println("Arguments:")
-		fmt.Printf("   path: %s\n", *argpaths)
+		fmt.Printf("   path: %q\n", *argpaths)
 		fmt.Printf("   limit: %d\n", *arglimit)
 		fmt.Printf("   fixunit: %s\n", *argfixunit)
 		fmt.Printf("   depth: %d\n", *depth)
