@@ -89,7 +89,6 @@ is depth of subfolders to analyze (optional)
 
 For integration with a other systems I recommend create a batch file like this:
 ```cmd
-del results.txt
 diskusage.exe -path "c:/somedir" > results.txt
 ```
 
