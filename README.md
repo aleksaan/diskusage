@@ -39,6 +39,7 @@ Total time: 272.0156ms
 
 ## Releases
 [download](https://github.com/aleksaan/diskusage/releases)
+
 Releases available as single executable files – just [download latest release](https://github.com/aleksaan/diskusage/releases) for your platform, unpack and run.
 
 ## Start on Windows - simple usage
