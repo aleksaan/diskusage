@@ -1,0 +1,4 @@
+# remove .files
+.config/
+dist/
+
