@@ -3,247 +3,70 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
-	"math"
-	"os"
-	"sort"
-	"strconv"
-	"strings"
 	"time"
+
+	"github.com/aleksaan/diskusage/diskusage"
 )
-
-type file struct {
-	path  string
-	size  int64
-	isdir bool
-	depth int
-}
-
-type files []file
-
-type sizeSorter []file
-
-func (a sizeSorter) Len() int           { return len(a) }
-func (a sizeSorter) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a sizeSorter) Less(i, j int) bool { return a[i].size < a[j].size }
-
-type sizeDescSorter []file
-
-func (a sizeDescSorter) Len() int           { return len(a) }
-func (a sizeDescSorter) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a sizeDescSorter) Less(i, j int) bool { return a[i].size > a[j].size }
-
-//входные аргументы
-var argpaths *string //list of folders to analyze separated by ;
-
-var arglimit *int          //limit folders in results
-const arglimitdefault = 10 //default value for a arglimit
-
-var depth *int         //depth of subfolders in results (-1 - all, 1 - only current, 2 and more - 2 and more)
-const depthdefault = 1 //default depth in results
-
-var argfixunit *string //fixed size unit in a results presetation (b, Kb, Mb, ...). Has a upper priority than "argmaxunit". Must be in sizeUnits.
-
-//pairs of key and scale power x, when 1024^x is scale of size
-var sizeUnits = map[string]float64{
-	"b":  1,
-	"Kb": 2,
-	"Mb": 3,
-	"Gb": 4,
-	"Tb": 5,
-	"Pb": 6,
-}
-var sortedKeysSizeUnits = []string{"b", "Kb", "Mb", "Gb", "Tb", "Pb"}
 
 //-----------------------------------------------------------------------------------------
 //main function
 func main() {
 
-	//start timer for calculating total execution time
+	//start timer
 	start := time.Now()
 
 	//gets command line arguments
-	var res = parseCLIArguments()
+	parseCLIArguments()
+	diskusage.InputArgs.PrintArguments()
 
-	//check for required argument is exists
-	if !res {
-		fmt.Println("Incorrect arguments! Program is finished.")
-		os.Exit(1)
-	}
+	//start scanning files
+	fmt.Printf("\nStart scanning\n")
 
-	//split paths from inline format to array
-	var paths = strings.Split(*argpaths, ";")
-	var files files
+	//get files
+	files := &diskusage.TFiles{}
+	diskusage.ScanDir(files, diskusage.InputArgs.Path, 1)
 
-	fmt.Println("Start scanning")
+	//sort files by size
+	files.Sort("size_name", "desc")
 
-	//loop throught folders and get info about size into &files object
-	for _, p := range paths {
-		getFileInfo(&files, strings.Trim(p, " "), 1)
-	}
+	//print files results to console
+	files.PrintFilesSizes()
 
-	//sort list of folders by descending size
-	files.sort("size", "desc")
-
-	var maxlen = 0
-	var c = 0
-	for _, f := range files {
-		if f.depth <= *depth {
-			c++
-			maxlen = int(math.Max(float64(maxlen), float64(len(f.path))))
-			//break if we up to defined limit
-			if c+1 >= *arglimit-1 {
-				break
-			}
-		}
-	}
-	//print results
-	var strfmt = "%3d.| DIR: %-" + fmt.Sprintf("%d", maxlen+2) + "s | SIZE: %6.2f %-4s | DEPTH: %d \n"
-	c = 0
-	for _, f := range files {
-		unit, size := f.getSize(*argfixunit)
-		if f.depth <= *depth {
-			c++
-			fmt.Printf(strfmt, c, f.path, size, unit, f.depth)
-
-			//break if we up to defined limit
-			if c+1 >= *arglimit-1 {
-				break
-			}
-		}
-	}
-
-	//print total time
-	fmt.Println("Finish scanning")
+	//finish work and calculate elapsed time
+	fmt.Printf("Finish scanning\n")
 	elapsed := time.Since(start)
-	fmt.Printf("Total time: %s", elapsed)
+
+	//print overall info
+	total := files.GetOverallInfo(elapsed)
+	total.PrintOverallInfo()
+
 }
 
 //-----------------------------------------------------------------------------------------
-//parses input arguments
-func parseCLIArguments() bool {
 
-	var res = true
+//ParseCLIArguments - parses input arguments
+func parseCLIArguments() {
 
-	//path - folders paths separated by semicolon (required)
-	argpaths = flag.String("path", "", "Folders paths separated by semicolon (required)")
-	//limit - number of folders printed in a results
-	arglimit = flag.Int("limit", arglimitdefault, fmt.Sprintf("Number of folders printed in a results (%d by default)", arglimitdefault))
-	//maxunit - max unit for a comfort mode representation
-	//argmaxunit = flag.String("maxunit", "Gb", "Max possible size unit for a results represetation. One from {b, Kb, Mb, Gb, Tb, Pb}.")
-	//fixedunit - unit for a fixed mode representation. If argument is that means fixed mode representation is on, else is off
-	argfixunit = flag.String("fixunit", "", "Fixed size unit for a results represetation. Should be one of {b, Kb, Mb, Gb, Tb, Pb}.")
-
-	depth = flag.Int("depth", depthdefault, "Depth of subfolders.")
+	var argpath = flag.String("path", "", "Path to analyze (required)")
+	var arglimit = flag.Int("limit", diskusage.LimitDefault, fmt.Sprintf("Number of folders printed in a results (%d by default)", diskusage.LimitDefault))
+	var argfixunit = flag.String("fixunit", "", "Fixed size unit for a results represetation. Should be one of {b, Kb, Mb, Gb, Tb, Pb}.")
+	var argdepth = flag.Int("depth", diskusage.DepthDefault, "Depth of subfolders.")
 
 	//parse argument
 	flag.Parse()
 
+	t := &diskusage.InputArgs
+
 	//processing arguments
-	*argpaths = strconv.Quote(*argpaths)
-	*argpaths = strings.Replace(*argpaths, "\\", "/", -1)
-	*argpaths, _ = strconv.Unquote(*argpaths)
-	if len(*argpaths) == 0 {
-		fmt.Println("Error! Argument 'path' could not be an empty string")
-		res = false
-	}
+	t.SetPath(argpath)
+	//checkError(err)
 
-	if *arglimit < 1 {
-		fmt.Printf("Argument 'limit' is negative (%d) and has been set to default value (%d)\n", *arglimit, arglimitdefault)
-		*arglimit = arglimitdefault //set to default value
-	}
+	t.SetLimit(arglimit)
+	//checkError(err)
 
-	if _, ok := sizeUnits[*argfixunit]; !ok && len(*argfixunit) > 0 {
-		fmt.Println("Error! Argument 'fixunit' is not in allowable range {b, Kb, Mb, Gb, Tb, Pb}")
-		res = false
-	}
+	t.SetFixUnit(argfixunit)
+	//checkError(err)
 
-	if res && len(*argfixunit) > 0 {
-		fmt.Printf("Results will be represented with fixed units style in '%s'\n", *argfixunit)
-	}
-
-	//prints arguments
-	if res {
-		fmt.Println("Arguments:")
-		fmt.Printf("   path: %q\n", *argpaths)
-		fmt.Printf("   limit: %d\n", *arglimit)
-		fmt.Printf("   fixunit: %s\n", *argfixunit)
-		fmt.Printf("   depth: %d\n", *depth)
-	}
-
-	return res
-}
-
-//-----------------------------------------------------------------------------------------
-
-//-----------------------------------------------------------------------------------------
-//sorts files array
-func (f files) sort(by string, order string) {
-	switch {
-	case by == "size" && order == "desc":
-		sort.Sort(sizeDescSorter(f))
-	case by == "size" && order == "":
-		sort.Sort(sizeSorter(f))
-	default:
-	}
-}
-
-//-----------------------------------------------------------------------------------------
-//converts size to ident dimension
-func (f file) getSize(fixunit string) (string, float64) {
-
-	var size = float64(f.size)
-	var unit string
-	var power float64
-
-	if len(fixunit) > 0 {
-		unit = fixunit
-		power = sizeUnits[fixunit]
-	} else {
-		for _, unit = range sortedKeysSizeUnits {
-			power = sizeUnits[unit]
-			if size < math.Pow(1024, power) {
-				break
-			}
-		}
-	}
-	return unit, size / math.Pow(1024, power-1)
-}
-
-//-----------------------------------------------------------------------------------------
-//calculates dir size
-func getFileInfo(files *files, path string, depth int) (*file, error) {
-	size := int64(0)
-
-	//if file or folder is not accessible then return nil
-	dir, err := os.Stat(path)
-	if err != nil {
-		return nil, err
-	}
-
-	//if file then return it size
-	if !dir.IsDir() {
-		size = dir.Size()
-		return &file{path: path, size: dir.Size(), isdir: false}, nil
-	}
-
-	//read content of folder
-	fs, _ := ioutil.ReadDir(path)
-
-	//calc total size throught folder content
-	for _, f := range fs {
-		cf, err := getFileInfo(files, path+"/"+f.Name(), depth+1)
-		if err == nil {
-			size = size + cf.size
-		}
-	}
-
-	//generate object
-	f := file{path: path, size: size, isdir: true, depth: depth}
-
-	//append to a global list
-	*files = append(*files, f)
-
-	//and return back
-	return &f, nil
+	t.SetDepth(argdepth)
+	//checkError(err)
 }
