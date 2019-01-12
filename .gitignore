@@ -1,4 +1,4 @@
 # remove .files
 .config/
 dist/
-
+debug

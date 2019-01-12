@@ -34,5 +34,3 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
-files:
-  - start_example.bat
