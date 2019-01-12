@@ -83,7 +83,7 @@ func (files *TFiles) CalculateMaxLenFilename() int {
 			c++
 			maxlen = int(math.Max(float64(maxlen), float64(len(f.RelativePath)+1+len(f.Name))))
 			//break if we up to defined limit
-			if c+1 >= InputArgs.Limit-1 {
+			if c+1 > InputArgs.Limit {
 				break
 			}
 		}
