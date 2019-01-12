@@ -20,11 +20,11 @@ func main() {
 	diskusage.InputArgs.PrintArguments()
 
 	//start scanning files
-	fmt.Printf("Start scanning\n")
+	fmt.Printf("\nStart scanning\n")
 
 	//get files
 	files := &diskusage.TFiles{}
-	diskusage.ScanDir(files, diskusage.InputArgs.Paths, 1)
+	diskusage.ScanDir(files, diskusage.InputArgs.Path, 1)
 
 	//sort files by size
 	files.Sort("size_name", "desc")
@@ -35,7 +35,11 @@ func main() {
 	//finish work and calculate elapsed time
 	fmt.Printf("Finish scanning\n")
 	elapsed := time.Since(start)
-	fmt.Printf("Total time: %s", elapsed)
+
+	//print overall info
+	total := files.GetOverallInfo(elapsed)
+	total.PrintOverallInfo()
+
 }
 
 //-----------------------------------------------------------------------------------------
@@ -43,7 +47,7 @@ func main() {
 //ParseCLIArguments - parses input arguments
 func parseCLIArguments() {
 
-	var argpaths = flag.String("path", "", "Folders paths separated by semicolon (required)")
+	var argpath = flag.String("path", "", "Path to analyze (required)")
 	var arglimit = flag.Int("limit", diskusage.LimitDefault, fmt.Sprintf("Number of folders printed in a results (%d by default)", diskusage.LimitDefault))
 	var argfixunit = flag.String("fixunit", "", "Fixed size unit for a results represetation. Should be one of {b, Kb, Mb, Gb, Tb, Pb}.")
 	var argdepth = flag.Int("depth", diskusage.DepthDefault, "Depth of subfolders.")
@@ -54,7 +58,7 @@ func parseCLIArguments() {
 	t := &diskusage.InputArgs
 
 	//processing arguments
-	t.SetPaths(argpaths)
+	t.SetPath(argpath)
 	//checkError(err)
 
 	t.SetLimit(arglimit)

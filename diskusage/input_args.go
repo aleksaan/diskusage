@@ -3,8 +3,7 @@ package diskusage
 import (
 	"errors"
 	"fmt"
-	"strconv"
-	"strings"
+	"path/filepath"
 )
 
 //LimitDefault - default Limit value
@@ -17,21 +16,19 @@ var InputArgs TInputArgs
 
 //TInputArgs - the programm arguments
 type TInputArgs struct {
-	Paths   string //list of folders to analyze separated by ;
+	Path    string //analysed path
 	Limit   int    //limit folders in results
 	Depth   int    //depth of subfolders in results (-1 - all, 1 - only current, 2 and more - 2 and more)
 	FixUnit string //fixed size unit in a results presetation (b, Kb, Mb, ...). Has a upper priority than "argmaxunit". Must be in sizeUnits.
 }
 
-//SetPaths - init Paths field
-func (t *TInputArgs) SetPaths(paths *string) error {
-	*paths = strconv.Quote(*paths)
-	*paths = strings.Replace(*paths, "\\", "/", -1)
-	*paths, _ = strconv.Unquote(*paths)
-	if len(*paths) == 0 {
+//SetPath - init Path field
+func (t *TInputArgs) SetPath(path *string) error {
+	newpath := filepath.Clean(*path)
+	if len(newpath) == 0 {
 		return errors.New("Error! Argument 'path' could not be an empty string")
 	}
-	t.Paths = *paths
+	t.Path = newpath
 	return nil
 }
 
@@ -68,8 +65,8 @@ func (t *TInputArgs) SetDepth(depth *int) error {
 
 //PrintArguments - print arguments
 func (t TInputArgs) PrintArguments() {
-	fmt.Println("Arguments:")
-	fmt.Printf("   path: %q\n", t.Paths)
+	fmt.Println("\nArguments:")
+	fmt.Printf("   path: %s\n", t.Path)
 	fmt.Printf("   limit: %d\n", t.Limit)
 	fmt.Printf("   fixunit: %s\n", t.FixUnit)
 	fmt.Printf("   depth: %d\n", t.Depth)

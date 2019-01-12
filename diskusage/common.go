@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"math"
 	"os"
+	"path/filepath"
 )
 
 //pairs of key and scale power x, when 1024^x is scale of size
@@ -29,10 +30,12 @@ func ScanDir(files *TFiles, path string, depth int) int64 {
 
 	//calc total size throught folder content
 	for _, osfile := range osfiles {
-		file := ScanFile(path+"/"+osfile.Name(), depth)
+
+		file := ScanFile(path+string(os.PathSeparator), osfile.Name(), depth)
 		if file.IsDir {
-			file.Size = ScanDir(files, file.Path, depth+1)
+			file.Size = ScanDir(files, path+string(os.PathSeparator)+osfile.Name(), depth+1)
 		}
+
 		file.SetAdaptedSizeOfFile(&InputArgs)
 		dirsize += file.Size
 		*files = append(*files, *file)
@@ -41,20 +44,42 @@ func ScanDir(files *TFiles, path string, depth int) int64 {
 	return dirsize
 }
 
+//SetAdaptedSizeOfFile - set file properties: AdaptedSize & AdaptedUnit
+func (file *TFile) SetAdaptedSizeOfFile(inputArgs *TInputArgs) {
+	file.AdaptedSize, file.AdaptedUnit = GetAdaptedSize(file.Size, inputArgs.FixUnit)
+}
+
 //-----------------------------------------------------------------------------------------
 
 //ScanFile - scan dir/file parameters
-func ScanFile(path string, depth int) *TFile {
+func ScanFile(path string, name string, depth int) *TFile {
 	f := &TFile{}
-	f.Path = path
+	f.Name = name
+	f.RelativePath = path[len(InputArgs.Path):]
 	f.Depth = depth
 
 	//if file or folder is not accessible then return nil
-	dir, err := os.Stat(path)
+	pathName := filepath.Clean(path + name)
+
+	//dirstat, _ := os.Stat(pathName)
+	dir, err := os.Lstat(pathName)
+
 	if err != nil {
 		f.IsNotAccessible = true
 		f.IsNotAccessibleMessage = err.Error()
 		return f
+	}
+
+	linkdir, linkerr := filepath.EvalSymlinks(pathName)
+	if linkerr != nil {
+		f.IsNotAccessible = true
+		f.IsNotAccessibleMessage = linkerr.Error()
+		return f
+	}
+
+	if linkdir != pathName {
+		f.IsLink = true
+		f.LinkedDirPath = linkdir
 	}
 
 	f.IsDir = dir.IsDir()
@@ -66,16 +91,16 @@ func ScanFile(path string, depth int) *TFile {
 	return f
 }
 
-//SetAdaptedSizeOfFile - set file size adapted to InputArgs.FixUnit units or to a flexible useful units
-func (f *TFile) SetAdaptedSizeOfFile(inputargs *TInputArgs) {
+//GetAdaptedSize - get file size adapted to InputArgs.FixUnit units or to a flexible useful units
+func GetAdaptedSize(sizeB int64, fixunit string) (float64, string) {
 
-	var size = float64(f.Size)
+	var size = float64(sizeB)
 	var unit string
 	var power float64
 
-	if len(inputargs.FixUnit) > 0 {
-		unit = inputargs.FixUnit
-		power = sizeUnits[inputargs.FixUnit]
+	if len(fixunit) > 0 {
+		unit = fixunit
+		power = sizeUnits[fixunit]
 	} else {
 		for _, unit = range sortedKeysSizeUnits {
 			power = sizeUnits[unit]
@@ -84,6 +109,5 @@ func (f *TFile) SetAdaptedSizeOfFile(inputargs *TInputArgs) {
 			}
 		}
 	}
-	f.AdaptedUnit = unit
-	f.AdaptedSize = size / math.Pow(1024, power-1)
+	return (size / math.Pow(1024, power-1)), unit
 }
