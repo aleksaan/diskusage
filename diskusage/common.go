@@ -5,6 +5,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 //pairs of key and scale power x, when 1024^x is scale of size
@@ -77,7 +78,7 @@ func ScanFile(path string, name string, depth int) *TFile {
 		return f
 	}
 
-	if linkdir != pathName {
+	if strings.ToLower(linkdir) != strings.ToLower(pathName) {
 		f.IsLink = true
 		f.LinkedDirPath = linkdir
 	}
