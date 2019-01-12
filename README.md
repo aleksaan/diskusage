@@ -26,7 +26,7 @@ Overall info:
    Total time: 4.2919743s
    Total dirs: 1129
    Total files: 8690
-   Total links: 9819
+   Total links: 0
    Total size: 325.81 Mb
    Total size (bytes): 341640673
    Unaccessible dirs & files: 0
