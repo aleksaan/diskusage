@@ -3,7 +3,6 @@ package diskusage
 import (
 	"errors"
 	"fmt"
-	"path/filepath"
 )
 
 //LimitDefault - default Limit value
@@ -23,8 +22,8 @@ type TInputArgs struct {
 }
 
 //SetPath - init Path field
-func (t *TInputArgs) SetPath(path *string) error {
-	newpath := filepath.Clean(*path)
+func (t *TInputArgs) SetPath(inpath *string) error {
+	newpath := CleanPath(inpath, true)
 	if len(newpath) == 0 {
 		return errors.New("Error! Argument 'path' could not be an empty string")
 	}

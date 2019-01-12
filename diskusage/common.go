@@ -31,9 +31,9 @@ func ScanDir(files *TFiles, path string, depth int) int64 {
 	//calc total size throught folder content
 	for _, osfile := range osfiles {
 
-		file := ScanFile(path+string(os.PathSeparator), osfile.Name(), depth)
+		file := ScanFile(path, osfile.Name(), depth)
 		if file.IsDir {
-			file.Size = ScanDir(files, path+string(os.PathSeparator)+osfile.Name(), depth+1)
+			file.Size = ScanDir(files, AddPathSeparator(path+osfile.Name()), depth+1)
 		}
 
 		file.SetAdaptedSizeOfFile(&InputArgs)
@@ -59,7 +59,7 @@ func ScanFile(path string, name string, depth int) *TFile {
 	f.Depth = depth
 
 	//if file or folder is not accessible then return nil
-	pathName := filepath.Clean(path + name)
+	pathName := CleanPath(&path, false) + name
 
 	//dirstat, _ := os.Stat(pathName)
 	dir, err := os.Lstat(pathName)
@@ -110,4 +110,24 @@ func GetAdaptedSize(sizeB int64, fixunit string) (float64, string) {
 		}
 	}
 	return (size / math.Pow(1024, power-1)), unit
+}
+
+//CleanPath - get absolute path like C:\temp\
+func CleanPath(path *string, isrelativeclean bool) string {
+	if isrelativeclean {
+		abspath, _ := filepath.Abs(*path)
+		return AddPathSeparator(filepath.Clean(abspath))
+	}
+
+	return AddPathSeparator(filepath.Clean(*path))
+}
+
+//AddPathSeparator - add os path separator to string
+func AddPathSeparator(path string) string {
+	cleanPath := filepath.Clean(path)
+	lastSymbol := cleanPath[(len(cleanPath) - 1):]
+	if lastSymbol == string(os.PathSeparator) {
+		return filepath.Clean(path)
+	}
+	return filepath.Clean(path) + string(os.PathSeparator)
 }
