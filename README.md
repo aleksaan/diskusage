@@ -4,33 +4,42 @@
 diskusage is a command line utility for calculating folders sizes.
 ```cmd
 Arguments:
-   path: d:/go; d:/Books
-   limit: 20
+   path: c:\go\
+   limit: 10
    fixunit: 
-   depth: 2
+   depth: 5
+
 Start scanning
-  1.| DIR: d:/go            | SIZE: 325.72 Mb   | DEPTH: 1 
-  2.| DIR: d:/go/pkg        | SIZE: 212.88 Mb   | DEPTH: 2 
-  3.| DIR: d:/go/src        | SIZE:  62.57 Mb   | DEPTH: 2 
-  4.| DIR: d:/go/bin        | SIZE:  30.44 Mb   | DEPTH: 2 
-  5.| DIR: d:/Books/Chess   | SIZE:  14.01 Mb   | DEPTH: 2 
-  6.| DIR: d:/Books         | SIZE:  14.01 Mb   | DEPTH: 1 
-  7.| DIR: d:/go/api        | SIZE:   6.41 Mb   | DEPTH: 2 
-  8.| DIR: d:/go/test       | SIZE:   5.11 Mb   | DEPTH: 2 
-  9.| DIR: d:/go/doc        | SIZE:   4.00 Mb   | DEPTH: 2 
- 10.| DIR: d:/go/misc       | SIZE:   3.82 Mb   | DEPTH: 2 
- 11.| DIR: d:/go/lib        | SIZE: 358.25 Kb   | DEPTH: 2 
+  1.| PATH:   pkg                                   | SIZE:   212.95 Mb   | DEPTH: 1 
+  2.| PATH:   pkg\tool                              | SIZE:   123.65 Mb   | DEPTH: 2 
+  3.| PATH:   pkg\tool\windows_amd64                | SIZE:   123.65 Mb   | DEPTH: 3 
+  4.| PATH:   src                                   | SIZE:    62.58 Mb   | DEPTH: 1 
+  5.| PATH:   pkg\windows_amd64_race                | SIZE:    45.89 Mb   | DEPTH: 2 
+  6.| PATH:   pkg\windows_amd64                     | SIZE:    38.95 Mb   | DEPTH: 2 
+  7.| PATH:   bin                                   | SIZE:    30.45 Mb   | DEPTH: 1 
+  8.| PATH:   src\cmd                               | SIZE:    30.11 Mb   | DEPTH: 2 
+  9.| PATH:   pkg\tool\windows_amd64\compile.exe    | SIZE:    19.84 Mb   | DEPTH: 4 
+ 10.| PATH:   bin\godoc.exe                         | SIZE:    14.99 Mb   | DEPTH: 2 
 Finish scanning
-Total time: 272.0156ms
+
+Overall info:
+   Total time: 4.2919743s
+   Total dirs: 1129
+   Total files: 8690
+   Total links: 9819
+   Total size: 325.81 Mb
+   Total size (bytes): 341640673
+   Unaccessible dirs & files: 0
+
 ```
 ## Features
 - A primitive tool for getting folder(s) sizes
 - Command line environment only
 - Supports both folders and disks as arguments
-- Recursive pass through subfolders
-- Calculate size of each folder
-- Analyze on defined depth of subfolders
-- Set limit how much folders will be printed in a results
+- Recursive passes through subfolders
+- Calculates size of each folder
+- Analyzes on defined depth of subfolders
+- Sets limit how much folders will be printed in a results
 - Fast
 
 ## Main cons
@@ -47,32 +56,27 @@ Releases available as single executable files – just [download latest release]
 ```cmd
 diskusage.exe -path "c:/somedir"
 ```
-if you want to get only c:/somedir size
+if you want to get c:/somedir first level subfolders sizes
 
 ```cmd
 diskusage.exe -path "c:/somedir" -depth 2
 ```
-if you want to get sizes of (sub)folders inside c:/somedir
-
-```cmd
-diskusage.exe -path "c:/somedir; d:/otherdir"
-```
-if you want to calculate size each of them
+if you want to get c:/somedir first & second level subfolders/files sizes
 
 
 ## Start on Windows - advanced usage
 
 ```cmd
-diskusage.exe -path "c:/somedir; d:/otherdir" -limit 20 -fixunit "Gb" -depth 3
+diskusage.exe -path "c:/somedir" -limit 20 -fixunit "Gb" -depth 3
 ```
-if you want to get 20 biggest directories across c:/somedir and d:/otherdir with a three subfolder's levels depth. All results will be represented in Gb.
+if you want to get 20 biggest directories across c:/somedir with a three subfolder's levels depth. All results will be represented in Gb.
 
 
 where:
 ```cmd
--path "c:/somedir; d:/otherdir"
+-path "c:/somedir"
 ``` 
-is list of disk(s) / folder(s) separated by semicolon (required)
+is a folder name (required)
 ```cmd 
 -limit 20
 ```
