@@ -47,6 +47,7 @@ Overall info:
 - No any intelligents features (also pros)
 
 ## Releases
+[Releases here](https://github.com/aleksaan/diskusage/releases)
 
 Releases available as single executable files – just [download latest release](https://github.com/aleksaan/diskusage/releases) for your platform, unpack and run.
 
@@ -55,12 +56,12 @@ Releases available as single executable files – just [download latest release]
 ```cmd
 diskusage.exe -path "c:/somedir"
 ```
-if you want to get 20 biggest directories in c:/somedir
+if you want to get c:/somedir first level subfolders sizes
 
 ```cmd
-diskusage.exe -path "c:/somedir" -depth 1
+diskusage.exe -path "c:/somedir" -depth 2
 ```
-if you want to get only c:/somedir first level subfolders sizes
+if you want to get c:/somedir first & second level subfolders/files sizes
 
 
 ## Start on Windows - advanced usage
@@ -93,7 +94,6 @@ is depth of subfolders to analyze (optional)
 
 For integration with a other systems I recommend create a batch file like this:
 ```cmd
-del results.txt
 diskusage.exe -path "c:/somedir" > results.txt
 ```
 
