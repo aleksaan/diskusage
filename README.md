@@ -11,23 +11,23 @@ Arguments:
    sort: size_desc
 
 Start scanning
-  1.| PATH:   pkg                                   | SIZE:   212.95 Mb   | DEPTH: 1 
-  2.| PATH:   pkg\tool                              | SIZE:   123.65 Mb   | DEPTH: 2 
-  3.| PATH:   pkg\tool\windows_amd64                | SIZE:   123.65 Mb   | DEPTH: 3 
-  4.| PATH:   src                                   | SIZE:    62.58 Mb   | DEPTH: 1 
-  5.| PATH:   pkg\windows_amd64_race                | SIZE:    45.89 Mb   | DEPTH: 2 
-  6.| PATH:   pkg\windows_amd64                     | SIZE:    38.95 Mb   | DEPTH: 2 
-  7.| PATH:   bin                                   | SIZE:    30.45 Mb   | DEPTH: 1 
-  8.| PATH:   src\cmd                               | SIZE:    30.11 Mb   | DEPTH: 2 
-  9.| PATH:   pkg\tool\windows_amd64\compile.exe    | SIZE:    19.84 Mb   | DEPTH: 4 
- 10.| PATH:   bin\godoc.exe                         | SIZE:    14.99 Mb   | DEPTH: 2 
+  1.| PATH:   c:\go\pkg                                   | SIZE:   212.95 Mb   | DEPTH: 1 
+  2.| PATH:   c:\go\pkg\tool                              | SIZE:   123.65 Mb   | DEPTH: 2 
+  3.| PATH:   c:\go\pkg\tool\windows_amd64                | SIZE:   123.65 Mb   | DEPTH: 3 
+  4.| PATH:   c:\go\src                                   | SIZE:    62.58 Mb   | DEPTH: 1 
+  5.| PATH:   c:\go\pkg\windows_amd64_race                | SIZE:    45.89 Mb   | DEPTH: 2 
+  6.| PATH:   c:\go\pkg\windows_amd64                     | SIZE:    38.95 Mb   | DEPTH: 2 
+  7.| PATH:   c:\go\bin                                   | SIZE:    30.45 Mb   | DEPTH: 1 
+  8.| PATH:   c:\go\src\cmd                               | SIZE:    30.11 Mb   | DEPTH: 2 
+  9.| PATH:   c:\go\pkg\tool\windows_amd64\compile.exe    | SIZE:    19.84 Mb   | DEPTH: 4 
+ 10.| PATH:   c:\go\bin\godoc.exe                         | SIZE:    14.99 Mb   | DEPTH: 2 
 Finish scanning
 
-Overall info:
+Overall info (c:\go\):
    Total time: 4.2919743s
    Total dirs: 1129
    Total files: 8690
-   Total links: 9819
+   Total links: 0
    Total size: 325.81 Mb
    Total size (bytes): 341640673
    Unaccessible dirs & files: 0
