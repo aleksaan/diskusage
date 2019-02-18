@@ -82,7 +82,7 @@ is a folder name (required)
 -limit 20
 ```
 is how much biggest folders will be printed in the results (optional)
-if you set -limit to 0 it means limitless (no one row not be cuts from results)
+if you set -limit to 0 it means limitless (no one row not be cuts from results). Be warned it might be a huge list of files!
 ```cmd 
 -fixunit "Gb"
 ```
@@ -100,7 +100,7 @@ is set sorting of results (optional)
 It should be also "name_asc" like windows explorer default sorting
 
 
-## save results to a file
+## Save results to a file
 For integration with a other systems I recommend create a batch file like this:
 ```cmd
 diskusage.exe -path "c:/somedir" > results.txt
