@@ -1,5 +1,6 @@
 # remove .files
 .config/
 dist/
-debug
+debug*
 diskusage.exe
+results.txt
