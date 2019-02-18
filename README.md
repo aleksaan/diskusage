@@ -8,6 +8,7 @@ Arguments:
    limit: 10
    fixunit: 
    depth: 5
+   sort: size_desc
 
 Start scanning
   1.| PATH:   pkg                                   | SIZE:   212.95 Mb   | DEPTH: 1 
@@ -67,7 +68,7 @@ if you want to get c:/somedir first & second level subfolders/files sizes
 ## Start on Windows - advanced usage
 
 ```cmd
-diskusage.exe -path "c:/somedir" -limit 20 -fixunit "Gb" -depth 3
+diskusage.exe -path "c:/somedir" -limit 20 -fixunit "Gb" -depth 3 -sort "size_desc"
 ```
 if you want to get 20 biggest directories across c:/somedir with a three subfolder's levels depth. All results will be represented in Gb.
 
@@ -81,6 +82,7 @@ is a folder name (required)
 -limit 20
 ```
 is how much biggest folders will be printed in the results (optional)
+if you set -limit to 0 it means limitless (no one row not be cuts from results)
 ```cmd 
 -fixunit "Gb"
 ```
@@ -91,7 +93,14 @@ You can use "fixunit" in case you want to compare sizes afterward (optional).
 ```
 is depth of subfolders to analyze (optional)
 
+```cmd 
+-sort "size_desc"
+```
+is set sorting of results (optional)
+It should be also "name_asc" like windows explorer default sorting
 
+
+## save results to a file
 For integration with a other systems I recommend create a batch file like this:
 ```cmd
 diskusage.exe -path "c:/somedir" > results.txt

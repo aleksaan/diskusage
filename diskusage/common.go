@@ -5,6 +5,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -16,6 +17,11 @@ var sizeUnits = map[string]float64{
 	"Gb": 4,
 	"Tb": 5,
 	"Pb": 6,
+}
+
+var sortValues = map[string]float64{
+	"name_asc":  1,
+	"size_desc": 2,
 }
 
 var sortedKeysSizeUnits = []string{"b", "Kb", "Mb", "Gb", "Tb", "Pb"}
@@ -131,4 +137,14 @@ func AddPathSeparator(path string) string {
 		return filepath.Clean(path)
 	}
 	return filepath.Clean(path) + string(os.PathSeparator)
+}
+
+//end line symbol
+func es() string {
+	switch runtime.GOOS {
+	case "windows":
+		return "\r\n"
+	default:
+		return "\n"
+	}
 }

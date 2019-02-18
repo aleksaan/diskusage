@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -57,18 +58,30 @@ func (a sizeAndNameSorter) Less(i, j int) bool {
 	return a[i].Size > a[j].Size || (a[i].Size == a[j].Size && (a[i].RelativePath+a[i].Name < a[j].RelativePath+a[j].Name))
 }
 
+type nameSorter []TFile
+
+func (a nameSorter) Len() int      { return len(a) }
+func (a nameSorter) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a nameSorter) Less(i, j int) bool {
+	switch {
+	case (a[i].IsDir == false && a[j].IsDir == true):
+		return false
+	case (a[i].IsDir == true && a[j].IsDir == false):
+		return true
+	default:
+		return a[i].RelativePath+strings.ToLower(a[i].Name) < a[j].RelativePath+strings.ToLower(a[j].Name)
+	}
+}
+
 //-----------------------------------------------------------------------------------------
 
 //Sort - sort files by size
-func (files *TFiles) Sort(by string, order string) {
+func (files *TFiles) Sort(by string) {
 	switch {
-	case by == "size" && order == "desc":
-		sort.Sort(sizeDescSorter(*files))
-	case by == "size_name" && order == "desc":
-		sort.Sort(sizeAndNameSorter(*files))
-	case by == "size" && order == "":
-		sort.Sort(sizeSorter(*files))
+	case by == "name_asc":
+		sort.Sort(nameSorter(*files))
 	default:
+		sort.Sort(sizeAndNameSorter(*files))
 	}
 }
 
@@ -83,7 +96,7 @@ func (files *TFiles) CalculateMaxLenFilename() int {
 			c++
 			maxlen = int(math.Max(float64(maxlen), float64(len(f.RelativePath)+1+len(f.Name))))
 			//break if we up to defined limit
-			if c+1 > InputArgs.Limit {
+			if isExceedLimit(c + 1) {
 				break
 			}
 		}
@@ -98,20 +111,25 @@ func (files *TFiles) PrintFilesSizes() {
 	maxlen := files.CalculateMaxLenFilename()
 
 	//print results
-	var strfmt = "%3d.| %-7s %-" + fmt.Sprintf("%d", maxlen+2) + "s | SIZE: %8.2f %-4s | DEPTH: %d \n"
+	var strfmt = "%3d.| %-7s %-" + fmt.Sprintf("%d", maxlen+2) + "s | SIZE: %8.2f %-4s | DEPTH: %d %s"
 	var c = 0
 	for _, f := range *files {
 		if f.Depth <= InputArgs.Depth && !f.IsNotAccessible {
 			c++
 			dirorfile := "PATH:"
-			fmt.Printf(strfmt, c, dirorfile, f.RelativePath+f.Name, f.AdaptedSize, f.AdaptedUnit, f.Depth)
+			fmt.Printf(strfmt, c, dirorfile, f.RelativePath+f.Name, f.AdaptedSize, f.AdaptedUnit, f.Depth, es())
 
-			//break if we up to defined limit
-			if c+1 > InputArgs.Limit {
+			//break if we up to defined limit in case limit > 0
+			if isExceedLimit(c + 1) {
 				break
 			}
 		}
 	}
+}
+
+//return True if limit has exceeded
+func isExceedLimit(x int) bool {
+	return x > InputArgs.Limit && InputArgs.Limit != 0
 }
 
 //PrintOverallInfo -

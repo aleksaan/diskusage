@@ -34,3 +34,6 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
+    - '*exe'
+    - 'debug*'
+    - 'cover*'
