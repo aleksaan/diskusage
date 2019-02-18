@@ -82,7 +82,7 @@ is a folder name (required)
 -limit 20
 ```
 is how much biggest folders will be printed in the results (optional)
-if you set -limit to 0 it means limitless (no one row not be cuts from results). Be warned it might be a huge list of files!
+if you set -limit to 0 it means limitless (no one row be cuted from results). Be warned it might be a huge list of files!
 ```cmd 
 -fixunit "Gb"
 ```
@@ -96,7 +96,7 @@ is depth of subfolders to analyze (optional)
 ```cmd 
 -sort "size_desc"
 ```
-is set sorting of results (optional)
+sets sorting (order) of printed results (optional)
 It should be also "name_asc" like windows explorer default sorting
 
 
