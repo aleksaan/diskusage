@@ -27,7 +27,7 @@ func main() {
 	diskusage.ScanDir(files, diskusage.InputArgs.Path, 1)
 
 	//sort files by size
-	files.Sort("size_name", "desc")
+	files.Sort(diskusage.InputArgs.Sort)
 
 	//print files results to console
 	files.PrintFilesSizes()
@@ -51,6 +51,7 @@ func parseCLIArguments() {
 	var arglimit = flag.Int("limit", diskusage.LimitDefault, fmt.Sprintf("Number of folders printed in a results (%d by default)", diskusage.LimitDefault))
 	var argfixunit = flag.String("fixunit", "", "Fixed size unit for a results represetation. Should be one of {b, Kb, Mb, Gb, Tb, Pb}.")
 	var argdepth = flag.Int("depth", diskusage.DepthDefault, "Depth of subfolders.")
+	var argsort = flag.String("sort", diskusage.SortDefault, "Sorting of results.  Should be one of {name_asc, size_desc}.")
 
 	//parse argument
 	flag.Parse()
@@ -69,4 +70,6 @@ func parseCLIArguments() {
 
 	t.SetDepth(argdepth)
 	//checkError(err)
+
+	t.SetSort(argsort)
 }

@@ -9,6 +9,8 @@ import (
 const LimitDefault = 10 //default value for a arglimit
 //DepthDefault - default Depth value
 const DepthDefault = 1 //default depth in results
+//SortDefault - default Sort value
+const SortDefault = "size_desc"
 
 //InputArgs - input arguments
 var InputArgs TInputArgs
@@ -19,6 +21,7 @@ type TInputArgs struct {
 	Limit   int    //limit folders in results
 	Depth   int    //depth of subfolders in results (-1 - all, 1 - only current, 2 and more - 2 and more)
 	FixUnit string //fixed size unit in a results presetation (b, Kb, Mb, ...). Has a upper priority than "argmaxunit". Must be in sizeUnits.
+	Sort    string //results sorting by
 }
 
 //SetPath - init Path field
@@ -33,7 +36,7 @@ func (t *TInputArgs) SetPath(inpath *string) error {
 
 //SetLimit - init Limit field
 func (t *TInputArgs) SetLimit(limit *int) error {
-	if *limit < 1 {
+	if *limit < 0 {
 		fmt.Printf("Argument 'limit' is negative (%d) and has been set to default value (%d)", *limit, LimitDefault)
 		*limit = LimitDefault //set to default value
 	}
@@ -62,6 +65,17 @@ func (t *TInputArgs) SetDepth(depth *int) error {
 	return nil
 }
 
+//SetSort - init Sort field
+func (t *TInputArgs) SetSort(sort *string) error {
+	if _, ok := sortValues[*sort]; !ok && len(*sort) > 0 {
+		t.Sort = SortDefault
+		return errors.New("Error! Argument 'sort' is not in allowable range {size_desc, name_asc} and replaced to :" + SortDefault)
+	}
+
+	t.Sort = *sort
+	return nil
+}
+
 //PrintArguments - print arguments
 func (t TInputArgs) PrintArguments() {
 	fmt.Println("\nArguments:")
@@ -69,4 +83,5 @@ func (t TInputArgs) PrintArguments() {
 	fmt.Printf("   limit: %d\n", t.Limit)
 	fmt.Printf("   fixunit: %s\n", t.FixUnit)
 	fmt.Printf("   depth: %d\n", t.Depth)
+	fmt.Printf("   sort: %s\n", t.Sort)
 }

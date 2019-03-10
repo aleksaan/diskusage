@@ -8,25 +8,26 @@ Arguments:
    limit: 10
    fixunit: 
    depth: 5
+   sort: size_desc
 
 Start scanning
-  1.| PATH:   pkg                                   | SIZE:   212.95 Mb   | DEPTH: 1 
-  2.| PATH:   pkg\tool                              | SIZE:   123.65 Mb   | DEPTH: 2 
-  3.| PATH:   pkg\tool\windows_amd64                | SIZE:   123.65 Mb   | DEPTH: 3 
-  4.| PATH:   src                                   | SIZE:    62.58 Mb   | DEPTH: 1 
-  5.| PATH:   pkg\windows_amd64_race                | SIZE:    45.89 Mb   | DEPTH: 2 
-  6.| PATH:   pkg\windows_amd64                     | SIZE:    38.95 Mb   | DEPTH: 2 
-  7.| PATH:   bin                                   | SIZE:    30.45 Mb   | DEPTH: 1 
-  8.| PATH:   src\cmd                               | SIZE:    30.11 Mb   | DEPTH: 2 
-  9.| PATH:   pkg\tool\windows_amd64\compile.exe    | SIZE:    19.84 Mb   | DEPTH: 4 
- 10.| PATH:   bin\godoc.exe                         | SIZE:    14.99 Mb   | DEPTH: 2 
+  1.| PATH:   c:\go\pkg                                   | SIZE:   212.95 Mb   | DEPTH: 1 
+  2.| PATH:   c:\go\pkg\tool                              | SIZE:   123.65 Mb   | DEPTH: 2 
+  3.| PATH:   c:\go\pkg\tool\windows_amd64                | SIZE:   123.65 Mb   | DEPTH: 3 
+  4.| PATH:   c:\go\src                                   | SIZE:    62.58 Mb   | DEPTH: 1 
+  5.| PATH:   c:\go\pkg\windows_amd64_race                | SIZE:    45.89 Mb   | DEPTH: 2 
+  6.| PATH:   c:\go\pkg\windows_amd64                     | SIZE:    38.95 Mb   | DEPTH: 2 
+  7.| PATH:   c:\go\bin                                   | SIZE:    30.45 Mb   | DEPTH: 1 
+  8.| PATH:   c:\go\src\cmd                               | SIZE:    30.11 Mb   | DEPTH: 2 
+  9.| PATH:   c:\go\pkg\tool\windows_amd64\compile.exe    | SIZE:    19.84 Mb   | DEPTH: 4 
+ 10.| PATH:   c:\go\bin\godoc.exe                         | SIZE:    14.99 Mb   | DEPTH: 2 
 Finish scanning
 
-Overall info:
+Overall info (c:\go\):
    Total time: 4.2919743s
    Total dirs: 1129
    Total files: 8690
-   Total links: 9819
+   Total links: 0
    Total size: 325.81 Mb
    Total size (bytes): 341640673
    Unaccessible dirs & files: 0
@@ -67,7 +68,7 @@ if you want to get c:/somedir first & second level subfolders/files sizes
 ## Start on Windows - advanced usage
 
 ```cmd
-diskusage.exe -path "c:/somedir" -limit 20 -fixunit "Gb" -depth 3
+diskusage.exe -path "c:/somedir" -limit 20 -fixunit "Gb" -depth 3 -sort "size_desc"
 ```
 if you want to get 20 biggest directories across c:/somedir with a three subfolder's levels depth. All results will be represented in Gb.
 
@@ -81,6 +82,7 @@ is a folder name (required)
 -limit 20
 ```
 is how much biggest folders will be printed in the results (optional)
+if you set -limit to 0 it means limitless (no one row be cuted from results). Be warned it might be a huge list of files!
 ```cmd 
 -fixunit "Gb"
 ```
@@ -91,7 +93,14 @@ You can use "fixunit" in case you want to compare sizes afterward (optional).
 ```
 is depth of subfolders to analyze (optional)
 
+```cmd 
+-sort "size_desc"
+```
+sets sorting (order) of printed results (optional)
+It should be also "name_asc" like windows explorer default sorting
 
+
+## Save results to a file
 For integration with a other systems I recommend create a batch file like this:
 ```cmd
 diskusage.exe -path "c:/somedir" > results.txt
