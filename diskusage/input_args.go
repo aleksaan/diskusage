@@ -3,6 +3,7 @@ package diskusage
 import (
 	"errors"
 	"fmt"
+	"time"
 )
 
 //LimitDefault - default Limit value
@@ -12,16 +13,20 @@ const DepthDefault = 1 //default depth in results
 //SortDefault - default Sort value
 const SortDefault = "size_desc"
 
+//CsvDefault - default value "nocsv" without generation csv file at end
+const CsvDefault = "nocsv"
+
 //InputArgs - input arguments
 var InputArgs TInputArgs
 
 //TInputArgs - the programm arguments
 type TInputArgs struct {
-	Path    string //analysed path
-	Limit   int    //limit folders in results
-	Depth   int    //depth of subfolders in results (-1 - all, 1 - only current, 2 and more - 2 and more)
-	FixUnit string //fixed size unit in a results presetation (b, Kb, Mb, ...). Has a upper priority than "argmaxunit". Must be in sizeUnits.
-	Sort    string //results sorting by
+	Path        string //analysed path
+	Limit       int    //limit folders in results
+	Depth       int    //depth of subfolders in results (-1 - all, 1 - only current, 2 and more - 2 and more)
+	FixUnit     string //fixed size unit in a results presetation (b, Kb, Mb, ...). Has a upper priority than "argmaxunit". Must be in sizeUnits.
+	Sort        string //results sorting by
+	CsvFileName string //csv file name to export results
 }
 
 //SetPath - init Path field
@@ -76,6 +81,23 @@ func (t *TInputArgs) SetSort(sort *string) error {
 	return nil
 }
 
+//SetCsvFileName - init SetCsvFileName field
+func (t *TInputArgs) SetCsvFileName(csvfilename *string) error {
+	if len(*csvfilename) == 0 {
+		t.CsvFileName = getDefaultCsvFileName()
+		fmt.Printf("Csv file for export to: '%s'\n", t.CsvFileName)
+		return nil
+	}
+	t.CsvFileName = *csvfilename
+	return nil
+}
+
+func getDefaultCsvFileName() string {
+	tnow := time.Now()
+	tnowstr := tnow.Format("20060102_150405")
+	return fmt.Sprintf("./results/result_%s.csv", tnowstr)
+}
+
 //PrintArguments - print arguments
 func (t TInputArgs) PrintArguments() {
 	fmt.Println("\nArguments:")
@@ -84,4 +106,5 @@ func (t TInputArgs) PrintArguments() {
 	fmt.Printf("   fixunit: %s\n", t.FixUnit)
 	fmt.Printf("   depth: %d\n", t.Depth)
 	fmt.Printf("   sort: %s\n", t.Sort)
+	fmt.Printf("   csv: %s\n", t.CsvFileName)
 }
