@@ -9,6 +9,7 @@ Arguments:
    fixunit: 
    depth: 5
    sort: size_desc
+   csv: nocsv
 
 Start scanning
   1.| PATH:   c:\go\pkg                                   | SIZE:   212.95 Mb   | DEPTH: 1 
