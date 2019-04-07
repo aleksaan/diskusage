@@ -9,6 +9,7 @@ Arguments:
    fixunit: 
    depth: 5
    sort: size_desc
+   csv: nocsv
 
 Start scanning
   1.| PATH:   c:\go\pkg                                   | SIZE:   212.95 Mb   | DEPTH: 1 
@@ -42,6 +43,7 @@ Overall info (c:\go\):
 - Analyzes on defined depth of subfolders
 - Sets limit how much folders will be printed in a results
 - Fast
+- Saves results to csv-file
 
 ## Main cons
 - No any dummies protection (also pros)
@@ -68,9 +70,9 @@ if you want to get c:/somedir first & second level subfolders/files sizes
 ## Start on Windows - advanced usage
 
 ```cmd
-diskusage.exe -path "c:/somedir" -limit 20 -fixunit "Gb" -depth 3 -sort "size_desc"
+diskusage.exe -path "c:/somedir" -limit 20 -fixunit "Gb" -depth 3 -sort "size_desc" -csv ""
 ```
-if you want to get 20 biggest directories across c:/somedir with a three subfolder's levels depth. All results will be represented in Gb.
+if you want to get 20 biggest directories across c:/somedir with a three subfolder's levels depth. All results will be represented in Gb. Results will be saved to a default CSV-file.
 
 
 where:
@@ -99,8 +101,20 @@ is depth of subfolders to analyze (optional)
 sets sorting (order) of printed results (optional)
 It should be also "name_asc" like windows explorer default sorting
 
+## Exporting results to CSV file
+```cmd 
+-csv "./results/csv_1.csv"
+```
+use option -csv to define name of output csv-file with results. It is convenient to be used for automated analysis.
 
-## Save results to a file
+```cmd 
+-csv ""
+```
+empty value of csv argument generate CSV-file with a default name to ./results folder 
+
+* if you do not use csv argument no csv file will be generated 
+
+## Saving results to a file (redirecting console output to file)
 For integration with a other systems I recommend create a batch file like this:
 ```cmd
 diskusage.exe -path "c:/somedir" > results.txt

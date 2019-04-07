@@ -31,10 +31,11 @@ func main() {
 
 	//print files results to console
 	files.PrintFilesSizes()
-
 	//finish work and calculate elapsed time
 	fmt.Printf("Finish scanning\n")
 	elapsed := time.Since(start)
+
+	files.SaveToCsv()
 
 	//print overall info
 	total := files.GetOverallInfo(elapsed)
@@ -52,11 +53,13 @@ func parseCLIArguments() {
 	var argfixunit = flag.String("fixunit", "", "Fixed size unit for a results represetation. Should be one of {b, Kb, Mb, Gb, Tb, Pb}.")
 	var argdepth = flag.Int("depth", diskusage.DepthDefault, "Depth of subfolders.")
 	var argsort = flag.String("sort", diskusage.SortDefault, "Sorting of results.  Should be one of {name_asc, size_desc}.")
+	var argcsv = flag.String("csv", "", "Filename for saving results (optional).")
 
 	//parse argument
 	flag.Parse()
 
 	t := &diskusage.InputArgs
+	t.CsvFileName = diskusage.CsvDefault
 
 	//processing arguments
 	t.SetPath(argpath)
@@ -72,4 +75,20 @@ func parseCLIArguments() {
 	//checkError(err)
 
 	t.SetSort(argsort)
+	//checkError(err)
+
+	if isFlagPassed("csv") {
+		t.SetCsvFileName(argcsv)
+	}
+	//checkError(err)
+}
+
+func isFlagPassed(name string) bool {
+	found := false
+	flag.Visit(func(f *flag.Flag) {
+		if f.Name == name {
+			found = true
+		}
+	})
+	return found
 }
