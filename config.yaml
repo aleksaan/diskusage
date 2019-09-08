@@ -1,0 +1,9 @@
+# Analyzer options
+analyzer: 
+  path: c:\temp  
+  depth: 5
+# Result's options
+printer:
+  limit: 20
+  fixunit:   #b, Kb, Mb, Gb, ... 
+  tofile:    #file name to export
