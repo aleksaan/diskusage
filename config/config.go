@@ -6,11 +6,10 @@ import (
 	"os"
 
 	"github.com/jessevdk/go-flags"
-	"github.com/sqshq/sampler/console"
 	"gopkg.in/yaml.v3"
 )
 
-
+var defaultConfigFile = "config.yaml"
 
 // LoadConfig - load configuration file
 func LoadConfig() (*Config, Options) {
@@ -19,15 +18,11 @@ func LoadConfig() (*Config, Options) {
 	_, err := flags.Parse(&opt)
 
 	if err != nil {
-		console.Exit("")
-	}
-
-	if opt.Version == true {
-		console.Exit(console.AppVersion)
+		log.Fatalln("Error! Wrong options")
 	}
 
 	if opt.ConfigFile == nil {
-		console.Exit("Please specify config file using --config flag. Example: sampler --config example.yml")
+		opt.ConfigFile = &defaultConfigFile
 	}
 
 	cfg := readFile(opt.ConfigFile)

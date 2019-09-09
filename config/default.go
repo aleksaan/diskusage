@@ -3,10 +3,11 @@ package config
 import "os"
 
 const (
-	defaultDepth = 5
-	defaultLimit = 20
-	defaultUnits = ""
-	defaultSort  = "size_desc"
+	defaultDepth  = 5
+	defaultLimit  = 20
+	defaultUnits  = ""
+	defaultSort   = "size_desc"
+	defaultToFile = "<no file>"
 )
 
 func (c *Config) setDefaults() {
@@ -32,5 +33,15 @@ func (c *Config) setDefaultValues() {
 	if c.Printer.Units == nil {
 		u := defaultUnits
 		c.Printer.Units = &u
+	}
+
+	if c.Printer.ToFile == nil {
+		f := defaultToFile
+		c.Printer.ToFile = &f
+	}
+
+	if c.Printer.Sort == nil {
+		s := defaultSort
+		c.Printer.Sort = &s
 	}
 }

@@ -3,13 +3,14 @@ package printer
 import (
 	"math"
 	"time"
+	"unicode/utf8"
 
 	"github.com/aleksaan/diskusage/analyzer"
 	"github.com/aleksaan/diskusage/config"
 	"github.com/aleksaan/diskusage/files"
 )
 
-var preparedFiles *files.TFiles
+var preparedFiles = &files.TFiles{}
 
 var overallInfo = &TOverallInfo{}
 
@@ -19,7 +20,7 @@ func prepareData(cfg *config.Config, files *files.TFiles) {
 		if f.Depth <= *cfg.Analyzer.Depth {
 			c++
 			//break if we up to defined limit
-			if isExceedLimit(c+1, cfg.Printer.Limit) {
+			if isExceedLimit(c, cfg.Printer.Limit) {
 				break
 			}
 			*preparedFiles = append(*preparedFiles, f)
@@ -34,7 +35,8 @@ func isExceedLimit(checkedValue int, limit *int) bool {
 func calculateMaxLenFilename() int {
 	var maxlen = 0
 	for _, f := range *preparedFiles {
-		maxlen = int(math.Max(float64(maxlen), float64(len(f.RelativePath)+1+len(f.Name))))
+		strlen := utf8.RuneCountInString(f.RelativePath) + 1 + utf8.RuneCountInString(f.Name)
+		maxlen = int(math.Max(float64(maxlen), float64(strlen)))
 	}
 	return maxlen
 }

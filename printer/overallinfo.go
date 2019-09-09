@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-//OverallInfo -
+//TOverallInfo -
 type TOverallInfo struct {
 	totalTime               time.Duration
 	totalDirs               int64

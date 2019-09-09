@@ -17,4 +17,5 @@ type PrinterConfig struct {
 	Limit  *int    `yaml:"limit,omitempty"`
 	Units  *string `yaml:"unit,omitempty"`
 	ToFile *string `yaml:"tofile,omitempty"`
+	Sort   *string `yaml:"sort,omitempty"`
 }
