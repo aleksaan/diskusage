@@ -4,3 +4,4 @@ dist/
 debug*
 diskusage.exe
 results.txt
+results.csv
