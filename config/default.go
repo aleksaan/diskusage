@@ -7,7 +7,8 @@ const (
 	defaultLimit  = 20
 	defaultUnits  = ""
 	defaultSort   = "size_desc"
-	defaultToFile = "<no file>"
+	defaultToFile = ""
+	//DefaultToFile = "<no file>"
 )
 
 func (c *Config) setDefaults() {
@@ -36,8 +37,8 @@ func (c *Config) setDefaultValues() {
 	}
 
 	if c.Printer.ToFile == nil {
-		f := defaultToFile
-		c.Printer.ToFile = &f
+		u := defaultToFile
+		c.Printer.ToFile = &u
 	}
 
 	if c.Printer.Sort == nil {

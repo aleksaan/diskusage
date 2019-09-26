@@ -1,9 +1,7 @@
-# Analyzer options
-analyzer: 
-  path: d:\_docs
+analyzer:
+  path: d:\_appl\go\src\github.com\aleksaan\diskusage
   depth: 5
-# Result's options
 printer:
   limit: 20
-  # fixunit: 
-  # tofile: 
+  fixunit:
+  tofile: out.txt

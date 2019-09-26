@@ -7,8 +7,10 @@ import (
 )
 
 //WaitExit -
-func WaitExit() {
-	runReadRune("\nPress [Y] for exit: ")
+func WaitExit(isNeedWaiting bool) {
+	if isNeedWaiting {
+		runReadRune("\nPress [Y] for exit: ")
+	}
 }
 
 func runReadRune(prompt string) {
