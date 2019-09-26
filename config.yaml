@@ -1,0 +1,7 @@
+analyzer:
+  path: d:\_appl\go\src\github.com\aleksaan\diskusage
+  depth: 5
+printer:
+  limit: 20
+  fixunit:
+  tofile: out.txt
