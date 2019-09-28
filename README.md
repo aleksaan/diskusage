@@ -15,26 +15,26 @@ Arguments:
    tofile:    out.txt
 
 Results:
-     1.| PATH:   WinSxS                                                                         | SIZE:    11.16 Gb   | DEPTH: 1 
-     2.| PATH:   System32                                                                       | SIZE:     3.98 Gb   | DEPTH: 1 
-     3.| PATH:   SysWOW64                                                                       | SIZE:     1.21 Gb   | DEPTH: 1 
-     4.| PATH:   Installer                                                                      | SIZE:  1007.59 Mb   | DEPTH: 1 
-     5.| PATH:   servicing                                                                      | SIZE:   963.02 Mb   | DEPTH: 1 
-     6.| PATH:   System32\DriverStore                                                           | SIZE:   948.36 Mb   | DEPTH: 2 
-     7.| PATH:   System32\DriverStore\FileRepository                                            | SIZE:   944.60 Mb   | DEPTH: 3 
-     8.| PATH:   MEMORY.DMP                                                                     | SIZE:   848.83 Mb   | DEPTH: 1 
-     9.| PATH:   servicing\LCU                                                                  | SIZE:   845.45 Mb   | DEPTH: 2 
-    10.| PATH:   assembly                                                                       | SIZE:   833.59 Mb   | DEPTH: 1 
-    11.| PATH:   Microsoft.NET                                                                  | SIZE:   802.01 Mb   | DEPTH: 1 
-    12.| PATH:   Panther                                                                        | SIZE:   624.18 Mb   | DEPTH: 1 
-    13.| PATH:   System32\DriverStore\FileRepository\nv_ref_pubwu.inf_amd64_2e7fa54192fe16d0    | SIZE:   558.38 Mb   | DEPTH: 4 
-    14.| PATH:   servicing\LCU\Package_for_RollupFix~31bf3856ad364e35~amd64~~18362.356.1.9      | SIZE:   445.44 Mb   | DEPTH: 3 
-    15.| PATH:   SoftwareDistribution                                                           | SIZE:   421.71 Mb   | DEPTH: 1 
-    16.| PATH:   WinSxS\Backup                                                                  | SIZE:   402.11 Mb   | DEPTH: 2 
-    17.| PATH:   servicing\LCU\Package_for_RollupFix~31bf3856ad364e35~amd64~~18362.295.1.5      | SIZE:   400.01 Mb   | DEPTH: 3 
-    18.| PATH:   SoftwareDistribution\Download                                                  | SIZE:   391.21 Mb   | DEPTH: 2 
-    19.| PATH:   Fonts                                                                          | SIZE:   361.27 Mb   | DEPTH: 1 
-    20.| PATH:   assembly\NativeImages_v4.0.30319_64                                            | SIZE:   359.89 Mb   | DEPTH: 2 
+     1.| PATH:   WinSxS                                                    | SIZE:    11.16 Gb   | DEPTH: 1 
+     2.| PATH:   System32                                                  | SIZE:     3.98 Gb   | DEPTH: 1 
+     3.| PATH:   SysWOW64                                                  | SIZE:     1.21 Gb   | DEPTH: 1 
+     4.| PATH:   Installer                                                 | SIZE:  1007.59 Mb   | DEPTH: 1 
+     5.| PATH:   servicing                                                 | SIZE:   963.02 Mb   | DEPTH: 1 
+     6.| PATH:   System32\DriverStore                                      | SIZE:   948.36 Mb   | DEPTH: 2 
+     7.| PATH:   System32\DriverStore\FileRepository                       | SIZE:   944.60 Mb   | DEPTH: 3 
+     8.| PATH:   MEMORY.DMP                                                | SIZE:   848.83 Mb   | DEPTH: 1 
+     9.| PATH:   servicing\LCU                                             | SIZE:   845.45 Mb   | DEPTH: 2 
+    10.| PATH:   assembly                                                  | SIZE:   833.59 Mb   | DEPTH: 1 
+    11.| PATH:   Microsoft.NET                                             | SIZE:   802.01 Mb   | DEPTH: 1 
+    12.| PATH:   Panther                                                   | SIZE:   624.18 Mb   | DEPTH: 1 
+    13.| PATH:   System32\DriverStore\FileRepository\nv_ref_pubwu.inf      | SIZE:   558.38 Mb   | DEPTH: 4 
+    14.| PATH:   servicing\LCU\Package_for_RollupFix~31bf3856ad364e35      | SIZE:   445.44 Mb   | DEPTH: 3 
+    15.| PATH:   SoftwareDistribution                                      | SIZE:   421.71 Mb   | DEPTH: 1 
+    16.| PATH:   WinSxS\Backup                                             | SIZE:   402.11 Mb   | DEPTH: 2 
+    17.| PATH:   servicing\LCU\Package_for_RollupFix~31bf3856ad364e35      | SIZE:   400.01 Mb   | DEPTH: 3 
+    18.| PATH:   SoftwareDistribution\Download                             | SIZE:   391.21 Mb   | DEPTH: 2 
+    19.| PATH:   Fonts                                                     | SIZE:   361.27 Mb   | DEPTH: 1 
+    20.| PATH:   assembly\NativeImages_v4.0.30319_64                       | SIZE:   359.89 Mb   | DEPTH: 2 
 
 Overall info:
    Total time: 1m51.4143664s
