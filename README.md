@@ -7,7 +7,7 @@ About:
    github/aleksaan/diskusage, 2.0.2, Anufriev Alexander, 2019
 
 Arguments:
-   path:      c:\Windows
+   path:      d:\_appl\go\src\
    limit:     20
    units:     <dynamic>
    depth:     5
@@ -15,36 +15,35 @@ Arguments:
    tofile:    out.txt
 
 Results:
-     1.| PATH:   WinSxS                                                    | SIZE:    11.16 Gb   | DEPTH: 1 
-     2.| PATH:   System32                                                  | SIZE:     3.98 Gb   | DEPTH: 1 
-     3.| PATH:   SysWOW64                                                  | SIZE:     1.21 Gb   | DEPTH: 1 
-     4.| PATH:   Installer                                                 | SIZE:  1007.59 Mb   | DEPTH: 1 
-     5.| PATH:   servicing                                                 | SIZE:   963.02 Mb   | DEPTH: 1 
-     6.| PATH:   System32\DriverStore                                      | SIZE:   948.36 Mb   | DEPTH: 2 
-     7.| PATH:   System32\DriverStore\FileRepository                       | SIZE:   944.60 Mb   | DEPTH: 3 
-     8.| PATH:   MEMORY.DMP                                                | SIZE:   848.83 Mb   | DEPTH: 1 
-     9.| PATH:   servicing\LCU                                             | SIZE:   845.45 Mb   | DEPTH: 2 
-    10.| PATH:   assembly                                                  | SIZE:   833.59 Mb   | DEPTH: 1 
-    11.| PATH:   Microsoft.NET                                             | SIZE:   802.01 Mb   | DEPTH: 1 
-    12.| PATH:   Panther                                                   | SIZE:   624.18 Mb   | DEPTH: 1 
-    13.| PATH:   System32\DriverStore\FileRepository\nv_ref_pubwu.inf      | SIZE:   558.38 Mb   | DEPTH: 4 
-    14.| PATH:   servicing\LCU\Package_for_RollupFix~31bf3856ad364e35      | SIZE:   445.44 Mb   | DEPTH: 3 
-    15.| PATH:   SoftwareDistribution                                      | SIZE:   421.71 Mb   | DEPTH: 1 
-    16.| PATH:   WinSxS\Backup                                             | SIZE:   402.11 Mb   | DEPTH: 2 
-    17.| PATH:   servicing\LCU\Package_for_RollupFix~31bf3856ad364e35      | SIZE:   400.01 Mb   | DEPTH: 3 
-    18.| PATH:   SoftwareDistribution\Download                             | SIZE:   391.21 Mb   | DEPTH: 2 
-    19.| PATH:   Fonts                                                     | SIZE:   361.27 Mb   | DEPTH: 1 
-    20.| PATH:   assembly\NativeImages_v4.0.30319_64                       | SIZE:   359.89 Mb   | DEPTH: 2 
+     1.| PATH:   github.com                                | SIZE:   316.65 Mb   | DEPTH: 1 
+     2.| PATH:   github.com\aws                            | SIZE:   140.36 Mb   | DEPTH: 2 
+     3.| PATH:   github.com\aws\aws-sdk-go                 | SIZE:   140.36 Mb   | DEPTH: 3 
+     4.| PATH:   golang.org                                | SIZE:    73.65 Mb   | DEPTH: 1 
+     5.| PATH:   golang.org\x                              | SIZE:    73.65 Mb   | DEPTH: 2 
+     6.| PATH:   github.com\aws\aws-sdk-go\.git            | SIZE:    66.13 Mb   | DEPTH: 4 
+     7.| PATH:   github.com\aws\aws-sdk-go\.git\objects    | SIZE:    65.83 Mb   | DEPTH: 5 
+     8.| PATH:   github.com\aleksaan                       | SIZE:    63.05 Mb   | DEPTH: 2 
+     9.| PATH:   github.com\aleksaan\diskusage             | SIZE:    60.76 Mb   | DEPTH: 3 
+    10.| PATH:   github.com\aws\aws-sdk-go\service         | SIZE:    48.31 Mb   | DEPTH: 4 
+    11.| PATH:   golang.org\x\tools                        | SIZE:    32.83 Mb   | DEPTH: 3 
+    12.| PATH:   github.com\derekparker                    | SIZE:    32.60 Mb   | DEPTH: 2 
+    13.| PATH:   github.com\derekparker\delve              | SIZE:    32.60 Mb   | DEPTH: 3 
+    14.| PATH:   github.com\aleksaan\diskusage\dist        | SIZE:    28.30 Mb   | DEPTH: 4 
+    15.| PATH:   golang.org\x\sys                          | SIZE:    23.44 Mb   | DEPTH: 3 
+    16.| PATH:   golang.org\x\tools\.git                   | SIZE:    23.07 Mb   | DEPTH: 4 
+    17.| PATH:   golang.org\x\tools\.git\objects           | SIZE:    22.94 Mb   | DEPTH: 5 
+    18.| PATH:   github.com\hajimehoshi                    | SIZE:    22.04 Mb   | DEPTH: 2 
+    19.| PATH:   github.com\aws\aws-sdk-go\models          | SIZE:    21.92 Mb   | DEPTH: 4 
+    20.| PATH:   github.com\hajimehoshi\go-mp3             | SIZE:    21.81 Mb   | DEPTH: 3 
 
 Overall info:
-   Total time: 1m51.4143664s
-   Total dirs: 45275
-   Total files: 189145
+   Total time: 6.3016798s
+   Total dirs: 3674
+   Total files: 9646
    Total links: 0
-   Total size: 23.33 Gb
-   Total size (bytes): 25046502289
-   Unaccessible dirs & files: 336
-
+   Total size: 414.98 Mb
+   Total size (bytes): 435138161
+   Unaccessible dirs & files: 0
 ```
 ## Features
 - A primitive tool for getting folder(s) sizes
