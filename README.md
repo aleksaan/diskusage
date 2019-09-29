@@ -1,7 +1,10 @@
  [![cover.run](https://cover.run/go/github.com/aleksaan/diskusage.svg?style=flat&tag=golang-1.10)](https://cover.run/go?tag=golang-1.10&repo=github.com%2Faleksaan%2Fdiskusage) 
  
 # diskusage 
-diskusage is a utility for calculating folders sizes.
+diskusage is a utility to find top biggest directories on the disk.
+
+## !!! Version 2.0.2 is now avaliable !!!
+
 ```cmd
 About:
    github/aleksaan/diskusage, 2.0.2, Alexander Anufriev, 2019
