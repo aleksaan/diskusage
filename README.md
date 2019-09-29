@@ -4,7 +4,7 @@
 diskusage is a utility for calculating folders sizes.
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.0.2, Anufriev Alexander, 2019
+   github/aleksaan/diskusage, 2.0.2, Alexander Anufriev, 2019
 
 Arguments:
    path:      d:\_appl\go\src\
