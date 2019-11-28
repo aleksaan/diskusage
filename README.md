@@ -90,7 +90,7 @@ analyzer:
 printer:
   limit: 20
   fixunit: Gb
-  tofile: out.txt
+  tofile: diskusage_out.txt
   ```
 where:
 ```yaml
