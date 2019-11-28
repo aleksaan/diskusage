@@ -3,10 +3,7 @@
 # diskusage 
 diskusage is a utility to find top largest directories on the disk.
 
-## !!! Version 2.0.3 is now avaliable !!!
-- rename default name of config.yaml to diskusage_config.yaml
-- rename default name of out.txt to diskusage_out.txt
-(garantee of lack of files names conflicts with other files)
+## !!! 2019.11.28: Version 2.0.3 is now avaliable  !!!
 
 
 ```cmd
