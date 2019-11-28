@@ -1,0 +1,7 @@
+analyzer:
+  path: c:\_goenv\src\github.com\aleksaan\diskusage
+  depth: 5
+printer:
+  limit: 20
+  fixunit:
+  tofile: diskusage_out.txt

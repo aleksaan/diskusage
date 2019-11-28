@@ -11,7 +11,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var defaultConfigFile = "config.yaml"
+var defaultConfigFile = "diskusage_config.yaml"
 
 // LoadConfig - load configuration file
 func LoadConfig() (*Config, Options) {
@@ -85,7 +85,7 @@ func createDefaultConfig() {
 	printEndOfLine(f)
 	fmt.Fprintf(f, "  fixunit:")
 	printEndOfLine(f)
-	fmt.Fprintf(f, "  tofile: out.txt")
+	fmt.Fprintf(f, "  tofile: diskusage_out.txt")
 }
 
 func createFile(filename *string) *os.File {

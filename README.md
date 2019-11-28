@@ -1,13 +1,13 @@
  [![cover.run](https://cover.run/go/github.com/aleksaan/diskusage.svg?style=flat&tag=golang-1.10)](https://cover.run/go?tag=golang-1.10&repo=github.com%2Faleksaan%2Fdiskusage) 
  
 # diskusage 
-diskusage is a utility to find top biggest directories on the disk.
+diskusage is a utility to find top largest directories on the disk.
 
-## !!! Version 2.0.2 is now avaliable !!!
+## !!! Version 2.0.3 is now avaliable !!!
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.0.2, Alexander Anufriev, 2019
+   github/aleksaan/diskusage, 2.0.3, Alexander Anufriev, 2019
 
 Arguments:
    path:      d:\_appl\go\src\
@@ -15,7 +15,7 @@ Arguments:
    units:     <dynamic>
    depth:     5
    sort:      size_desc
-   tofile:    out.txt
+   tofile:    diskusage_out.txt
 
 Results:
      1.| PATH:   github.com                                | SIZE:   316.65 Mb   | DEPTH: 1 
@@ -69,15 +69,15 @@ Releases available as single executable files – just [download latest release]
 
 ## Simple usage (Windows example)
 
-Put ```diskusage.exe``` into analyzed directory, run it and get results in ```out.txt```
+Put ```diskusage.exe``` into analyzed directory, run it and get results in ```diskusage_out.txt```
 
 * config.yaml will be created with a default settings
 
 ## Advanced usage (Windows example)
 
-(Optional) Download, create or save ```config.yaml``` near ```diskusage.exe```.
+(Optional) Download, create or save ```diskusage_config.yaml``` near ```diskusage.exe```.
 
-Open ```config.yaml``` in text editor to setup diskusage
+Open ```diskusage_config.yaml``` in text editor to setup diskusage
 
 You will see:
 ```yaml
@@ -85,7 +85,7 @@ You will see:
 analyzer: 
   path: 'D:\_docs'
   depth: 5
-# Result's options
+# Results options
 printer:
   limit: 20
   fixunit: Gb
@@ -119,7 +119,7 @@ Fixed scale values: b, Kb, Mb, Gb, Tb, Pb.
 You can use "fixunit" in case you want to compare sizes afterward (optional).
 
 ```yaml
-   tofile: out.txt
+   tofile: diskusage_out.txt
 ```
 
 File name to save results. If value is empty file will not be created and you will see results in console window with prompt to exit at the end.

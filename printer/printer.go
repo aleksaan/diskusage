@@ -12,7 +12,7 @@ import (
 
 const (
 	AppTitle   = "github/aleksaan/diskusage"
-	AppVersion = "2.0.2"
+	AppVersion = "2.0.3"
 	AppAuthor  = "Anufriev Alexander"
 	AppYear    = "2019"
 )
@@ -86,6 +86,10 @@ func printFiles(cfg *config.Config, files *files.TFiles) {
 	var strfmt = "   %3d.| %-7s %-" + fmt.Sprintf("%d", maxlen+2) + "s | SIZE: %8.2f %-4s | DEPTH: %d %s"
 	var dirorfile = "PATH:"
 	for i, f := range *preparedFiles {
+		dirorfile = "PATH:"
+		if !f.IsDir {
+			dirorfile = "PATH:"
+		}
 		fmt.Printf(strfmt, i+1, dirorfile, f.RelativePath+f.Name, f.AdaptedSize, f.AdaptedUnit, f.Depth, es())
 	}
 }
