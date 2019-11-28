@@ -6,3 +6,4 @@ diskusage.exe
 results.txt
 results.csv
 *.txt
+.goreleaser.yml

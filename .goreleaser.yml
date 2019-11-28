@@ -25,7 +25,7 @@ archive:
 checksum:
   name_template: 'checksums.txt'
 env_files:
-  github_token: D:/_appl/go/src/github.com/aleksaan/diskusage/.config/goreleaser/github_token
+  github_token: c:/_goenv/src/github.com/aleksaan/github_token/token_aleksaan.txt
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
