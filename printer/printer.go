@@ -71,7 +71,7 @@ func printConfig(cfg *config.Config) {
 	}
 	fmt.Printf("   %-10s %s%s", "units:", units, es())
 	fmt.Printf("   %-10s %d%s", "depth:", *cfg.Analyzer.Depth, es())
-	fmt.Printf("   %-10s %s%s", "sort:", *cfg.Printer.Sort, es())
+	//fmt.Printf("   %-10s %s%s", "sort:", *cfg.Printer.Sort, es())
 	tofile := *cfg.Printer.ToFile
 	if tofile == "" {
 		tofile = "<no file>"

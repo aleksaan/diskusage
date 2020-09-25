@@ -15,7 +15,7 @@ type AnalyzerConfig struct {
 //PrinterConfig section
 type PrinterConfig struct {
 	Limit  *int    `yaml:"limit,omitempty"`
-	Units  *string `yaml:"unit,omitempty"`
+	Units  *string `yaml:"units,omitempty"`
 	ToFile *string `yaml:"tofile,omitempty"`
-	Sort   *string `yaml:"sort,omitempty"`
+	Sort   *string
 }

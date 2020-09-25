@@ -83,7 +83,7 @@ func createDefaultConfig() {
 	printEndOfLine(f)
 	fmt.Fprintf(f, "  limit: 20")
 	printEndOfLine(f)
-	fmt.Fprintf(f, "  fixunit:")
+	fmt.Fprintf(f, "  units:")
 	printEndOfLine(f)
 	fmt.Fprintf(f, "  tofile: diskusage_out.txt")
 }
