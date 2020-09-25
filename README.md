@@ -72,7 +72,7 @@ Releases available as single executable files – just [download latest release]
 
 Put ```diskusage.exe``` into analyzed directory, run it and get results in ```diskusage_out.txt```
 
-* config.yaml will be created with a default settings
+* diskusage_config.yaml will be created with a default settings
 
 ## Advanced usage (Windows example)
 
@@ -90,7 +90,7 @@ analyzer:
 printer:
   limit: 20
   fixunit: Gb
-  tofile: out.txt
+  tofile: diskusage_out.txt
   ```
 where:
 ```yaml
