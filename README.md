@@ -3,7 +3,7 @@
 # diskusage 
 diskusage is a utility to find top largest directories on the disk.
 
-## !!! 2019.11.28: Version 2.0.3 is now avaliable  !!!
+## !!! 2020.09.25: Version 2.0.4 is now avaliable  !!!
 
 
 ```cmd
@@ -15,7 +15,6 @@ Arguments:
    limit:     20
    units:     <dynamic>
    depth:     5
-   sort:      size_desc
    tofile:    diskusage_out.txt
 
 Results:
@@ -89,7 +88,7 @@ analyzer:
 # Results options
 printer:
   limit: 20
-  fixunit: Gb
+  units: Gb
   tofile: diskusage_out.txt
   ```
 where:
@@ -109,15 +108,15 @@ is depth of subfolders to analyze (optional)
 is how much biggest folders will be printed in the results (optional)
 if you set -limit to 0 it means limitless (no one row be cuted from results). Be warned it might be a huge list of files!
 ```yaml
-   fixunit: Gb
+   units: Gb
 ```
 you can choose unit style to representing folder sizes. It can be fixed or dynamic-scaled.
 
-If you omit 'fixunit' it means dynamic-scaled units style.
+If you omit 'units' it means dynamic-scaled units style.
 
 Fixed scale values: b, Kb, Mb, Gb, Tb, Pb.
 
-You can use "fixunit" in case you want to compare sizes afterward (optional).
+You can use "units" in case you want to compare sizes afterward (optional).
 
 ```yaml
    tofile: diskusage_out.txt
