@@ -8,7 +8,7 @@ diskusage is a utility to find top largest directories on the disk.
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.0.3, Alexander Anufriev, 2019
+   github/aleksaan/diskusage, 2.0.4, Alexander Anufriev, 2020
 
 Arguments:
    path:      d:\_appl\go\src\

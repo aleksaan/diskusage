@@ -12,9 +12,9 @@ import (
 
 const (
 	AppTitle   = "github/aleksaan/diskusage"
-	AppVersion = "2.0.3"
+	AppVersion = "2.0.4"
 	AppAuthor  = "Anufriev Alexander"
-	AppYear    = "2019"
+	AppYear    = "2020"
 )
 
 var f *os.File
