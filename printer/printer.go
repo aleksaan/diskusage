@@ -2,12 +2,14 @@ package printer
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"runtime"
-	"time"
+	"unicode/utf8"
 
+	"github.com/aleksaan/diskusage/analyzer"
 	"github.com/aleksaan/diskusage/config"
-	"github.com/aleksaan/diskusage/files"
+	filespkg "github.com/aleksaan/diskusage/files"
 )
 
 const (
@@ -18,13 +20,15 @@ const (
 )
 
 var f *os.File
-
-var initFlag = false
-
 var cfg *config.Config
+var initFlag = false
+var files *filespkg.TFiles
+var overallInfo *analyzer.TOverallInfo
+var filesToPrint = &filespkg.TFiles{}
 
-//Init -
-func Init(cfg *config.Config) {
+//Load -
+func Load() {
+	cfg = config.Cfg
 	if *cfg.Printer.ToFile != "" {
 		f = createResultsFile(cfg.Printer.ToFile)
 		os.Stdout = f
@@ -37,13 +41,17 @@ func Close() {
 }
 
 //Run - run print process
-func Run(cfg *config.Config, files *files.TFiles, totalTime time.Duration) {
+func Run() {
+	files = analyzer.FinalFiles
+	overallInfo = analyzer.OverallInfo
 	files.Sort(*cfg.Printer.Sort)
-	prepareData(cfg, files)
-	printConfig(cfg)
-	printFiles(cfg, preparedFiles)
-	prepareOverallInfo(files, totalTime)
-	printOverall()
+	prepareData()
+	printConfig()
+	printFiles()
+	//overallInfo.totalTime = totalTime
+	//prepareOverallInfo(files, totalTime)
+	printOverall(overallInfo)
+	printSystemReport()
 }
 
 func createResultsFile(filename *string) *os.File {
@@ -60,7 +68,7 @@ func PrintAbout() {
 	fmt.Printf("About:%s   %s, %s, %s, %s%s", es(), AppTitle, AppVersion, AppAuthor, AppYear, es())
 }
 
-func printConfig(cfg *config.Config) {
+func printConfig() {
 	fmt.Printf(es())
 	fmt.Println("Arguments:")
 	fmt.Printf("   %-10s %s%s", "path:", *cfg.Analyzer.Path, es())
@@ -79,13 +87,13 @@ func printConfig(cfg *config.Config) {
 	fmt.Printf("   %-10s %s\n", "tofile:", tofile)
 }
 
-func printFiles(cfg *config.Config, files *files.TFiles) {
+func printFiles() {
 	fmt.Printf(es())
 	fmt.Printf("Results:%s", es())
 	maxlen := calculateMaxLenFilename()
 	var strfmt = "   %3d.| %-7s %-" + fmt.Sprintf("%d", maxlen+2) + "s | SIZE: %8.2f %-4s | DEPTH: %d %s"
 	var dirorfile = "PATH:"
-	for i, f := range *preparedFiles {
+	for i, f := range *filesToPrint {
 		dirorfile = "PATH:"
 		if !f.IsDir {
 			dirorfile = "PATH:"
@@ -94,16 +102,31 @@ func printFiles(cfg *config.Config, files *files.TFiles) {
 	}
 }
 
-func printOverall() {
+func printOverall(overallInfo *analyzer.TOverallInfo) {
 	fmt.Printf(es())
 	fmt.Printf("Overall info:%s", es())
-	fmt.Printf("   Total time: %s%s", overallInfo.totalTime, es())
-	fmt.Printf("   Total dirs: %d%s", overallInfo.totalDirs, es())
-	fmt.Printf("   Total files: %d%s", overallInfo.totalFiles, es())
-	fmt.Printf("   Total links: %d%s", overallInfo.totalLinks, es())
-	fmt.Printf("   Total size: %.2f %s%s", overallInfo.totalAdaptedSize, overallInfo.totalAdaptedUnit, es())
-	fmt.Printf("   Total size (bytes): %d%s", overallInfo.totalSize, es())
-	fmt.Printf("   Unaccessible dirs & files: %d%s", overallInfo.totalNotAccessibleFiles, es())
+	fmt.Printf("   Total time: %s%s", overallInfo.TotalTime, es())
+	fmt.Printf("   Total dirs: %d%s", overallInfo.TotalDirs, es())
+	fmt.Printf("   Total files: %d%s", overallInfo.TotalFiles, es())
+	fmt.Printf("   Total links: %d%s", overallInfo.TotalLinks, es())
+	fmt.Printf("   Total size: %.2f %s%s", overallInfo.TotalAdaptedSize, overallInfo.TotalAdaptedUnit, es())
+	fmt.Printf("   Total size (bytes): %d%s", overallInfo.TotalSize, es())
+	fmt.Printf("   Unaccessible dirs & files: %d%s", overallInfo.TotalNotAccessibleFiles, es())
+}
+
+func printSystemReport() {
+	fmt.Printf(es())
+	fmt.Printf("System resources:%s", es())
+	// f := &filespkg.TFile{}
+	// var sizeoff = int(unsafe.Sizeof(f))
+	// sizeInBytes := int64(len(*analyzer.FinalFiles) * sizeoff)
+	var units = ""
+	mTotal, mCurrent := getMemoryUsage()
+	adaptedSize, adaptedUnits := filespkg.GetAdaptedSize(int64(mTotal), &units)
+	fmt.Printf("   Total used memory: %.2f %s%s", adaptedSize, adaptedUnits, es())
+	adaptedSizeC, adaptedUnitsC := filespkg.GetAdaptedSize(int64(mCurrent), &units)
+	fmt.Printf("   Current used memory: %.2f %s%s", adaptedSizeC, adaptedUnitsC, es())
+
 }
 
 func es() string {
@@ -113,4 +136,40 @@ func es() string {
 	default:
 		return "\n"
 	}
+}
+
+func prepareData() {
+	var c = 0
+	for _, f := range *analyzer.FinalFiles {
+		if f.Depth <= *cfg.Analyzer.Depth {
+			c++
+			//break if we up to defined limit
+			if isExceedLimit(c, cfg.Printer.Limit) {
+				break
+			}
+			*filesToPrint = append(*filesToPrint, f)
+		}
+	}
+}
+
+func isExceedLimit(checkedValue int, limit *int) bool {
+	return checkedValue > *limit && *limit != 0
+}
+
+//calculateMaxLenFilename -
+func calculateMaxLenFilename() int {
+	var maxlen = 0
+	for _, f := range *files {
+		strlen := utf8.RuneCountInString(f.RelativePath) + 1 + utf8.RuneCountInString(f.Name)
+		maxlen = int(math.Max(float64(maxlen), float64(strlen)))
+	}
+	return maxlen
+}
+
+// PrintMemUsage outputs the current, total and OS memory being used. As well as the number
+// of garage collection cycles completed.
+func getMemoryUsage() (uint64, uint64) {
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	return m.TotalAlloc, m.Alloc
 }

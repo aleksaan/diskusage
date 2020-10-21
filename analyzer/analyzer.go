@@ -2,43 +2,36 @@ package analyzer
 
 import (
 	"io/ioutil"
-	"math"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/aleksaan/diskusage/config"
 	"github.com/aleksaan/diskusage/files"
 )
-
-//pairs of key and scale power x, when 1024^x is scale of size
-var sizeUnits = map[string]float64{
-	"b":  1,
-	"Kb": 2,
-	"Mb": 3,
-	"Gb": 4,
-	"Tb": 5,
-	"Pb": 6,
-}
 
 var sortValues = map[string]float64{
 	"name_asc":  1,
 	"size_desc": 2,
 }
 
-var sortedKeysSizeUnits = []string{"b", "Kb", "Mb", "Gb", "Tb", "Pb"}
-
 //Files -
 var Files = &files.TFiles{}
 
+//FinalFiles -
+var FinalFiles = &files.TFiles{}
+var cfg *config.Config
 var basePath string
-var units *string
 
 //Run -
-func Run(cfg *config.Config) {
-	basePath = addPathSeparator(*cfg.Analyzer.Path)
-	units = cfg.Printer.Units
+func Run() {
+	startProcess()
+	cfg = config.Cfg
+	basePath = files.AddPathSeparator(*cfg.Analyzer.Path)
 	scanDir(basePath, 1)
+	calcAdaptedSizeInOverallInfo()
+	endProcess()
 }
 
 //-----------------------------------------------------------------------------------------
@@ -55,20 +48,26 @@ func scanDir(path string, depth int) int64 {
 
 		file := scanFile(path, osfile.Name(), depth)
 		if file.IsDir {
-			newpath := addPathSeparator(path + osfile.Name())
+			newpath := files.AddPathSeparator(path + osfile.Name())
 			file.Size = scanDir(newpath, depth+1)
 		}
 
-		setAdaptedFileSize(file, units)
+		setAdaptedFileSize(file)
 		dirsize += file.Size
-		*Files = append(*Files, *file)
+
+		//*Files = append(*Files, *file)
+		addToOverallInfo(file)
+		depthcfg := *cfg.Analyzer.Depth
+		if depth <= depthcfg {
+			*FinalFiles = append(*FinalFiles, *file)
+		}
 	}
 
 	return dirsize
 }
 
-func setAdaptedFileSize(file *files.TFile, units *string) {
-	file.AdaptedSize, file.AdaptedUnit = GetAdaptedSize(file.Size, units)
+func setAdaptedFileSize(file *files.TFile) {
+	file.AdaptedSize, file.AdaptedUnit = files.GetAdaptedSize(file.Size, cfg.Printer.Units)
 }
 
 //-----------------------------------------------------------------------------------------
@@ -81,7 +80,7 @@ func scanFile(path string, name string, depth int) *files.TFile {
 	f.Depth = depth
 
 	//if file or folder is not accessible then return nil
-	pathName := cleanPath(&path, false) + name
+	pathName := files.CleanPath(&path, false) + name
 
 	//dirstat, _ := os.Stat(pathName)
 	dir, err := os.Lstat(pathName)
@@ -113,43 +112,11 @@ func scanFile(path string, name string, depth int) *files.TFile {
 	return f
 }
 
-//GetAdaptedSize - get file size adapted to InputArgs.FixUnit units or to a flexible useful units
-func GetAdaptedSize(sizeB int64, units *string) (float64, string) {
-
-	var size = float64(sizeB)
-	var unit string
-	var power float64
-
-	if len(*units) > 0 {
-		unit = *units
-		power = sizeUnits[*units]
-	} else {
-		for _, unit = range sortedKeysSizeUnits {
-			power = sizeUnits[unit]
-			if size < math.Pow(1024, power) {
-				break
-			}
-		}
-	}
-	return (size / math.Pow(1024, power-1)), unit
+func startProcess() {
+	startTime = time.Now()
 }
 
-//CleanPath - get absolute path like C:\temp\
-func cleanPath(path *string, isrelativeclean bool) string {
-	if isrelativeclean {
-		abspath, _ := filepath.Abs(*path)
-		return addPathSeparator(filepath.Clean(abspath))
-	}
-
-	return addPathSeparator(filepath.Clean(*path))
-}
-
-//AddPathSeparator - add os path separator to string
-func addPathSeparator(path string) string {
-	cleanPath := filepath.Clean(path)
-	lastSymbol := cleanPath[(len(cleanPath) - 1):]
-	if lastSymbol == string(os.PathSeparator) {
-		return filepath.Clean(path)
-	}
-	return filepath.Clean(path) + string(os.PathSeparator)
+func endProcess() {
+	t := time.Now()
+	OverallInfo.TotalTime = t.Sub(startTime)
 }

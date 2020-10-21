@@ -11,10 +11,6 @@ const (
 	//DefaultToFile = "<no file>"
 )
 
-func (c *Config) setDefaults() {
-	c.setDefaultValues()
-}
-
 func (c *Config) setDefaultValues() {
 
 	if c.Analyzer.Depth == nil {

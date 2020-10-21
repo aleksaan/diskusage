@@ -1,5 +1,18 @@
 package tests
 
+import (
+	"testing"
+)
+
+func TestAnalyzer(t *testing.T) {
+	// cfg, _ := config.LoadConfig()
+
+	// printer.Init(cfg)
+	// defer printer.Close()
+
+	// analyzer.Run(cfg)
+}
+
 /*
 import (
 	"testing"

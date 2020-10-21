@@ -5,56 +5,51 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"runtime"
 
-	"github.com/jessevdk/go-flags"
+	"github.com/aleksaan/diskusage/files"
 	"gopkg.in/yaml.v3"
 )
 
 var defaultConfigFile = "diskusage_config.yaml"
 
-// LoadConfig - load configuration file
-func LoadConfig() (*Config, Options) {
+//set of configuration options
+var opt Options
 
-	var opt Options
-	_, err := flags.Parse(&opt)
+//Cfg -
+var Cfg = &Config{}
 
-	if err != nil {
-		log.Fatalln("Error! Wrong options")
-	}
+//Load - load config from a yaml file & creates it if not exist
+func (c *Config) Load() {
 
 	if opt.ConfigFile == nil {
 		opt.ConfigFile = &defaultConfigFile
 	}
 
-	if !fileExists(*opt.ConfigFile) {
-		createDefaultConfig()
+	if !files.CheckFileIsExist(*opt.ConfigFile) {
+		c.createDefaultConfigYamlFile()
 	}
 
-	cfg, err := readFile(opt.ConfigFile)
-	cfg.setDefaults()
-
-	return cfg, opt
+	_ = c.readConfigFromYamlFile(opt.ConfigFile)
+	c.setDefaultValues()
 }
 
-func readFile(location *string) (*Config, error) {
+func (c *Config) readConfigFromYamlFile(location *string) error {
 
 	yamlFile, err := ioutil.ReadFile(*location)
 	if err != nil {
 		log.Fatalf("Failed to read config file: %s", *location)
 	}
 
-	cfg := new(Config)
-	err = yaml.Unmarshal(yamlFile, cfg)
+	err = yaml.Unmarshal(yamlFile, c)
 
 	if err != nil {
 		log.Fatalf("Failed to read config file: %v", err)
 	}
 
-	return cfg, err
+	return err
 }
 
-func saveFile(config *Config, fileName *string) {
+/* func (c *Config) saveConfigToYamlFile(config *Config, fileName *string) {
 	file, err := yaml.Marshal(config)
 	if err != nil {
 		log.Fatalf("Failed to marshal config file: %v", err)
@@ -63,10 +58,10 @@ func saveFile(config *Config, fileName *string) {
 	if err != nil {
 		log.Fatalf("Failed to save config file: %v", err)
 	}
-}
+} */
 
-func createDefaultConfig() {
-	f := createFile(&defaultConfigFile)
+func (c *Config) createDefaultConfigYamlFile() {
+	f := files.CreateFile(&defaultConfigFile)
 	defer f.Close()
 	dir, err := os.Getwd()
 	if err != nil {
@@ -74,43 +69,16 @@ func createDefaultConfig() {
 	}
 
 	fmt.Fprintf(f, "analyzer:")
-	printEndOfLine(f)
+	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "  path: %s", dir)
-	printEndOfLine(f)
+	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "  depth: 5")
-	printEndOfLine(f)
+	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "printer:")
-	printEndOfLine(f)
+	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "  limit: 20")
-	printEndOfLine(f)
+	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "  units:")
-	printEndOfLine(f)
+	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "  tofile: diskusage_out.txt")
-}
-
-func createFile(filename *string) *os.File {
-	// open output file
-	f, err := os.Create(*filename)
-	if err != nil {
-		panic(err)
-	}
-	return f
-}
-
-func fileExists(name string) bool {
-	_, err := os.Stat(name)
-	return !os.IsNotExist(err)
-}
-
-func printEndOfLine(f *os.File) {
-	fmt.Fprintf(f, "%s", es())
-}
-
-func es() string {
-	switch runtime.GOOS {
-	case "windows":
-		return "\r\n"
-	default:
-		return "\n"
-	}
 }

@@ -1,7 +1,7 @@
 analyzer:
   path: c:\_virtualmachines\
-  depth: 2
+  depth: 5
 printer:
   limit: 20
-  units: 
+  units:
   tofile: diskusage_out.txt

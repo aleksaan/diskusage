@@ -6,3 +6,11 @@ go test -coverprofile=cover.out -coverpkg "github.com/aleksaan/diskusage/diskusa
 
 --3--
 go tool cover -html=cover.out -o cover.html
+
+--PROFILING
+
+cd tests
+
+go test -cpuprofile cpu.prof -memprofile mem.prof -bench .
+
+go tool pprof cpu.prof
