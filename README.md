@@ -3,12 +3,12 @@
 # diskusage 
 diskusage is a utility to find top largest directories on the disk.
 
-## !!! 2020.09.25: Version 2.0.4 is now avaliable  !!!
+## !!! 2020.10.29: Version 2.1.0 is now avaliable  !!!
 
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.0.4, Alexander Anufriev, 2020
+   github/aleksaan/diskusage, 2.1.0, Alexander Anufriev, 2020
 
 Arguments:
    path:      d:\_appl\go\src\
@@ -47,6 +47,9 @@ Overall info:
    Total size: 414.98 Mb
    Total size (bytes): 435138161
    Unaccessible dirs & files: 0
+
+System resources:
+   Total used memory: 257.12 Mb
 ```
 ## Features
 - A primitive tool for getting folder(s) sizes

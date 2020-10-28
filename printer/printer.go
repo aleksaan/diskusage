@@ -14,7 +14,7 @@ import (
 
 const (
 	AppTitle   = "github/aleksaan/diskusage"
-	AppVersion = "2.0.4"
+	AppVersion = "2.1.0"
 	AppAuthor  = "Anufriev Alexander"
 	AppYear    = "2020"
 )
@@ -121,11 +121,11 @@ func printSystemReport() {
 	// var sizeoff = int(unsafe.Sizeof(f))
 	// sizeInBytes := int64(len(*analyzer.FinalFiles) * sizeoff)
 	var units = ""
-	mTotal, mCurrent := getMemoryUsage()
+	mTotal, _ := getMemoryUsage()
 	adaptedSize, adaptedUnits := filespkg.GetAdaptedSize(int64(mTotal), &units)
-	fmt.Printf("   Total used memory: %.2f %s%s", adaptedSize, adaptedUnits, es())
-	adaptedSizeC, adaptedUnitsC := filespkg.GetAdaptedSize(int64(mCurrent), &units)
-	fmt.Printf("   Current used memory: %.2f %s%s", adaptedSizeC, adaptedUnitsC, es())
+	fmt.Printf("   Total used memory*: %.2f %s%s", adaptedSize, adaptedUnits, es())
+	//adaptedSizeC, adaptedUnitsC := filespkg.GetAdaptedSize(int64(mCurrent), &units)
+	//fmt.Printf("   Current used memory: %.2f %s%s", adaptedSizeC, adaptedUnitsC, es())
 
 }
 
@@ -171,5 +171,5 @@ func calculateMaxLenFilename() int {
 func getMemoryUsage() (uint64, uint64) {
 	var m runtime.MemStats
 	runtime.ReadMemStats(&m)
-	return m.TotalAlloc, m.Alloc
+	return m.Sys, m.Alloc
 }

@@ -57,8 +57,7 @@ func scanDir(path string, depth int) int64 {
 
 		//*Files = append(*Files, *file)
 		addToOverallInfo(file)
-		depthcfg := *cfg.Analyzer.Depth
-		if depth <= depthcfg {
+		if depth <= *cfg.Analyzer.Depth {
 			*FinalFiles = append(*FinalFiles, *file)
 		}
 	}
