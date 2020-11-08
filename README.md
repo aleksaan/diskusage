@@ -3,7 +3,7 @@
 # diskusage 
 diskusage is a utility to find top largest directories on the disk.
 
-## !!! 2020.10.29: Version 2.1.0 is now avaliable  !!!
+## !!! 2020.11.08: Version 2.1.1 is now avaliable  !!!
 
 
 ```cmd

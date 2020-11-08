@@ -1,9 +1,7 @@
 # remove .files
 .config/
+bin/
 dist/
-debug*
-diskusage.exe
-results.txt
-results.csv
+docs/
+*.exe
 *.txt
-.goreleaser.yml

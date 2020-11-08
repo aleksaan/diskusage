@@ -1,7 +1,7 @@
 analyzer:
-  path: c:\
-  depth: 2
+  path: C:\
+  depth: 5
 printer:
   limit: 20
-  units: 
-  tofile: diskusage_out.txt
+  units:
+  tofile: .\bin\diskusage_out.txt

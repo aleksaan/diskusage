@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	AppTitle   = "github/aleksaan/diskusage"
-	AppVersion = "2.1.0"
+	AppTitle   = "https://github.com/aleksaan/diskusage"
+	AppVersion = "2.1.1"
 	AppAuthor  = "Anufriev Alexander"
 	AppYear    = "2020"
 )
@@ -117,15 +117,10 @@ func printOverall(overallInfo *analyzer.TOverallInfo) {
 func printSystemReport() {
 	fmt.Printf(es())
 	fmt.Printf("System resources:%s", es())
-	// f := &filespkg.TFile{}
-	// var sizeoff = int(unsafe.Sizeof(f))
-	// sizeInBytes := int64(len(*analyzer.FinalFiles) * sizeoff)
 	var units = ""
 	mTotal, _ := getMemoryUsage()
 	adaptedSize, adaptedUnits := filespkg.GetAdaptedSize(int64(mTotal), &units)
 	fmt.Printf("   Total used memory*: %.2f %s%s", adaptedSize, adaptedUnits, es())
-	//adaptedSizeC, adaptedUnitsC := filespkg.GetAdaptedSize(int64(mCurrent), &units)
-	//fmt.Printf("   Current used memory: %.2f %s%s", adaptedSizeC, adaptedUnitsC, es())
 
 }
 
@@ -159,7 +154,7 @@ func isExceedLimit(checkedValue int, limit *int) bool {
 //calculateMaxLenFilename -
 func calculateMaxLenFilename() int {
 	var maxlen = 0
-	for _, f := range *files {
+	for _, f := range *filesToPrint {
 		strlen := utf8.RuneCountInString(f.RelativePath) + 1 + utf8.RuneCountInString(f.Name)
 		maxlen = int(math.Max(float64(maxlen), float64(strlen)))
 	}
