@@ -5,3 +5,4 @@ dist/
 docs/
 *.exe
 *.txt
+goreleaser.yml
