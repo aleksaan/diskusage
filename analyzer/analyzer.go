@@ -3,8 +3,6 @@ package analyzer
 import (
 	"io/ioutil"
 	"os"
-	"path/filepath"
-	"strings"
 	"time"
 
 	"github.com/aleksaan/diskusage/config"
@@ -90,16 +88,9 @@ func scanFile(path string, name string, depth int) *files.TFile {
 		return f
 	}
 
-	linkdir, linkerr := filepath.EvalSymlinks(pathName)
-	if linkerr != nil {
-		f.IsNotAccessible = true
-		f.IsNotAccessibleMessage = linkerr.Error()
-		return f
-	}
-
-	if strings.ToLower(linkdir) != strings.ToLower(pathName) {
+	if dir.Mode()&os.ModeSymlink != 0 {
 		f.IsLink = true
-		f.LinkedDirPath = linkdir
+		f.LinkedDirPath = "unknown"
 	}
 
 	f.IsDir = dir.IsDir()
