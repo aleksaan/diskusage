@@ -90,7 +90,7 @@ func scanFile(path string, name string, depth int) *files.TFile {
 
 	if dir.Mode()&os.ModeSymlink != 0 {
 		f.IsLink = true
-		f.LinkedDirPath = "unknown"
+		f.LinkedDirPath = "Unknown"
 	}
 
 	f.IsDir = dir.IsDir()
