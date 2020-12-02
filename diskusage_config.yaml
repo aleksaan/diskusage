@@ -4,4 +4,4 @@ analyzer:
 printer:
   limit: 20
   units:
-  tofile: .\bin\diskusage_out_slow.txt
+  tofile: .\bin\diskusage_out_fast.txt

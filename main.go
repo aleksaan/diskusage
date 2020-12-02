@@ -15,6 +15,8 @@ import (
 //main function
 func main() {
 	var cfg = config.Cfg
+
+
 	cfg.Load()
 	printer.Load()
 	printer.PrintAbout()
@@ -22,4 +24,5 @@ func main() {
 	printer.Run()
 	console.WaitExit(*config.Cfg.Printer.ToFile == "")
 	printer.Close()
+	
 }

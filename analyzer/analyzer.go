@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/aleksaan/diskusage/config"
+	"github.com/aleksaan/diskusage/console"
 	"github.com/aleksaan/diskusage/files"
 )
 
@@ -21,6 +22,8 @@ var Files = &files.TFiles{}
 var FinalFiles = &files.TFiles{}
 var cfg *config.Config
 var basePath string
+var c = make(chan int)
+var countFiles int
 
 //Run -
 func Run() {
@@ -55,6 +58,11 @@ func scanDir(path string, depth int) int64 {
 
 		//*Files = append(*Files, *file)
 		addToOverallInfo(file)
+
+		//increase count of processed files and folders and out it to console
+		countFiles++
+		c <- countFiles
+
 		if depth <= *cfg.Analyzer.Depth {
 			*FinalFiles = append(*FinalFiles, *file)
 		}
@@ -104,9 +112,11 @@ func scanFile(path string, name string, depth int) *files.TFile {
 
 func startProcess() {
 	startTime = time.Now()
+	go console.PrintCountFilesToConsole(c)
 }
 
 func endProcess() {
 	t := time.Now()
 	OverallInfo.TotalTime = t.Sub(startTime)
+	close(c)
 }
