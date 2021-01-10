@@ -3,19 +3,20 @@
 # diskusage 
 diskusage is an utility to find top largest directories on the disk.
 
-## !!! 2020.12.02: Version 2.2.0 is now avaliable  !!!
-## 5 TIMES FASTER NOW
+## !!! 2021.10.01: Version 2.3.0 is now avaliable  !!!
+## SAVING RESULTS IN YAML FORMAT
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.2.0, Alexander Anufriev, 2020
+   github/aleksaan/diskusage, 2.3.0, Alexander Anufriev, 2021
 
 Arguments:
    path:      d:\_appl\go\src\
    limit:     20
    units:     <dynamic>
    depth:     5
-   tofile:    diskusage_out.txt
+   toTextFile:    diskusage_out.txt
+   toYamlFile:    diskusage_out.yaml
 
 Results:
      1.| PATH:   github.com                                | SIZE:   316.65 Mb   | DEPTH: 1 
@@ -92,7 +93,8 @@ analyzer:
 printer:
   limit: 20
   units: Gb
-  tofile: diskusage_out.txt
+  toTextFile: diskusage_out.txt
+  toYamlFile: diskusage_out.yaml
   ```
 where:
 ```yaml
@@ -122,9 +124,14 @@ Fixed scale values: b, Kb, Mb, Gb, Tb, Pb.
 You can use "units" in case you want to compare sizes afterward (optional).
 
 ```yaml
-   tofile: diskusage_out.txt
+   toTextFile: diskusage_out.txt
 ```
 
-File name to save results. If value is empty file will not be created and you will see results in console window with prompt to exit at the end.
+File name to save results in human readable format. If value is empty file will not be created and you will see results in console window with prompt to exit at the end.
+
+```yaml
+   toYamlFile: diskusage_out.yaml
+```
+File name for saving results in YAML format for best compatibility with others programs.
 
 Run ```diskusage.exe```

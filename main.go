@@ -16,13 +16,12 @@ import (
 func main() {
 	var cfg = config.Cfg
 
-
 	cfg.Load()
 	printer.Load()
 	printer.PrintAbout()
 	analyzer.Run()
 	printer.Run()
-	console.WaitExit(*config.Cfg.Printer.ToFile == "")
+	console.WaitExit(*config.Cfg.Printer.ToTextFile == "")
 	printer.Close()
-	
+
 }

@@ -80,5 +80,7 @@ func (c *Config) createDefaultConfigYamlFile() {
 	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "  units:")
 	files.PrintEndOfLine(f)
-	fmt.Fprintf(f, "  tofile: diskusage_out.txt")
+	fmt.Fprintf(f, "  toTextFile: diskusage_out.txt")
+	files.PrintEndOfLine(f)
+	fmt.Fprintf(f, "  toYamlFile: diskusage_out.yaml")
 }

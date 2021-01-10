@@ -7,17 +7,19 @@ import (
 
 //TFile - struct for file object
 type TFile struct {
-	RelativePath           string
-	Name                   string
-	Size                   int64
-	IsDir                  bool
-	IsLink                 bool
-	LinkedDirPath          string
-	Depth                  int
-	IsNotAccessible        bool
-	IsNotAccessibleMessage string
-	AdaptedSize            float64
-	AdaptedUnit            string
+	Number                 int     `yaml:"number"`
+	RelativePath           string  `yaml:"-"`
+	FullPath               string  `yaml:"path"`
+	Name                   string  `yaml:"-"`
+	Size                   int64   `yaml:"sizeInBytes"`
+	IsDir                  bool    `yaml:"isDir"`
+	IsLink                 bool    `yaml:"isLink"`
+	LinkedDirPath          string  `yaml:"-"`
+	Depth                  int     `yaml:"depth"`
+	IsNotAccessible        bool    `yaml:"-"`
+	IsNotAccessibleMessage string  `yaml:"-"`
+	AdaptedSize            float64 `yaml:"adaptedSize"`
+	AdaptedUnit            string  `yaml:"adaptedUnit"`
 }
 
 //TFiles - struct for files array object
@@ -67,5 +69,13 @@ func (files *TFiles) Sort(by string) {
 		sort.Sort(nameSorter(*files))
 	default:
 		sort.Sort(sizeAndNameSorter(*files))
+	}
+}
+
+//ComputeFullPathAndNumber - compute additional fields for files
+func (files *TFiles) ComputeFullPathAndNumber(startPath string) {
+	for i, f := range *files {
+		f.FullPath = startPath + "\\" + f.RelativePath + f.Name
+		f.Number = i
 	}
 }
