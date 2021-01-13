@@ -71,11 +71,3 @@ func (files *TFiles) Sort(by string) {
 		sort.Sort(sizeAndNameSorter(*files))
 	}
 }
-
-//ComputeFullPathAndNumber - compute additional fields for files
-func (files *TFiles) ComputeFullPathAndNumber(startPath string) {
-	for i, f := range *files {
-		f.FullPath = startPath + "\\" + f.RelativePath + f.Name
-		f.Number = i
-	}
-}

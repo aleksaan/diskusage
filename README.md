@@ -3,12 +3,12 @@
 # diskusage 
 diskusage is an utility to find top largest directories on the disk.
 
-## !!! 2021.10.01: Version 2.3.0 is now avaliable  !!!
+## !!! 2021.01.13: Version 2.3.1 is now avaliable  !!!
 ## SAVING RESULTS IN YAML FORMAT
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.3.0, Alexander Anufriev, 2021
+   github/aleksaan/diskusage, 2.3.1, Alexander Anufriev, 2021
 
 Arguments:
    path:      d:\_appl\go\src\

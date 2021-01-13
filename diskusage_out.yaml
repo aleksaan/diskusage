@@ -1,160 +1,160 @@
-- number: 0
-  path: ""
-  sizeInBytes: 25375380
+- number: 1
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git
+  sizeInBytes: 25384634
   isDir: true
   isLink: false
   depth: 1
-  adaptedSize: 24.199848175048828
+  adaptedSize: 24.20867347717285
   adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 25338551
+- number: 2
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects
+  sizeInBytes: 25346614
   isDir: true
   isLink: false
   depth: 2
-  adaptedSize: 24.164725303649902
+  adaptedSize: 24.172414779663086
   adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 15598063
+- number: 3
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist
+  sizeInBytes: 16537993
   isDir: true
   isLink: false
   depth: 1
-  adaptedSize: 14.875472068786621
+  adaptedSize: 15.771859169006348
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 4
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\ae
   sizeInBytes: 11131946
   isDir: true
   isLink: false
   depth: 3
   adaptedSize: 10.616250991821289
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 5
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\ae\cc1ca69a79ec5b371af3a7a28ef2414f0c7118
   sizeInBytes: 11131946
   isDir: false
   isLink: false
   depth: 4
   adaptedSize: 10.616250991821289
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 6
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\pack
   sizeInBytes: 10100361
   isDir: true
   isLink: false
   depth: 3
   adaptedSize: 9.632454872131348
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 7
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\pack\pack-0697aaae846438caf90ffd5358d4d93aacd3bb34.pack
   sizeInBytes: 10089545
   isDir: false
   isLink: false
   depth: 4
   adaptedSize: 9.622139930725098
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 8
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\tests
   sizeInBytes: 3963718
   isDir: true
   isLink: false
   depth: 1
   adaptedSize: 3.7800960540771484
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 9
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\tests\tests.test.exe
   sizeInBytes: 3925504
   isDir: false
   isLink: false
   depth: 2
   adaptedSize: 3.74365234375
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 10
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\__debug_bin
+  sizeInBytes: 3546112
+  isDir: false
+  isLink: false
+  depth: 1
+  adaptedSize: 3.3818359375
+  adaptedUnit: Mb
+- number: 11
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\diskusage.exe
   sizeInBytes: 3499008
   isDir: false
   isLink: false
   depth: 1
   adaptedSize: 3.3369140625
   adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 2386856
+- number: 12
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_darwin_amd64
+  sizeInBytes: 2529176
   isDir: true
   isLink: false
   depth: 2
-  adaptedSize: 2.2762832641601562
+  adaptedSize: 2.4120101928710938
   adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 2386856
+- number: 13
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_darwin_amd64\diskusage
+  sizeInBytes: 2529176
   isDir: false
   isLink: false
   depth: 3
-  adaptedSize: 2.2762832641601562
+  adaptedSize: 2.4120101928710938
   adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 2349568
+- number: 14
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_windows_amd64
+  sizeInBytes: 2488832
   isDir: true
   isLink: false
   depth: 2
-  adaptedSize: 2.24072265625
+  adaptedSize: 2.37353515625
   adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 2349568
+- number: 15
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_windows_amd64\diskusage.exe
+  sizeInBytes: 2488832
   isDir: false
   isLink: false
   depth: 3
-  adaptedSize: 2.24072265625
+  adaptedSize: 2.37353515625
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 16
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_linux_amd64
+  sizeInBytes: 2355200
+  isDir: true
+  isLink: false
+  depth: 2
+  adaptedSize: 2.24609375
+  adaptedUnit: Mb
+- number: 17
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_linux_amd64\diskusage
+  sizeInBytes: 2355200
+  isDir: false
+  isLink: false
+  depth: 3
+  adaptedSize: 2.24609375
+  adaptedUnit: Mb
+- number: 18
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\c1
   sizeInBytes: 2236436
   isDir: true
   isLink: false
   depth: 3
   adaptedSize: 2.132831573486328
   adaptedUnit: Mb
-- number: 0
-  path: ""
+- number: 19
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\c1\496e985dd3934339c3ecbf569a1064d9c7405a
   sizeInBytes: 2236436
   isDir: false
   isLink: false
   depth: 4
   adaptedSize: 2.132831573486328
   adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 2215936
+- number: 20
+  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_windows_386
+  sizeInBytes: 2150400
   isDir: true
   isLink: false
   depth: 2
-  adaptedSize: 2.11328125
-  adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 2215936
-  isDir: false
-  isLink: false
-  depth: 3
-  adaptedSize: 2.11328125
-  adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 2031616
-  isDir: true
-  isLink: false
-  depth: 2
-  adaptedSize: 1.9375
-  adaptedUnit: Mb
-- number: 0
-  path: ""
-  sizeInBytes: 2031616
-  isDir: false
-  isLink: false
-  depth: 3
-  adaptedSize: 1.9375
+  adaptedSize: 2.05078125
   adaptedUnit: Mb

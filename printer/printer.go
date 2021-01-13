@@ -17,7 +17,7 @@ import (
 
 const (
 	AppTitle   = "https://github.com/aleksaan/diskusage"
-	AppVersion = "2.3.0"
+	AppVersion = "2.3.1"
 	AppAuthor  = "Anufriev Alexander"
 	AppYear    = "2021"
 )
@@ -172,6 +172,8 @@ func prepareData() {
 			if isExceedLimit(c, cfg.Printer.Limit) {
 				break
 			}
+			f.FullPath = *cfg.Analyzer.Path + "\\" + f.RelativePath + f.Name
+			f.Number = c
 			*filesToPrint = append(*filesToPrint, f)
 		}
 	}
@@ -200,7 +202,6 @@ func getMemoryUsage() (uint64, uint64) {
 }
 
 func writeToYamlFile() error {
-	filesToPrint.ComputeFullPathAndNumber(*cfg.Analyzer.Path)
 	d, err := yaml.Marshal(filesToPrint)
 
 	if err != nil {
