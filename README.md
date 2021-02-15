@@ -3,18 +3,19 @@
 # diskusage 
 diskusage is an utility to find top largest directories on the disk.
 
-## !!! 2021.01.13: Version 2.3.1 is now avaliable  !!!
-## SAVING RESULTS IN YAML FORMAT
+## !!! 2021.02.15: Version 2.4.0 is now avaliable  !!!
+## new option PRINTONLY to filter printing by objects (only files or folders or both of them)
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.3.1, Alexander Anufriev, 2021
+   github/aleksaan/diskusage, 2.4.0, Alexander Anufriev, 2021
 
 Arguments:
    path:      d:\_appl\go\src\
    limit:     20
    units:     <dynamic>
    depth:     5
+   printonly: folders&files
    toTextFile:    diskusage_out.txt
    toYamlFile:    diskusage_out.yaml
 
@@ -122,6 +123,16 @@ If you omit 'units' it means dynamic-scaled units style.
 Fixed scale values: b, Kb, Mb, Gb, Tb, Pb.
 
 You can use "units" in case you want to compare sizes afterward (optional).
+
+```yaml
+   printonly: folders&files
+```
+It is a filter to manage what kind of objects will be printed.
+
+Possible values:
+   - files - print only files;
+   - folders - print only folders;
+   - folders&files - (default) print both of them.
 
 ```yaml
    toTextFile: diskusage_out.txt

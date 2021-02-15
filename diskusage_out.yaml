@@ -1,160 +1,160 @@
 - number: 1
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git
-  sizeInBytes: 25384634
-  isDir: true
+  path: c:\\Users\angry\VirtualBox VMs\CentOS\CentOS.vdi
+  sizeInBytes: 8592031744
+  isDir: false
   isLink: false
-  depth: 1
-  adaptedSize: 24.20867347717285
-  adaptedUnit: Mb
+  depth: 5
+  adaptedSize: 8.001953125
+  adaptedUnit: Gb
 - number: 2
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects
-  sizeInBytes: 25346614
-  isDir: true
+  path: c:\\hiberfil.sys
+  sizeInBytes: 6816493568
+  isDir: false
   isLink: false
-  depth: 2
-  adaptedSize: 24.172414779663086
-  adaptedUnit: Mb
+  depth: 1
+  adaptedSize: 6.348354339599609
+  adaptedUnit: Gb
 - number: 3
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist
-  sizeInBytes: 16537993
-  isDir: true
+  path: c:\\pagefile.sys
+  sizeInBytes: 2550136832
+  isDir: false
   isLink: false
   depth: 1
-  adaptedSize: 15.771859169006348
-  adaptedUnit: Mb
+  adaptedSize: 2.375
+  adaptedUnit: Gb
 - number: 4
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\ae
-  sizeInBytes: 11131946
-  isDir: true
+  path: c:\\Users\angry\Downloads\CentOS-8.2.2004-x86_64-minimal.iso
+  sizeInBytes: 1718616064
+  isDir: false
   isLink: false
-  depth: 3
-  adaptedSize: 10.616250991821289
-  adaptedUnit: Mb
+  depth: 4
+  adaptedSize: 1.6005859375
+  adaptedUnit: Gb
 - number: 5
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\ae\cc1ca69a79ec5b371af3a7a28ef2414f0c7118
-  sizeInBytes: 11131946
-  isDir: false
-  isLink: false
-  depth: 4
-  adaptedSize: 10.616250991821289
-  adaptedUnit: Mb
-- number: 6
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\pack
-  sizeInBytes: 10100361
-  isDir: true
-  isLink: false
-  depth: 3
-  adaptedSize: 9.632454872131348
-  adaptedUnit: Mb
-- number: 7
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\pack\pack-0697aaae846438caf90ffd5358d4d93aacd3bb34.pack
-  sizeInBytes: 10089545
-  isDir: false
-  isLink: false
-  depth: 4
-  adaptedSize: 9.622139930725098
-  adaptedUnit: Mb
-- number: 8
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\tests
-  sizeInBytes: 3963718
-  isDir: true
-  isLink: false
-  depth: 1
-  adaptedSize: 3.7800960540771484
-  adaptedUnit: Mb
-- number: 9
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\tests\tests.test.exe
-  sizeInBytes: 3925504
+  path: c:\\Windows\MEMORY.DMP
+  sizeInBytes: 1583943972
   isDir: false
   isLink: false
   depth: 2
-  adaptedSize: 3.74365234375
-  adaptedUnit: Mb
+  adaptedSize: 1.4751627780497074
+  adaptedUnit: Gb
+- number: 6
+  path: c:\\Games\World_of_Tanks_RU\res\packages\vehicles_level_08-part2.pkg
+  sizeInBytes: 1568962710
+  isDir: false
+  isLink: false
+  depth: 5
+  adaptedSize: 1.4612103905528784
+  adaptedUnit: Gb
+- number: 7
+  path: c:\\Games\World_of_Tanks_RU\res\packages\vehicles_level_08-part1.pkg
+  sizeInBytes: 1498732317
+  isDir: false
+  isLink: false
+  depth: 5
+  adaptedSize: 1.3958032401278615
+  adaptedUnit: Gb
+- number: 8
+  path: c:\\Games\World_of_Tanks_RU\res\packages\audioww-part1.pkg
+  sizeInBytes: 1478075680
+  isDir: false
+  isLink: false
+  depth: 5
+  adaptedSize: 1.3765652477741241
+  adaptedUnit: Gb
+- number: 9
+  path: c:\\Games\World_of_Tanks_RU\res\packages\shared_content-part2.pkg
+  sizeInBytes: 1344681159
+  isDir: false
+  isLink: false
+  depth: 5
+  adaptedSize: 1.2523319190368056
+  adaptedUnit: Gb
 - number: 10
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\__debug_bin
-  sizeInBytes: 3546112
+  path: c:\\Games\World_of_Tanks_RU\res\packages\shared_content-part1.pkg
+  sizeInBytes: 1305798047
   isDir: false
   isLink: false
-  depth: 1
-  adaptedSize: 3.3818359375
-  adaptedUnit: Mb
+  depth: 5
+  adaptedSize: 1.2161191990599036
+  adaptedUnit: Gb
 - number: 11
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\diskusage.exe
-  sizeInBytes: 3499008
+  path: c:\\Games\World_of_Tanks_RU\res\packages\shared_content_sandbox-part1.pkg
+  sizeInBytes: 1060172700
   isDir: false
   isLink: false
-  depth: 1
-  adaptedSize: 3.3369140625
+  depth: 5
+  adaptedSize: 1011.0594749450684
   adaptedUnit: Mb
 - number: 12
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_darwin_amd64
-  sizeInBytes: 2529176
-  isDir: true
+  path: c:\\Games\World_of_Tanks_RU\res\packages\vehicles_level_10-part2.pkg
+  sizeInBytes: 1052533591
+  isDir: false
   isLink: false
-  depth: 2
-  adaptedSize: 2.4120101928710938
+  depth: 5
+  adaptedSize: 1003.7742528915405
   adaptedUnit: Mb
 - number: 13
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_darwin_amd64\diskusage
-  sizeInBytes: 2529176
+  path: c:\\Games\World_of_Tanks_RU\res\packages\vehicles_level_10-part1.pkg
+  sizeInBytes: 1040810398
   isDir: false
   isLink: false
-  depth: 3
-  adaptedSize: 2.4120101928710938
+  depth: 5
+  adaptedSize: 992.594144821167
   adaptedUnit: Mb
 - number: 14
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_windows_amd64
-  sizeInBytes: 2488832
-  isDir: true
+  path: c:\\Games\World_of_Tanks_RU\res\packages\gui-part2.pkg
+  sizeInBytes: 1029290345
+  isDir: false
   isLink: false
-  depth: 2
-  adaptedSize: 2.37353515625
+  depth: 5
+  adaptedSize: 981.6077661514282
   adaptedUnit: Mb
 - number: 15
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_windows_amd64\diskusage.exe
-  sizeInBytes: 2488832
+  path: c:\\Games\World_of_Tanks_RU\res\packages\90_minsk.pkg
+  sizeInBytes: 1027143765
   isDir: false
   isLink: false
-  depth: 3
-  adaptedSize: 2.37353515625
+  depth: 5
+  adaptedSize: 979.5606279373169
   adaptedUnit: Mb
 - number: 16
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_linux_amd64
-  sizeInBytes: 2355200
-  isDir: true
+  path: c:\\Games\World_of_Tanks_RU\res\packages\gui-part1.pkg
+  sizeInBytes: 1012015829
+  isDir: false
   isLink: false
-  depth: 2
-  adaptedSize: 2.24609375
+  depth: 5
+  adaptedSize: 965.1335039138794
   adaptedUnit: Mb
 - number: 17
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_linux_amd64\diskusage
-  sizeInBytes: 2355200
+  path: c:\\Games\World_of_Tanks_RU\res\packages\shared_content_sandbox-part2.pkg
+  sizeInBytes: 1008648732
   isDir: false
   isLink: false
-  depth: 3
-  adaptedSize: 2.24609375
+  depth: 5
+  adaptedSize: 961.9223899841309
   adaptedUnit: Mb
 - number: 18
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\c1
-  sizeInBytes: 2236436
-  isDir: true
-  isLink: false
-  depth: 3
-  adaptedSize: 2.132831573486328
-  adaptedUnit: Mb
-- number: 19
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\.git\objects\c1\496e985dd3934339c3ecbf569a1064d9c7405a
-  sizeInBytes: 2236436
+  path: c:\\Games\World_of_Tanks_RU\res\packages\audioww-part2.pkg
+  sizeInBytes: 943885264
   isDir: false
   isLink: false
-  depth: 4
-  adaptedSize: 2.132831573486328
+  depth: 5
+  adaptedSize: 900.1591339111328
+  adaptedUnit: Mb
+- number: 19
+  path: c:\\Games\World_of_Tanks_RU\res\packages\vehicles_level_09-part2.pkg
+  sizeInBytes: 777966017
+  isDir: false
+  isLink: false
+  depth: 5
+  adaptedSize: 741.9262094497681
   adaptedUnit: Mb
 - number: 20
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage\dist\diskusage_windows_386
-  sizeInBytes: 2150400
-  isDir: true
+  path: c:\\Games\World_of_Tanks_RU\res\packages\vehicles_level_04.pkg
+  sizeInBytes: 773487956
+  isDir: false
   isLink: false
-  depth: 2
-  adaptedSize: 2.05078125
+  depth: 5
+  adaptedSize: 737.6555976867676
   adaptedUnit: Mb

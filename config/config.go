@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"os"
 
 	"github.com/aleksaan/diskusage/files"
 	"gopkg.in/yaml.v3"
@@ -26,11 +25,12 @@ func (c *Config) Load() {
 	}
 
 	if !files.CheckFileIsExist(*opt.ConfigFile) {
+		c.setDefaultValues()
 		c.createDefaultConfigYamlFile()
+	} else {
+		_ = c.readConfigFromYamlFile(opt.ConfigFile)
+		c.setDefaultValues()
 	}
-
-	_ = c.readConfigFromYamlFile(opt.ConfigFile)
-	c.setDefaultValues()
 }
 
 func (c *Config) readConfigFromYamlFile(location *string) error {
@@ -63,24 +63,22 @@ func (c *Config) readConfigFromYamlFile(location *string) error {
 func (c *Config) createDefaultConfigYamlFile() {
 	f := files.CreateFile(&defaultConfigFile)
 	defer f.Close()
-	dir, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	fmt.Fprintf(f, "analyzer:")
 	files.PrintEndOfLine(f)
-	fmt.Fprintf(f, "  path: %s", dir)
+	fmt.Fprintf(f, "  path: %s", *c.Analyzer.Path)
 	files.PrintEndOfLine(f)
-	fmt.Fprintf(f, "  depth: 5")
+	fmt.Fprintf(f, "  depth: %d", *c.Analyzer.Depth)
 	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "printer:")
 	files.PrintEndOfLine(f)
-	fmt.Fprintf(f, "  limit: 20")
+	fmt.Fprintf(f, "  limit: %d", *c.Printer.Limit)
 	files.PrintEndOfLine(f)
-	fmt.Fprintf(f, "  units:")
+	fmt.Fprintf(f, "  units: %s", *c.Printer.Units)
 	files.PrintEndOfLine(f)
-	fmt.Fprintf(f, "  toTextFile: diskusage_out.txt")
+	fmt.Fprintf(f, "  printonly: %s", *c.Printer.PrintOnly)
 	files.PrintEndOfLine(f)
-	fmt.Fprintf(f, "  toYamlFile: diskusage_out.yaml")
+	fmt.Fprintf(f, "  toTextFile: %s", *c.Printer.ToTextFile)
+	files.PrintEndOfLine(f)
+	fmt.Fprintf(f, "  toYamlFile: %s", *c.Printer.ToYamlFile)
 }

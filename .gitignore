@@ -6,3 +6,6 @@ docs/
 *.exe
 *.txt
 .goreleaser.yml
+diskusage_out.yaml
+diskusage_config.yaml
+__debug_bin

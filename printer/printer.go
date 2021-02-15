@@ -17,7 +17,7 @@ import (
 
 const (
 	AppTitle   = "https://github.com/aleksaan/diskusage"
-	AppVersion = "2.3.1"
+	AppVersion = "2.4.0"
 	AppAuthor  = "Anufriev Alexander"
 	AppYear    = "2021"
 )
@@ -99,21 +99,22 @@ func printConfig() {
 	fmt.Fprintf(writerToText, "   %-10s %s%s", "path:", *cfg.Analyzer.Path, es())
 	fmt.Fprintf(writerToText, "   %-10s %d%s", "limit:", *cfg.Printer.Limit, es())
 	units := *cfg.Printer.Units
-	if units == "" {
-		units = "<dynamic>"
-	}
+	// if units == "" {
+	// 	units = "<dynamic>"
+	// }
 	fmt.Fprintf(writerToText, "   %-10s %s%s", "units:", units, es())
 	fmt.Fprintf(writerToText, "   %-10s %d%s", "depth:", *cfg.Analyzer.Depth, es())
+	fmt.Fprintf(writerToText, "   %-10s %s%s", "printonly:", *cfg.Printer.PrintOnly, es())
 	//fmt.Printf("   %-10s %s%s", "sort:", *cfg.Printer.Sort, es())
 	toTextFile := *cfg.Printer.ToTextFile
-	if toTextFile == "" {
-		toTextFile = "<no text file>"
-	}
+	// if toTextFile == "" {
+	// 	toTextFile = "<no text file>"
+	// }
 	fmt.Fprintf(writerToText, "   %-10s %s\n", "toTextFile:", toTextFile)
 	toYamlFile := *cfg.Printer.ToYamlFile
-	if toYamlFile == "" {
-		toYamlFile = "<no yaml file>"
-	}
+	// if toYamlFile == "" {
+	// 	toYamlFile = "<no yaml file>"
+	// }
 	fmt.Fprintf(writerToText, "   %-10s %s\n", "toYamlFile:", toYamlFile)
 }
 
@@ -165,8 +166,16 @@ func es() string {
 
 func prepareData() {
 	var c = 0
+	var isDir = true
+	if *cfg.Printer.PrintOnly == "files" {
+		isDir = false
+	}
+
+	//are files & folders both we need (or not)
+	var isAll = *cfg.Printer.PrintOnly == "folders&files"
+
 	for _, f := range *analyzer.FinalFiles {
-		if f.Depth <= *cfg.Analyzer.Depth {
+		if f.Depth <= *cfg.Analyzer.Depth && (f.IsDir == isDir || isAll) {
 			c++
 			//break if we up to defined limit
 			if isExceedLimit(c, cfg.Printer.Limit) {
@@ -202,12 +211,15 @@ func getMemoryUsage() (uint64, uint64) {
 }
 
 func writeToYamlFile() error {
-	d, err := yaml.Marshal(filesToPrint)
+	var err error
+	if writerToYaml != nil {
+		d, err := yaml.Marshal(filesToPrint)
 
-	if err != nil {
-		log.Fatalf("error: %v", err)
+		if err != nil {
+			log.Fatalf("error: %v", err)
+		}
+
+		fmt.Fprintf(writerToYaml, "%s", string(d))
 	}
-	fmt.Fprintf(writerToYaml, "%s", string(d))
-
 	return err
 }

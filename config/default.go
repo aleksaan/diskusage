@@ -7,7 +7,8 @@ const (
 	defaultLimit      = 20
 	defaultUnits      = ""
 	defaultSort       = "size_desc"
-	defaultToTextFile = ""
+	defaultPrintOnly  = "folders&files"
+	defaultToTextFile = "diskusage_out.txt"
 	defaultToYamlFile = ""
 	//DefaultToFile = "<no file>"
 )
@@ -31,6 +32,11 @@ func (c *Config) setDefaultValues() {
 	if c.Printer.Units == nil {
 		u := defaultUnits
 		c.Printer.Units = &u
+	}
+
+	if c.Printer.PrintOnly == nil {
+		u := defaultPrintOnly
+		c.Printer.PrintOnly = &u
 	}
 
 	if c.Printer.ToTextFile == nil {

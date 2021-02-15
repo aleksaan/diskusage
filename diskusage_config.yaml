@@ -1,8 +1,9 @@
 analyzer:
-  path: C:\_goworkspace\src\github.com\aleksaan\diskusage
+  path: c:\
   depth: 5
 printer:
   limit: 20
-  units:
+  units: 
+  printonly: files
   toTextFile: diskusage_out.txt
   toYamlFile: diskusage_out.yaml
