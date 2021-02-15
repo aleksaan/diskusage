@@ -4,7 +4,7 @@
 diskusage is an utility to find top largest directories on the disk.
 
 ## !!! 2021.02.15: Version 2.4.0 is now avaliable  !!!
-## new option PRINTONLY to print only files or folders in results
+## new option PRINTONLY for filtering only files or folders in a results
 
 ```cmd
 About:
