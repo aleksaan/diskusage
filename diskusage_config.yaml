@@ -1,9 +1,0 @@
-analyzer:
-  path: c:\
-  depth: 5
-printer:
-  limit: 20
-  units: 
-  printonly: files
-  toTextFile: diskusage_out.txt
-  toYamlFile: diskusage_out.yaml
