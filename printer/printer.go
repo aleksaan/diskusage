@@ -17,7 +17,7 @@ import (
 
 const (
 	AppTitle   = "https://github.com/aleksaan/diskusage"
-	AppVersion = "2.4.0"
+	AppVersion = "2.5.0"
 	AppAuthor  = "Anufriev Alexander"
 	AppYear    = "2021"
 )
@@ -98,6 +98,7 @@ func printConfig() {
 	fmt.Fprintln(writerToText, "Arguments:")
 	fmt.Fprintf(writerToText, "   %-10s %s%s", "path:", *cfg.Analyzer.Path, es())
 	fmt.Fprintf(writerToText, "   %-10s %d%s", "limit:", *cfg.Printer.Limit, es())
+	fmt.Fprintf(writerToText, "   %-10s %s%s", "hierarchy:", *cfg.Analyzer.Hierarchy, es())
 	units := *cfg.Printer.Units
 	// if units == "" {
 	// 	units = "<dynamic>"

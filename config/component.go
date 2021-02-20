@@ -8,8 +8,9 @@ type Config struct {
 
 //AnalyzerConfig section
 type AnalyzerConfig struct {
-	Path  *string `yaml:"path,omitempty"`
-	Depth *int    `yaml:"depth,omitempty"`
+	Path      *string `yaml:"path,omitempty"`
+	Depth     *int    `yaml:"depth,omitempty"`
+	Hierarchy *string `yaml:"hierarchy,omitempty"`
 }
 
 //PrinterConfig section

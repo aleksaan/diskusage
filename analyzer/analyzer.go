@@ -54,7 +54,9 @@ func scanDir(path string, depth int) int64 {
 		}
 
 		setAdaptedFileSize(file)
-		dirsize += file.Size
+		if *cfg.Analyzer.Hierarchy == "Y" || (*cfg.Analyzer.Hierarchy == "N" && !file.IsDir) {
+			dirsize += file.Size
+		}
 
 		//*Files = append(*Files, *file)
 		addToOverallInfo(file)

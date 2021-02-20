@@ -70,6 +70,8 @@ func (c *Config) createDefaultConfigYamlFile() {
 	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "  depth: %d", *c.Analyzer.Depth)
 	files.PrintEndOfLine(f)
+	fmt.Fprintf(f, "  hierarchy: %s", *c.Analyzer.Hierarchy)
+	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "printer:")
 	files.PrintEndOfLine(f)
 	fmt.Fprintf(f, "  limit: %d", *c.Printer.Limit)

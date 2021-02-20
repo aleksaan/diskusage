@@ -5,6 +5,7 @@ import "os"
 const (
 	defaultDepth      = 5
 	defaultLimit      = 20
+	defaultHierarchy  = "Y"
 	defaultUnits      = ""
 	defaultSort       = "size_desc"
 	defaultPrintOnly  = "folders&files"
@@ -19,9 +20,18 @@ func (c *Config) setDefaultValues() {
 		d := defaultDepth
 		c.Analyzer.Depth = &d
 	}
+
 	if c.Analyzer.Path == nil {
 		dir, _ := os.Getwd()
 		c.Analyzer.Path = &dir
+	}
+
+	if c.Analyzer.Hierarchy == nil {
+		h := defaultHierarchy
+		c.Analyzer.Hierarchy = &h
+	} else if *c.Analyzer.Hierarchy != "Y" && *c.Analyzer.Hierarchy != "N" {
+		h := defaultHierarchy
+		c.Analyzer.Hierarchy = &h
 	}
 
 	if c.Printer.Limit == nil {

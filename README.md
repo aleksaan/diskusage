@@ -3,12 +3,12 @@
 # diskusage 
 diskusage is an utility to find top largest directories on the disk.
 
-## !!! 2021.02.15: Version 2.4.0 is now avaliable  !!!
-## new option PRINTONLY to filter printing by objects (only files or folders or both of them)
+## !!! 2021.02.20: Version 2.5.0 is now avaliable  !!!
+## new option HIERARCHY (include or not subfolders for calculating size of parent folder)
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.4.0, Alexander Anufriev, 2021
+   github/aleksaan/diskusage, 2.5.0, Alexander Anufriev, 2021
 
 Arguments:
    path:      d:\_appl\go\src\
@@ -16,6 +16,7 @@ Arguments:
    units:     <dynamic>
    depth:     5
    printonly: folders&files
+   hierarchy: Y
    toTextFile:    diskusage_out.txt
    toYamlFile:    diskusage_out.yaml
 
@@ -133,6 +134,22 @@ Possible values:
    - files - print only files;
    - folders - print only folders;
    - folders&files - (default) print both of them.
+
+```yaml
+hierarchy: Y
+```
+Possible values (optional):
+   - Y - (default) sizes of subfolders will be included into size of the parent folder
+   - N - size of subfolders will not be included into size of the parent folder
+
+For example, if your directory tree seems like that:
+```cmd
+A(100Mb)\B(90Mb)\C(70Mb)
+```
+and output limit = 2 then
+* if hierarchy=Y then you get A(100Mb) and B(90Mb) as largest (by syze with included subfolders)
+* if hierarchy=N then you get B(20Mb) and C(70Mb) as largest (by syze without included subfolders)
+
 
 ```yaml
    toTextFile: diskusage_out.txt
