@@ -147,8 +147,8 @@ For example, if your directory tree seems like that:
 A(100Mb)\B(90Mb)\C(70Mb)
 ```
 and output limit = 2 then
-* if hierarchy=Y then you get A(100Mb) and B(90Mb) as largest (by syze with included subfolders)
-* if hierarchy=N then you get B(20Mb) and C(70Mb) as largest (by syze without included subfolders)
+* if hierarchy=Y then you get A(100Mb) and B(90Mb) as largest (by syze with nested subfolders)
+* if hierarchy=N then you get B(20Mb) and C(70Mb) as largest (by syze without nested subfolders)
 
 
 ```yaml
