@@ -3,22 +3,22 @@ package config
 import "os"
 
 const (
-	defaultDepth      = 5
-	defaultLimit      = 20
-	defaultHierarchy  = "Y"
-	defaultUnits      = ""
-	defaultSort       = "size_desc"
-	defaultPrintOnly  = "folders&files"
-	defaultToTextFile = "diskusage_out.txt"
-	defaultToYamlFile = ""
+	defaultDepth                 = 5
+	defaultLimit                 = 20
+	defaultSizeCalculatingMethod = "cumulative"
+	defaultUnits                 = ""
+	defaultSort                  = "size_desc"
+	defaultFilterByObject        = "folders&files"
+	defaultToTextFile            = "diskusage_out.txt"
+	defaultToYamlFile            = ""
 	//DefaultToFile = "<no file>"
 )
 
 func (c *Config) setDefaultValues() {
 
-	if c.Analyzer.Depth == nil {
+	if c.Filter.Depth == nil {
 		d := defaultDepth
-		c.Analyzer.Depth = &d
+		c.Filter.Depth = &d
 	}
 
 	if c.Analyzer.Path == nil {
@@ -26,17 +26,17 @@ func (c *Config) setDefaultValues() {
 		c.Analyzer.Path = &dir
 	}
 
-	if c.Analyzer.Hierarchy == nil {
-		h := defaultHierarchy
-		c.Analyzer.Hierarchy = &h
-	} else if *c.Analyzer.Hierarchy != "Y" && *c.Analyzer.Hierarchy != "N" {
-		h := defaultHierarchy
-		c.Analyzer.Hierarchy = &h
+	if c.Analyzer.SizeCalculatingMethod == nil {
+		h := defaultSizeCalculatingMethod
+		c.Analyzer.SizeCalculatingMethod = &h
+	} else if *c.Analyzer.SizeCalculatingMethod != "plain" && *c.Analyzer.SizeCalculatingMethod != "cumulative" {
+		h := defaultSizeCalculatingMethod
+		c.Analyzer.SizeCalculatingMethod = &h
 	}
 
-	if c.Printer.Limit == nil {
+	if c.Filter.Limit == nil {
 		l := defaultLimit
-		c.Printer.Limit = &l
+		c.Filter.Limit = &l
 	}
 
 	if c.Printer.Units == nil {
@@ -44,9 +44,9 @@ func (c *Config) setDefaultValues() {
 		c.Printer.Units = &u
 	}
 
-	if c.Printer.PrintOnly == nil {
-		u := defaultPrintOnly
-		c.Printer.PrintOnly = &u
+	if c.Filter.FilterByObjectType == nil {
+		u := defaultFilterByObject
+		c.Filter.FilterByObjectType = &u
 	}
 
 	if c.Printer.ToTextFile == nil {

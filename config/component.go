@@ -2,22 +2,27 @@ package config
 
 //Config - utility configuration
 type Config struct {
-	Analyzer AnalyzerConfig `yaml:"analyzer"`
-	Printer  PrinterConfig  `yaml:"printer"`
+	Analyzer AnalyzerOptions `yaml:"analyzerOptions"`
+	Filter   FilterOptions   `yaml:"filterOptions"`
+	Printer  PrinterOptions  `yaml:"printerOptions"`
 }
 
-//AnalyzerConfig section
-type AnalyzerConfig struct {
-	Path      *string `yaml:"path,omitempty"`
-	Depth     *int    `yaml:"depth,omitempty"`
-	Hierarchy *string `yaml:"hierarchy,omitempty"`
+//AnalyzerOptions section
+type AnalyzerOptions struct {
+	Path                  *string `yaml:"path,omitempty"`
+	SizeCalculatingMethod *string `yaml:"sizeCalculatingMethod,omitempty"`
 }
 
-//PrinterConfig section
-type PrinterConfig struct {
-	Limit      *int    `yaml:"limit,omitempty"`
+//FilterOptions section
+type FilterOptions struct {
+	Depth              *int    `yaml:"depth,omitempty"`
+	Limit              *int    `yaml:"limit,omitempty"`
+	FilterByObjectType *string `yaml:"filterByObjectType,omitempty"`
+}
+
+//PrinterOptions section
+type PrinterOptions struct {
 	Units      *string `yaml:"units,omitempty"`
-	PrintOnly  *string `yaml:"printonly,omitempty"`
 	ToTextFile *string `yaml:"toTextFile,omitempty"`
 	ToYamlFile *string `yaml:"toYamlFile,omitempty"`
 	Sort       *string

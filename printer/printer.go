@@ -96,27 +96,27 @@ func PrintAbout() {
 func printConfig() {
 	fmt.Fprintf(writerToText, es())
 	fmt.Fprintln(writerToText, "Arguments:")
-	fmt.Fprintf(writerToText, "   %-10s %s%s", "path:", *cfg.Analyzer.Path, es())
-	fmt.Fprintf(writerToText, "   %-10s %d%s", "limit:", *cfg.Printer.Limit, es())
-	fmt.Fprintf(writerToText, "   %-10s %s%s", "hierarchy:", *cfg.Analyzer.Hierarchy, es())
+	fmt.Fprintf(writerToText, "   %-25s %s%s", "path:", *cfg.Analyzer.Path, es())
+	fmt.Fprintf(writerToText, "   %-25s %s%s", "sizeCalculatingMethod:", *cfg.Analyzer.SizeCalculatingMethod, es())
 	units := *cfg.Printer.Units
 	// if units == "" {
 	// 	units = "<dynamic>"
 	// }
-	fmt.Fprintf(writerToText, "   %-10s %s%s", "units:", units, es())
-	fmt.Fprintf(writerToText, "   %-10s %d%s", "depth:", *cfg.Analyzer.Depth, es())
-	fmt.Fprintf(writerToText, "   %-10s %s%s", "printonly:", *cfg.Printer.PrintOnly, es())
+	fmt.Fprintf(writerToText, "   %-25s %d%s", "limit:", *cfg.Filter.Limit, es())
+	fmt.Fprintf(writerToText, "   %-25s %d%s", "depth:", *cfg.Filter.Depth, es())
+	fmt.Fprintf(writerToText, "   %-25s %s%s", "filterByObjectType:", *cfg.Filter.FilterByObjectType, es())
 	//fmt.Printf("   %-10s %s%s", "sort:", *cfg.Printer.Sort, es())
 	toTextFile := *cfg.Printer.ToTextFile
 	// if toTextFile == "" {
 	// 	toTextFile = "<no text file>"
 	// }
-	fmt.Fprintf(writerToText, "   %-10s %s\n", "toTextFile:", toTextFile)
+	fmt.Fprintf(writerToText, "   %-25s %s%s", "units:", units, es())
+	fmt.Fprintf(writerToText, "   %-25s %s\n", "toTextFile:", toTextFile)
 	toYamlFile := *cfg.Printer.ToYamlFile
 	// if toYamlFile == "" {
 	// 	toYamlFile = "<no yaml file>"
 	// }
-	fmt.Fprintf(writerToText, "   %-10s %s\n", "toYamlFile:", toYamlFile)
+	fmt.Fprintf(writerToText, "   %-25s %s\n", "toYamlFile:", toYamlFile)
 }
 
 func printFiles() {
@@ -168,18 +168,18 @@ func es() string {
 func prepareData() {
 	var c = 0
 	var isDir = true
-	if *cfg.Printer.PrintOnly == "files" {
+	if *cfg.Filter.FilterByObjectType == "files" {
 		isDir = false
 	}
 
 	//are files & folders both we need (or not)
-	var isAll = *cfg.Printer.PrintOnly == "folders&files"
+	var isAll = *cfg.Filter.FilterByObjectType == "folders&files"
 
 	for _, f := range *analyzer.FinalFiles {
-		if f.Depth <= *cfg.Analyzer.Depth && (f.IsDir == isDir || isAll) {
+		if f.Depth <= *cfg.Filter.Depth && (f.IsDir == isDir || isAll) {
 			c++
 			//break if we up to defined limit
-			if isExceedLimit(c, cfg.Printer.Limit) {
+			if isExceedLimit(c, cfg.Filter.Limit) {
 				break
 			}
 			f.FullPath = *cfg.Analyzer.Path + "\\" + f.RelativePath + f.Name

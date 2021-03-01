@@ -8,15 +8,15 @@ diskusage is an utility to find top largest directories on the disk.
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.5.0, Alexander Anufriev, 2021
+   github/aleksaan/diskusage, 2.6.0, Alexander Anufriev, 2021
 
 Arguments:
-   path:      d:\_appl\go\src\
-   limit:     20
-   units:     <dynamic>
-   depth:     5
-   printonly: folders&files
-   hierarchy: Y
+   path:               d:\_appl\go\src\
+   limit:              20
+   units:              
+   depth:              5
+   filterByObjectType: folders&files
+   sizeCalculatingMethod: cumulative
    toTextFile:    diskusage_out.txt
    toYamlFile:    diskusage_out.yaml
 
@@ -87,12 +87,17 @@ Open ```diskusage_config.yaml``` in text editor to setup diskusage
 
 You will see:
 ```yaml
-# Analyzer options
-analyzer: 
+
+analyzerOptions: 
   path: 'D:\_docs'
-  depth: 5
-# Results options
-printer:
+  sizeCalculatingMethod: cumulative
+  
+filterOptions:
+   depth: 5
+   limit: 20
+   filterByObjectType: folders&files
+
+printerOptions:
   limit: 20
   units: Gb
   toTextFile: diskusage_out.txt
