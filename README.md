@@ -133,12 +133,12 @@ You can use "units" in case you want to compare sizes afterward (optional).
 ```yaml
    filterByObjectType: folders&files
 ```
-It is a filter to manage what kind of objects will be printed.
+It is a filter to manage what kind of objects will be selected.
 
 Possible values:
-   - files - print only files;
-   - folders - print only folders;
-   - folders&files - (default) print both of them.
+   - files - select only files;
+   - folders - select only folders;
+   - folders&files - (default) select both of them.
 
 ```yaml
 sizeCalculatingMethod: cumulative
@@ -152,8 +152,8 @@ For example, if your directory tree seems like that:
 A(100Mb)\B(90Mb)\C(70Mb)
 ```
 and output limit = 2 then
-* if hierarchy=Y then you get A(100Mb) and B(90Mb) as largest (by syze with nested subfolders)
-* if hierarchy=N then you get B(20Mb) and C(70Mb) as largest (by syze without nested subfolders)
+* if sizeCalculatingMethod=cumulative then you get A(100Mb) and B(90Mb) as largest (by syze with nested subfolders)
+* if sizeCalculatingMethod=plain then you get B(20Mb) and C(70Mb) as largest (by syze without nested subfolders)
 
 
 ```yaml
