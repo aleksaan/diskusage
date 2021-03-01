@@ -17,7 +17,7 @@ import (
 
 const (
 	AppTitle   = "https://github.com/aleksaan/diskusage"
-	AppVersion = "2.5.0"
+	AppVersion = "2.6.0"
 	AppAuthor  = "Anufriev Alexander"
 	AppYear    = "2021"
 )

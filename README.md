@@ -3,8 +3,8 @@
 # diskusage 
 diskusage is an utility to find top largest directories on the disk.
 
-## !!! 2021.02.20: Version 2.5.0 is now avaliable  !!!
-## new option HIERARCHY (include or not subfolders for calculating size of parent folder)
+## !!! 2021.02.20: Version 2.6.0 is now avaliable  !!!
+## refactoring names of input arguments & adding notes about them into default diskusage_config.yaml
 
 ```cmd
 About:
