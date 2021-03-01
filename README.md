@@ -11,14 +11,14 @@ About:
    github/aleksaan/diskusage, 2.6.0, Alexander Anufriev, 2021
 
 Arguments:
-   path:               d:\_appl\go\src\
-   limit:              20
+   path:                  d:\_appl\go\src\
+   limit:                 20
    units:              
-   depth:              5
-   filterByObjectType: folders&files
+   depth:                 5
+   filterByObjectType:    folders&files
    sizeCalculatingMethod: cumulative
-   toTextFile:    diskusage_out.txt
-   toYamlFile:    diskusage_out.yaml
+   toTextFile:            diskusage_out.txt
+   toYamlFile:            diskusage_out.yaml
 
 Results:
      1.| PATH:   github.com                                | SIZE:   316.65 Mb   | DEPTH: 1 
