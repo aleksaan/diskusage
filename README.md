@@ -131,7 +131,7 @@ Fixed scale values: b, Kb, Mb, Gb, Tb, Pb.
 You can use "units" in case you want to compare sizes afterward (optional).
 
 ```yaml
-   printonly: folders&files
+   filterByObjectType: folders&files
 ```
 It is a filter to manage what kind of objects will be printed.
 
@@ -141,11 +141,11 @@ Possible values:
    - folders&files - (default) print both of them.
 
 ```yaml
-hierarchy: Y
+sizeCalculatingMethod: cumulative
 ```
 Possible values (optional):
-   - Y - (default) sizes of subfolders will be included into size of the parent folder
-   - N - size of subfolders will not be included into size of the parent folder
+   - cumulative - (default) sizes of subfolders will be included into size of the parent folder
+   - plain - size of subfolders will not be included into size of the parent folder
 
 For example, if your directory tree seems like that:
 ```cmd
