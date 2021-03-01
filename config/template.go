@@ -11,8 +11,8 @@ analyzerOptions:
 
   # path - (optional) name of disk or folder for analyzing inside them 
   # for example: abc/xyz (Unix-style) or C:\ or C:\temp (Windows-style) etc
-  # The default value is the working directory
-  path: C:\
+  # The default value (empty) is the working directory
+  path: %s
 
   # sizeCalculatingMethod - (optional) ndefines how the program calculates folder size
   # Possible values: 

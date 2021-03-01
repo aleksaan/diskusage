@@ -141,7 +141,7 @@ Possible values:
    - folders&files - (default) select both of them.
 
 ```yaml
-sizeCalculatingMethod: cumulative
+   sizeCalculatingMethod: cumulative
 ```
 Possible values (optional):
    - cumulative - (default) sizes of subfolders will be included into size of the parent folder

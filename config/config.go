@@ -64,7 +64,7 @@ func (c *Config) createDefaultConfigYamlFile() {
 	f := files.CreateFile(&defaultConfigFile)
 	defer f.Close()
 
-	fmt.Fprintf(f, "%s", ConfigTemplate)
+	fmt.Fprintf(f, ConfigTemplate, *c.Analyzer.Path)
 
 	// fmt.Fprintf(f, "analyzer:")
 	// files.PrintEndOfLine(f)

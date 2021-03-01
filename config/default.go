@@ -21,7 +21,7 @@ func (c *Config) setDefaultValues() {
 		c.Filter.Depth = &d
 	}
 
-	if c.Analyzer.Path == nil {
+	if c.Analyzer.Path == nil || *c.Analyzer.Path == "" {
 		dir, _ := os.Getwd()
 		c.Analyzer.Path = &dir
 	}
