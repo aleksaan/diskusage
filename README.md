@@ -13,7 +13,7 @@ About:
 Arguments:
    path:                  d:\_appl\go\src\
    limit:                 20
-   units:              
+   units:                 Gb
    depth:                 5
    filterByObjectType:    folders&files
    sizeCalculatingMethod: cumulative
