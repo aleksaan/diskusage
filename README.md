@@ -98,7 +98,6 @@ filterOptions:
    filterByObjectType: folders&files
 
 printerOptions:
-  limit: 20
   units: Gb
   toTextFile: diskusage_out.txt
   toYamlFile: diskusage_out.yaml
