@@ -1,7 +1,7 @@
  [![cover.run](https://cover.run/go/github.com/aleksaan/diskusage.svg?style=flat&tag=golang-1.10)](https://cover.run/go?tag=golang-1.10&repo=github.com%2Faleksaan%2Fdiskusage) 
  
 # diskusage 
-diskusage is an utility to find top largest directories on the disk.
+diskusage is an FANTASTIC SPEED utility to find out top largest directories on the disk.
 
 ## !!! 2021.03.01: Version 2.6.0 is now avaliable  !!!
 ## refactoring names of input arguments & adding notes about them into default diskusage_config.yaml
@@ -56,6 +56,7 @@ System resources:
 ```
 ## Features
 - A primitive tool for getting folder(s) sizes
+- Fantastic speed
 - Comfortable setup (yaml config)
 - Supports both folders and disks as arguments
 - Recursive passes through subfolders
