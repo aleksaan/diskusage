@@ -3,6 +3,8 @@ package files
 import (
 	"sort"
 	"strings"
+
+	"github.com/aleksaan/diskusage/config"
 )
 
 //TFile - struct for file object
@@ -63,9 +65,9 @@ func (a nameSorter) Less(i, j int) bool {
 //-----------------------------------------------------------------------------------------
 
 //Sort - sort files by size
-func (files *TFiles) Sort(by string) {
+func (files *TFiles) Sort() {
 	switch {
-	case by == "name_asc":
+	case config.Cfg.Printer.Sort == "name_asc":
 		sort.Sort(nameSorter(*files))
 	default:
 		sort.Sort(sizeAndNameSorter(*files))

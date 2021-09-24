@@ -9,21 +9,21 @@ type Config struct {
 
 //AnalyzerOptions section
 type AnalyzerOptions struct {
-	Path                  *string `yaml:"path,omitempty"`
-	SizeCalculatingMethod *string `yaml:"sizeCalculatingMethod,omitempty"`
+	Path                  string `yaml:"path,omitempty"`
+	SizeCalculatingMethod string `yaml:"sizeCalculatingMethod,omitempty"`
 }
 
 //FilterOptions section
 type FilterOptions struct {
-	Depth              *int    `yaml:"depth,omitempty"`
-	Limit              *int    `yaml:"limit,omitempty"`
-	FilterByObjectType *string `yaml:"filterByObjectType,omitempty"`
+	Depth              int    `yaml:"depth,omitempty"`
+	Limit              int    `yaml:"limit,omitempty"`
+	FilterByObjectType string `yaml:"filterByObjectType,omitempty"`
 }
 
 //PrinterOptions section
 type PrinterOptions struct {
-	Units      *string `yaml:"units,omitempty"`
-	ToTextFile *string `yaml:"toTextFile,omitempty"`
-	ToYamlFile *string `yaml:"toYamlFile,omitempty"`
-	Sort       *string
+	Units      string `yaml:"units,omitempty"`
+	ToTextFile string `yaml:"toTextFile,omitempty"`
+	ToYamlFile string `yaml:"toYamlFile,omitempty"`
+	Sort       string
 }

@@ -29,7 +29,7 @@ var countFiles int
 func Run() {
 	startProcess()
 	cfg = config.Cfg
-	basePath = files.AddPathSeparator(*cfg.Analyzer.Path)
+	basePath = files.AddPathSeparator(cfg.Analyzer.Path)
 	scanDir(basePath, 1)
 	calcAdaptedSizeInOverallInfo()
 	endProcess()
@@ -54,7 +54,7 @@ func scanDir(path string, depth int) int64 {
 		}
 
 		setAdaptedFileSize(file)
-		if *cfg.Analyzer.SizeCalculatingMethod == "cumulative" || (*cfg.Analyzer.SizeCalculatingMethod == "plain" && !file.IsDir) {
+		if cfg.Analyzer.SizeCalculatingMethod == "cumulative" || (cfg.Analyzer.SizeCalculatingMethod == "plain" && !file.IsDir) {
 			dirsize += file.Size
 		}
 
@@ -65,7 +65,7 @@ func scanDir(path string, depth int) int64 {
 		countFiles++
 		c <- countFiles
 
-		if depth <= *cfg.Filter.Depth {
+		if depth <= cfg.Filter.Depth {
 			*FinalFiles = append(*FinalFiles, *file)
 		}
 	}
@@ -74,7 +74,7 @@ func scanDir(path string, depth int) int64 {
 }
 
 func setAdaptedFileSize(file *files.TFile) {
-	file.AdaptedSize, file.AdaptedUnit = files.GetAdaptedSize(file.Size, cfg.Printer.Units)
+	file.AdaptedSize, file.AdaptedUnit = files.GetAdaptedSize(file.Size, &cfg.Printer.Units)
 }
 
 //-----------------------------------------------------------------------------------------

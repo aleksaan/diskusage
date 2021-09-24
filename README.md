@@ -3,15 +3,16 @@
 # diskusage 
 diskusage is an utility to find top largest directories on the disk.
 
-## !!! 2021.03.01: Version 2.6.0 is now avaliable  !!!
-## refactoring names of input arguments & adding notes about them into default diskusage_config.yaml
+## !!! 2021.09.24: Version 2.7.0 is now avaliable  !!!
+## Assignment input parameters as environment variables (rejection of using diskusage_config.yaml file) for better compatibility with an system level utilities
+## Renaming "path" parameter to "pathToScan" to avoid naming conflict with classic windows "PATH" system environment variable 
 
 ```cmd
 About:
-   github/aleksaan/diskusage, 2.6.0, Alexander Anufriev, 2021
+   github/aleksaan/diskusage, 2.7.0, Alexander Anufriev, 2021
 
 Arguments:
-   path:                  d:\_appl\go\src\
+   pathToScan:            d:\_appl\go\src\
    limit:                 20
    units:                 Gb
    depth:                 5
@@ -76,51 +77,44 @@ Releases available as single executable files – just [download latest release]
 ## Simple usage (Windows example)
 
 Put ```diskusage.exe``` into analyzed directory, run it and get results in ```diskusage_out.txt```
-
-* diskusage_config.yaml will be created with a default settings
+It will be scanning current folder with a default settings
 
 ## Advanced usage (Windows example)
 
-(Optional) Download, create or save ```diskusage_config.yaml``` near ```diskusage.exe```.
+You may define input parameters of diskusage by two ways:
+1. in a cmd|bash session define environment variables (like SET pathToScan=C:\) and run diskusage.exe (CLI MODE)
+2. or create .env file near diskusage.exe, fill it up by needed environment variables and run diskusage.exe (USER MODE)
 
-Open ```diskusage_config.yaml``` in text editor to setup diskusage
-
-You will see:
-```yaml
-
-analyzerOptions: 
-  path: 'D:\_docs'
-  sizeCalculatingMethod: cumulative
-  
-filterOptions:
-   depth: 5
-   limit: 20
-   filterByObjectType: folders&files
-
-printerOptions:
-  limit: 20
-  units: Gb
-  toTextFile: diskusage_out.txt
-  toYamlFile: diskusage_out.yaml
+Example of USER MODE settings in the .env file:
+```cmd
+SET pathToScan=D:\_docs
+SET depth=5
+SET limit=20
+SET units=Gb
+SET filterByObjectType=folders&files
+SET sizeCalculatingMethod=cumulative
+SET toTextFile=diskusage_out.txt
+SET toYamlFile=diskusage_out.yaml
   ```
+
 where:
-```yaml
-   path: D:\_docs
+```cmd
+   SET pathToScan=D:\_docs
 ``` 
 is a folder or disk name (required)
 
-```yaml
-   depth: 5
+```cmd
+   SET depth=5
 ```
 is depth of subfolders to analyze (optional)
 
-```yaml
-   limit: 20
+```cmd
+   SET limit=20
 ```
 is how much biggest folders will be printed in the results (optional)
 if you set -limit to 0 it means limitless (no one row be cuted from results). Be warned it might be a huge list of files!
-```yaml
-   units: Gb
+```cmd
+   SET units=Gb
 ```
 you can choose unit style to representing folder sizes. It can be fixed or dynamic-scaled.
 
@@ -130,8 +124,8 @@ Fixed scale values: b, Kb, Mb, Gb, Tb, Pb.
 
 You can use "units" in case you want to compare sizes afterward (optional).
 
-```yaml
-   filterByObjectType: folders&files
+```cmd
+   SET filterByObjectType=folders&files
 ```
 It is a filter to manage what kind of objects will be selected.
 
@@ -140,8 +134,8 @@ Possible values:
    - folders - select only folders;
    - folders&files - (default) select both of them.
 
-```yaml
-   sizeCalculatingMethod: cumulative
+```cmd
+   SET sizeCalculatingMethod=cumulative
 ```
 Possible values (optional):
    - cumulative - (default) sizes of subfolders will be included into size of the parent folder
@@ -156,14 +150,14 @@ and output limit = 2 then
 * if sizeCalculatingMethod=plain then you get B(20Mb) and C(70Mb) as largest (by size without nested subfolders)
 
 
-```yaml
-   toTextFile: diskusage_out.txt
+```cmd
+   SET toTextFile=diskusage_out.txt
 ```
 
 File name to save results in human readable format. If value is empty file will not be created and you will see results in console window with prompt to exit at the end.
 
-```yaml
-   toYamlFile: diskusage_out.yaml
+```cmd
+   SET toYamlFile=diskusage_out.yaml
 ```
 File name for saving results in YAML format for best compatibility with others programs.
 

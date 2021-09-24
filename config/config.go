@@ -2,87 +2,87 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
+	"os"
+	"strconv"
+	"strings"
 
-	"github.com/aleksaan/diskusage/files"
-	"gopkg.in/yaml.v3"
+	"github.com/joho/godotenv"
 )
 
-var defaultConfigFile = "diskusage_config.yaml"
+var Cfg *Config
 
-//set of configuration options
-var opt Options
-
-//Cfg -
-var Cfg = &Config{}
-
-//Load - load config from a yaml file & creates it if not exist
-func (c *Config) Load() {
-
-	if opt.ConfigFile == nil {
-		opt.ConfigFile = &defaultConfigFile
+func init() {
+	e := godotenv.Load() //Загрузить файл .env
+	if e != nil {
+		fmt.Print(e)
 	}
-
-	if !files.CheckFileIsExist(*opt.ConfigFile) {
-		c.setDefaultValues()
-		c.createDefaultConfigYamlFile()
-	} else {
-		_ = c.readConfigFromYamlFile(opt.ConfigFile)
-		c.setDefaultValues()
-	}
+	initDefaultsValues()
+	cfgInit()
 }
 
-func (c *Config) readConfigFromYamlFile(location *string) error {
+func cfgInit() {
+	Cfg = &Config{}
+	Cfg.Analyzer.Path = getEnvAsStr("pathToScan", defaultPath)
 
-	yamlFile, err := ioutil.ReadFile(*location)
-	if err != nil {
-		log.Fatalf("Failed to read config file: %s", *location)
+	Cfg.Analyzer.SizeCalculatingMethod = getEnvAsStr("sizeCalculatingMethod", defaultSizeCalculatingMethod)
+	if Cfg.Analyzer.SizeCalculatingMethod != "plain" && Cfg.Analyzer.SizeCalculatingMethod != "cumulative" {
+		Cfg.Analyzer.SizeCalculatingMethod = defaultSizeCalculatingMethod
 	}
 
-	err = yaml.Unmarshal(yamlFile, c)
+	Cfg.Filter.Depth = getEnvAsInt("depth", defaultDepth)
 
-	if err != nil {
-		log.Fatalf("Failed to read config file: %v", err)
+	Cfg.Filter.FilterByObjectType = getEnvAsStr("filterByObjectType", defaultFilterByObject)
+	if Cfg.Filter.FilterByObjectType != "folders" && Cfg.Filter.FilterByObjectType != "files" && Cfg.Filter.FilterByObjectType != "folders&files" {
+		Cfg.Filter.FilterByObjectType = defaultFilterByObject
 	}
 
-	return err
+	Cfg.Filter.Limit = getEnvAsInt("limit", defaultLimit)
+
+	Cfg.Printer.Units = getEnvAsStr("units", defaultUnits)
+
+	Cfg.Printer.ToTextFile = getEnvAsStr("toTextFile", defaultToTextFile)
+
+	Cfg.Printer.ToYamlFile = getEnvAsStr("toYamlFile", defaultToYamlFile)
+
+	Cfg.Printer.Sort = defaultSort
 }
 
-/* func (c *Config) saveConfigToYamlFile(config *Config, fileName *string) {
-	file, err := yaml.Marshal(config)
-	if err != nil {
-		log.Fatalf("Failed to marshal config file: %v", err)
+// Simple helper function to read an environment or return a default value
+func getEnvAsStr(key string, defaultVal string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
 	}
-	err = ioutil.WriteFile(*fileName, file, os.ModePerm)
-	if err != nil {
-		log.Fatalf("Failed to save config file: %v", err)
+
+	return defaultVal
+}
+
+// Simple helper function to read an environment variable into integer or return a default value
+func getEnvAsInt(key string, defaultVal int) int {
+	if value, exists := os.LookupEnv(key); exists {
+		if valueInt, err := strconv.Atoi(value); err == nil {
+			return valueInt
+		}
 	}
-} */
+	return defaultVal
+}
 
-func (c *Config) createDefaultConfigYamlFile() {
-	f := files.CreateFile(&defaultConfigFile)
-	defer f.Close()
+// Helper to read an environment variable into a bool or return default value
+func getEnvAsBool(key string, defaultVal bool) bool {
+	if value, exists := os.LookupEnv(key); exists {
+		if valueBool, err := strconv.ParseBool(value); err == nil {
+			return valueBool
+		}
+	}
+	return defaultVal
+}
 
-	fmt.Fprintf(f, ConfigTemplate, *c.Analyzer.Path)
+// Helper to read an environment variable into a string slice or return default value
+func getEnvAsSlice(key string, defaultVal []string, sep string) []string {
+	if value, exists := os.LookupEnv(key); exists && value != "" {
 
-	// fmt.Fprintf(f, "analyzer:")
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "  path:       %s", *c.Analyzer.Path)
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "  depth:      %d", *c.Analyzer.Depth)
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "  includeNestedFolders:  %s", *c.Analyzer.SizeCalculatingMethod)
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "printer:")
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "  limit:      %d", *c.Printer.Limit)
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "  units:      %s", *c.Printer.Units)
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "  filterBy:  %s", *c.Printer.FilterByObjectType)
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "  toTextFile: %s", *c.Printer.ToTextFile)
-	// files.PrintEndOfLine(f)
-	// fmt.Fprintf(f, "  toYamlFile: %s", *c.Printer.ToYamlFile)
+		valueSlice := strings.Split(value, sep)
+		return valueSlice
+	}
+
+	return defaultVal
 }

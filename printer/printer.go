@@ -17,8 +17,8 @@ import (
 
 const (
 	AppTitle   = "https://github.com/aleksaan/diskusage"
-	AppVersion = "2.6.0"
-	AppAuthor  = "Anufriev Alexander"
+	AppVersion = "2.7.0"
+	AppAuthor  = "Alexander Anufriev"
 	AppYear    = "2021"
 )
 
@@ -27,7 +27,6 @@ var writerToYaml io.Writer = nil
 var resultsTextFile *os.File
 var resultsYamlFile *os.File
 var cfg *config.Config
-var initFlag = false
 var files *filespkg.TFiles
 var overallInfo *analyzer.TOverallInfo
 var filesToPrint = &filespkg.TFiles{}
@@ -35,14 +34,14 @@ var filesToPrint = &filespkg.TFiles{}
 //Load -
 func Load() {
 	cfg = config.Cfg
-	if *cfg.Printer.ToTextFile != "" {
-		resultsTextFile = createTextResultsFile(cfg.Printer.ToTextFile)
+	if cfg.Printer.ToTextFile != "" {
+		resultsTextFile = createTextResultsFile()
 		writerToText = resultsTextFile
 		//os.Stdout = f
 	}
 
-	if *cfg.Printer.ToYamlFile != "" {
-		resultsYamlFile = createYamlResultsFile(cfg.Printer.ToYamlFile)
+	if cfg.Printer.ToYamlFile != "" {
+		resultsYamlFile = createYamlResultsFile()
 		writerToYaml = resultsYamlFile
 		//os.Stdout = f
 	}
@@ -59,7 +58,7 @@ func Close() {
 func Run() {
 	files = analyzer.FinalFiles
 	overallInfo = analyzer.OverallInfo
-	files.Sort(*cfg.Printer.Sort)
+	files.Sort()
 	prepareData()
 	printConfig()
 	printFiles()
@@ -70,18 +69,18 @@ func Run() {
 	writeToYamlFile()
 }
 
-func createTextResultsFile(filename *string) *os.File {
+func createTextResultsFile() *os.File {
 	// open output file
-	f, err := os.Create(*filename)
+	f, err := os.Create(cfg.Printer.ToTextFile)
 	if err != nil {
 		panic(err)
 	}
 	return f
 }
 
-func createYamlResultsFile(filename *string) *os.File {
+func createYamlResultsFile() *os.File {
 	// open output file
-	f, err := os.Create(*filename)
+	f, err := os.Create(cfg.Printer.ToYamlFile)
 	if err != nil {
 		panic(err)
 	}
@@ -94,25 +93,25 @@ func PrintAbout() {
 }
 
 func printConfig() {
-	fmt.Fprintf(writerToText, es())
+	fmt.Fprint(writerToText, es())
 	fmt.Fprintln(writerToText, "Arguments:")
-	fmt.Fprintf(writerToText, "   %-25s %s%s", "path:", *cfg.Analyzer.Path, es())
-	fmt.Fprintf(writerToText, "   %-25s %s%s", "sizeCalculatingMethod:", *cfg.Analyzer.SizeCalculatingMethod, es())
-	units := *cfg.Printer.Units
+	fmt.Fprintf(writerToText, "   %-25s %s%s", "pathToScan:", cfg.Analyzer.Path, es())
+	units := cfg.Printer.Units
 	// if units == "" {
 	// 	units = "<dynamic>"
 	// }
-	fmt.Fprintf(writerToText, "   %-25s %d%s", "limit:", *cfg.Filter.Limit, es())
-	fmt.Fprintf(writerToText, "   %-25s %d%s", "depth:", *cfg.Filter.Depth, es())
-	fmt.Fprintf(writerToText, "   %-25s %s%s", "filterByObjectType:", *cfg.Filter.FilterByObjectType, es())
+	fmt.Fprintf(writerToText, "   %-25s %d%s", "limit:", cfg.Filter.Limit, es())
+	fmt.Fprintf(writerToText, "   %-25s %d%s", "depth:", cfg.Filter.Depth, es())
+	fmt.Fprintf(writerToText, "   %-25s %s%s", "filterByObjectType:", cfg.Filter.FilterByObjectType, es())
+	fmt.Fprintf(writerToText, "   %-25s %s%s", "sizeCalculatingMethod:", cfg.Analyzer.SizeCalculatingMethod, es())
 	//fmt.Printf("   %-10s %s%s", "sort:", *cfg.Printer.Sort, es())
-	toTextFile := *cfg.Printer.ToTextFile
+	toTextFile := cfg.Printer.ToTextFile
 	// if toTextFile == "" {
 	// 	toTextFile = "<no text file>"
 	// }
 	fmt.Fprintf(writerToText, "   %-25s %s%s", "units:", units, es())
 	fmt.Fprintf(writerToText, "   %-25s %s\n", "toTextFile:", toTextFile)
-	toYamlFile := *cfg.Printer.ToYamlFile
+	toYamlFile := cfg.Printer.ToYamlFile
 	// if toYamlFile == "" {
 	// 	toYamlFile = "<no yaml file>"
 	// }
@@ -120,7 +119,7 @@ func printConfig() {
 }
 
 func printFiles() {
-	fmt.Fprintf(writerToText, es())
+	fmt.Fprint(writerToText, es())
 	fmt.Fprintf(writerToText, "Results:%s", es())
 	maxlen := calculateMaxLenFilename()
 	var strfmt = "   %3d.| %-7s %-" + fmt.Sprintf("%d", maxlen+2) + "s | SIZE: %8.2f %-4s | DEPTH: %d %s"
@@ -135,7 +134,7 @@ func printFiles() {
 }
 
 func printOverall(overallInfo *analyzer.TOverallInfo) {
-	fmt.Fprintf(writerToText, es())
+	fmt.Fprint(writerToText, es())
 	fmt.Fprintf(writerToText, "Overall info:%s", es())
 	fmt.Fprintf(writerToText, "   Total time: %s%s", overallInfo.TotalTime, es())
 	fmt.Fprintf(writerToText, "   Total dirs: %d%s", overallInfo.TotalDirs, es())
@@ -147,7 +146,7 @@ func printOverall(overallInfo *analyzer.TOverallInfo) {
 }
 
 func printSystemReport() {
-	fmt.Fprintf(writerToText, es())
+	fmt.Fprint(writerToText, es())
 	fmt.Fprintf(writerToText, "System resources:%s", es())
 	var units = ""
 	mTotal, _ := getMemoryUsage()
@@ -168,21 +167,21 @@ func es() string {
 func prepareData() {
 	var c = 0
 	var isDir = true
-	if *cfg.Filter.FilterByObjectType == "files" {
+	if cfg.Filter.FilterByObjectType == "files" {
 		isDir = false
 	}
 
 	//are files & folders both we need (or not)
-	var isAll = *cfg.Filter.FilterByObjectType == "folders&files"
+	var isAll = cfg.Filter.FilterByObjectType == "folders&files"
 
 	for _, f := range *analyzer.FinalFiles {
-		if f.Depth <= *cfg.Filter.Depth && (f.IsDir == isDir || isAll) {
+		if f.Depth <= cfg.Filter.Depth && (f.IsDir == isDir || isAll) {
 			c++
 			//break if we up to defined limit
-			if isExceedLimit(c, cfg.Filter.Limit) {
+			if isExceedLimit(c, &cfg.Filter.Limit) {
 				break
 			}
-			f.FullPath = *cfg.Analyzer.Path + "\\" + f.RelativePath + f.Name
+			f.FullPath = cfg.Analyzer.Path + "\\" + f.RelativePath + f.Name
 			f.Number = c
 			*filesToPrint = append(*filesToPrint, f)
 		}
