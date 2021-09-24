@@ -87,34 +87,34 @@ You may define input parameters of diskusage by two ways:
 
 Example of USER MODE settings in the .env file:
 ```cmd
-SET pathToScan=D:\_docs
-SET depth=5
-SET limit=20
-SET units=Gb
-SET filterByObjectType=folders&files
-SET sizeCalculatingMethod=cumulative
-SET toTextFile=diskusage_out.txt
-SET toYamlFile=diskusage_out.yaml
+pathToScan=D:\_docs
+depth=5
+limit=20
+units=Gb
+filterByObjectType=folders&files
+sizeCalculatingMethod=cumulative
+toTextFile=diskusage_out.txt
+toYamlFile=diskusage_out.yaml
   ```
 
 where:
 ```cmd
-   SET pathToScan=D:\_docs
+   pathToScan=D:\_docs
 ``` 
 is a folder or disk name (required)
 
 ```cmd
-   SET depth=5
+   depth=5
 ```
 is depth of subfolders to analyze (optional)
 
 ```cmd
-   SET limit=20
+   limit=20
 ```
 is how much biggest folders will be printed in the results (optional)
 if you set -limit to 0 it means limitless (no one row be cuted from results). Be warned it might be a huge list of files!
 ```cmd
-   SET units=Gb
+   units=Gb
 ```
 you can choose unit style to representing folder sizes. It can be fixed or dynamic-scaled.
 
@@ -125,7 +125,7 @@ Fixed scale values: b, Kb, Mb, Gb, Tb, Pb.
 You can use "units" in case you want to compare sizes afterward (optional).
 
 ```cmd
-   SET filterByObjectType=folders&files
+   filterByObjectType=folders&files
 ```
 It is a filter to manage what kind of objects will be selected.
 
@@ -135,7 +135,7 @@ Possible values:
    - folders&files - (default) select both of them.
 
 ```cmd
-   SET sizeCalculatingMethod=cumulative
+   sizeCalculatingMethod=cumulative
 ```
 Possible values (optional):
    - cumulative - (default) sizes of subfolders will be included into size of the parent folder
@@ -151,13 +151,13 @@ and output limit = 2 then
 
 
 ```cmd
-   SET toTextFile=diskusage_out.txt
+   toTextFile=diskusage_out.txt
 ```
 
 File name to save results in human readable format. If value is empty file will not be created and you will see results in console window with prompt to exit at the end.
 
 ```cmd
-   SET toYamlFile=diskusage_out.yaml
+   toYamlFile=diskusage_out.yaml
 ```
 File name for saving results in YAML format for best compatibility with others programs.
 
