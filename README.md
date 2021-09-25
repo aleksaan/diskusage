@@ -4,7 +4,7 @@
 diskusage is an FANTASTIC SPEED utility to find out top largest directories on the disk.
 
 ## !!! 2021.09.24: Version 2.7.0 is now avaliable  !!!
-## Assignment input parameters as environment variables (rejection of using diskusage_config.yaml file) for better compatibility with an system level utilities
+## Assignment input parameters as environment variables (rejection of using diskusage_config.yaml file) for better compatibility with a system level utilities
 ## Renaming "path" parameter to "pathToScan" to avoid naming conflict with classic windows "PATH" system environment variable 
 
 ```cmd
