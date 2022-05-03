@@ -94,6 +94,7 @@ Results:
 * How you can see results are sorted by ```CLEAN SIZE``` (not included sizes of subdirectories). ```FULL SIZE``` is not sorted and has differents from ```CLEAN SIZE```.
 
 **Note about ```FULL SIZE``` and ```CLEAN SIZE```**
+   
 For example, if you have directories:
 - ```A (100Mb)\B (70Mb)\C (60Mb)```
 
