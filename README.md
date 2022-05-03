@@ -128,7 +128,7 @@ You can use "units" in case you want to compare sizes afterward (optional).
 ```cmd
    filterByObjectType=folders&files
 ```
-It is a filter to manage what kind of objects will be selected.
+It is a filter to manage what type of objects will be analyzed.
 
 Possible values:
    - files - select only files;

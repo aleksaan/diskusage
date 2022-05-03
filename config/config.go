@@ -1,88 +1,44 @@
 package config
 
 import (
+	"flag"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
-
-	"github.com/joho/godotenv"
 )
 
 var Cfg *Config
 
 func init() {
-	e := godotenv.Load() //Загрузить файл .env
-	if e != nil {
-		fmt.Print(e)
-	}
 	initDefaultsValues()
 	cfgInit()
 }
 
 func cfgInit() {
 	Cfg = &Config{}
-	Cfg.Analyzer.Path = getEnvAsStr("pathToScan", defaultPath)
+	pathToScan := flag.String("pathToScan", defaultPath, "Start point (path) for analysis (default value is current path)")
+	sizeCalculatingMethod := flag.String("sizeCalculatingMethod", defaultSizeCalculatingMethod, "Method of calculating sizes (plain | cumulative)")
+	depth := flag.Int("depth", defaultDepth, fmt.Sprintf("Depth of analysed levels of folder tree (0 - full depth, %d - default value)", defaultDepth))
+	filterByObjectType := flag.String("filterByObjectType", defaultFilterByObject, "Type of objects that will be analyzed (folders | files | folders&files)")
+	limit := flag.Int("limit", defaultLimit, fmt.Sprintf("Number of biggest folders/files will be outputed (0 - all folders, %d - default value)", defaultLimit))
+	units := flag.String("units", defaultUnits, "Type of objects that will be analyzed (folders | files | folders&files)")
 
-	Cfg.Analyzer.SizeCalculatingMethod = getEnvAsStr("sizeCalculatingMethod", defaultSizeCalculatingMethod)
-	if Cfg.Analyzer.SizeCalculatingMethod != "plain" && Cfg.Analyzer.SizeCalculatingMethod != "cumulative" {
-		Cfg.Analyzer.SizeCalculatingMethod = defaultSizeCalculatingMethod
+	flag.Parse()
+
+	Cfg.Path = *pathToScan
+	Cfg.SizeCalculatingMethod = *sizeCalculatingMethod
+	Cfg.Depth = *depth
+	Cfg.FilterByObjectType = *filterByObjectType
+	Cfg.Limit = *limit
+	Cfg.Units = *units
+
+	if Cfg.SizeCalculatingMethod != "plain" && Cfg.SizeCalculatingMethod != "cumulative" {
+		Cfg.SizeCalculatingMethod = defaultSizeCalculatingMethod
 	}
 
-	Cfg.Filter.Depth = getEnvAsInt("depth", defaultDepth)
-
-	Cfg.Filter.FilterByObjectType = getEnvAsStr("filterByObjectType", defaultFilterByObject)
-	if Cfg.Filter.FilterByObjectType != "folders" && Cfg.Filter.FilterByObjectType != "files" && Cfg.Filter.FilterByObjectType != "folders&files" {
-		Cfg.Filter.FilterByObjectType = defaultFilterByObject
+	if Cfg.FilterByObjectType != "folders" && Cfg.FilterByObjectType != "files" && Cfg.FilterByObjectType != "folders&files" {
+		Cfg.FilterByObjectType = defaultFilterByObject
 	}
 
-	Cfg.Filter.Limit = getEnvAsInt("limit", defaultLimit)
+	Cfg.ToTextFile = defaultToTextFile
 
-	Cfg.Printer.Units = getEnvAsStr("units", defaultUnits)
-
-	Cfg.Printer.ToTextFile = getEnvAsStr("toTextFile", defaultToTextFile)
-
-	Cfg.Printer.ToYamlFile = getEnvAsStr("toYamlFile", defaultToYamlFile)
-
-	Cfg.Printer.Sort = defaultSort
-}
-
-// Simple helper function to read an environment or return a default value
-func getEnvAsStr(key string, defaultVal string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-
-	return defaultVal
-}
-
-// Simple helper function to read an environment variable into integer or return a default value
-func getEnvAsInt(key string, defaultVal int) int {
-	if value, exists := os.LookupEnv(key); exists {
-		if valueInt, err := strconv.Atoi(value); err == nil {
-			return valueInt
-		}
-	}
-	return defaultVal
-}
-
-// Helper to read an environment variable into a bool or return default value
-func getEnvAsBool(key string, defaultVal bool) bool {
-	if value, exists := os.LookupEnv(key); exists {
-		if valueBool, err := strconv.ParseBool(value); err == nil {
-			return valueBool
-		}
-	}
-	return defaultVal
-}
-
-// Helper to read an environment variable into a string slice or return default value
-func getEnvAsSlice(key string, defaultVal []string, sep string) []string {
-	if value, exists := os.LookupEnv(key); exists && value != "" {
-
-		valueSlice := strings.Split(value, sep)
-		return valueSlice
-	}
-
-	return defaultVal
+	Cfg.Sort = defaultSort
 }

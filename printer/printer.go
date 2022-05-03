@@ -1,189 +1,45 @@
 package printer
 
 import (
+	"encoding/json"
 	"fmt"
-	"io"
-	"log"
-	"math"
-	"os"
-	"runtime"
-	"unicode/utf8"
 
 	"github.com/aleksaan/diskusage/analyzer"
 	"github.com/aleksaan/diskusage/config"
-	filespkg "github.com/aleksaan/diskusage/files"
-	"gopkg.in/yaml.v3"
+	"github.com/aleksaan/diskusage/models"
 )
 
-const (
-	AppTitle   = "https://github.com/aleksaan/diskusage"
-	AppVersion = "2.7.0"
-	AppAuthor  = "Alexander Anufriev"
-	AppYear    = "2021"
-)
-
-var writerToText io.Writer = os.Stdout
-var writerToYaml io.Writer = nil
-var resultsTextFile *os.File
-var resultsYamlFile *os.File
-var cfg *config.Config
-var files *filespkg.TFiles
-var overallInfo *analyzer.TOverallInfo
-var filesToPrint = &filespkg.TFiles{}
-
-//Load -
-func Load() {
-	cfg = config.Cfg
-	if cfg.Printer.ToTextFile != "" {
-		resultsTextFile = createTextResultsFile()
-		writerToText = resultsTextFile
-		//os.Stdout = f
-	}
-
-	if cfg.Printer.ToYamlFile != "" {
-		resultsYamlFile = createYamlResultsFile()
-		writerToYaml = resultsYamlFile
-		//os.Stdout = f
-	}
-
-}
-
-//Close -
-func Close() {
-	resultsTextFile.Close()
-	resultsYamlFile.Close()
-}
+var files = &models.TFiles{}
 
 //Run - run print process
 func Run() {
 	files = analyzer.FinalFiles
-	overallInfo = analyzer.OverallInfo
 	files.Sort()
 	prepareData()
-	printConfig()
-	printFiles()
-	//overallInfo.totalTime = totalTime
-	//prepareOverallInfo(files, totalTime)
-	printOverall(overallInfo)
-	printSystemReport()
-	writeToYamlFile()
-}
-
-func createTextResultsFile() *os.File {
-	// open output file
-	f, err := os.Create(cfg.Printer.ToTextFile)
-	if err != nil {
-		panic(err)
-	}
-	return f
-}
-
-func createYamlResultsFile() *os.File {
-	// open output file
-	f, err := os.Create(cfg.Printer.ToYamlFile)
-	if err != nil {
-		panic(err)
-	}
-	return f
-}
-
-//PrintAbout -
-func PrintAbout() {
-	fmt.Fprintf(writerToText, "About:%s   %s, %s, %s, %s%s", es(), AppTitle, AppVersion, AppAuthor, AppYear, es())
-}
-
-func printConfig() {
-	fmt.Fprint(writerToText, es())
-	fmt.Fprintln(writerToText, "Arguments:")
-	fmt.Fprintf(writerToText, "   %-25s %s%s", "pathToScan:", cfg.Analyzer.Path, es())
-	units := cfg.Printer.Units
-	// if units == "" {
-	// 	units = "<dynamic>"
-	// }
-	fmt.Fprintf(writerToText, "   %-25s %d%s", "limit:", cfg.Filter.Limit, es())
-	fmt.Fprintf(writerToText, "   %-25s %d%s", "depth:", cfg.Filter.Depth, es())
-	fmt.Fprintf(writerToText, "   %-25s %s%s", "filterByObjectType:", cfg.Filter.FilterByObjectType, es())
-	fmt.Fprintf(writerToText, "   %-25s %s%s", "sizeCalculatingMethod:", cfg.Analyzer.SizeCalculatingMethod, es())
-	//fmt.Printf("   %-10s %s%s", "sort:", *cfg.Printer.Sort, es())
-	toTextFile := cfg.Printer.ToTextFile
-	// if toTextFile == "" {
-	// 	toTextFile = "<no text file>"
-	// }
-	fmt.Fprintf(writerToText, "   %-25s %s%s", "units:", units, es())
-	fmt.Fprintf(writerToText, "   %-25s %s\n", "toTextFile:", toTextFile)
-	toYamlFile := cfg.Printer.ToYamlFile
-	// if toYamlFile == "" {
-	// 	toYamlFile = "<no yaml file>"
-	// }
-	fmt.Fprintf(writerToText, "   %-25s %s\n", "toYamlFile:", toYamlFile)
-}
-
-func printFiles() {
-	fmt.Fprint(writerToText, es())
-	fmt.Fprintf(writerToText, "Results:%s", es())
-	maxlen := calculateMaxLenFilename()
-	var strfmt = "   %3d.| %-7s %-" + fmt.Sprintf("%d", maxlen+2) + "s | SIZE: %8.2f %-4s | DEPTH: %d %s"
-	var dirorfile = "PATH:"
-	for i, fi := range *filesToPrint {
-		dirorfile = "PATH:"
-		if !fi.IsDir {
-			dirorfile = "PATH:"
-		}
-		fmt.Fprintf(writerToText, strfmt, i+1, dirorfile, fi.RelativePath+fi.Name, fi.AdaptedSize, fi.AdaptedUnit, fi.Depth, es())
-	}
-}
-
-func printOverall(overallInfo *analyzer.TOverallInfo) {
-	fmt.Fprint(writerToText, es())
-	fmt.Fprintf(writerToText, "Overall info:%s", es())
-	fmt.Fprintf(writerToText, "   Total time: %s%s", overallInfo.TotalTime, es())
-	fmt.Fprintf(writerToText, "   Total dirs: %d%s", overallInfo.TotalDirs, es())
-	fmt.Fprintf(writerToText, "   Total files: %d%s", overallInfo.TotalFiles, es())
-	fmt.Fprintf(writerToText, "   Total links: %d%s", overallInfo.TotalLinks, es())
-	fmt.Fprintf(writerToText, "   Total size: %.2f %s%s", overallInfo.TotalAdaptedSize, overallInfo.TotalAdaptedUnit, es())
-	fmt.Fprintf(writerToText, "   Total size (bytes): %d%s", overallInfo.TotalSize, es())
-	fmt.Fprintf(writerToText, "   Unaccessible dirs & files: %d%s", overallInfo.TotalNotAccessibleFiles, es())
-}
-
-func printSystemReport() {
-	fmt.Fprint(writerToText, es())
-	fmt.Fprintf(writerToText, "System resources:%s", es())
-	var units = ""
-	mTotal, _ := getMemoryUsage()
-	adaptedSize, adaptedUnits := filespkg.GetAdaptedSize(int64(mTotal), &units)
-	fmt.Fprintf(writerToText, "   Total used memory*: %.2f %s%s", adaptedSize, adaptedUnits, es())
-
-}
-
-func es() string {
-	switch runtime.GOOS {
-	case "windows":
-		return "\r\n"
-	default:
-		return "\n"
-	}
+	writeResultToConsole()
 }
 
 func prepareData() {
 	var c = 0
 	var isDir = true
-	if cfg.Filter.FilterByObjectType == "files" {
+	if config.Cfg.FilterByObjectType == "files" {
 		isDir = false
 	}
 
 	//are files & folders both we need (or not)
-	var isAll = cfg.Filter.FilterByObjectType == "folders&files"
+	var isAll = config.Cfg.FilterByObjectType == "folders&files"
 
 	for _, f := range *analyzer.FinalFiles {
-		if f.Depth <= cfg.Filter.Depth && (f.IsDir == isDir || isAll) {
+		if f.Depth <= config.Cfg.Depth && (f.IsDir == isDir || isAll) {
 			c++
 			//break if we up to defined limit
-			if isExceedLimit(c, &cfg.Filter.Limit) {
+			if isExceedLimit(c, &config.Cfg.Limit) {
 				break
 			}
-			f.FullPath = cfg.Analyzer.Path + "\\" + f.RelativePath + f.Name
+			f.FullPath = config.Cfg.Path + "\\" + f.RelativePath + f.Name
 			f.Number = c
-			*filesToPrint = append(*filesToPrint, f)
+			//*filesToPrint = append(*filesToPrint, f)
+			analyzer.Result.Files = append(analyzer.Result.Files, f)
 		}
 	}
 }
@@ -192,34 +48,11 @@ func isExceedLimit(checkedValue int, limit *int) bool {
 	return checkedValue > *limit && *limit != 0
 }
 
-//calculateMaxLenFilename -
-func calculateMaxLenFilename() int {
-	var maxlen = 0
-	for _, f := range *filesToPrint {
-		strlen := utf8.RuneCountInString(f.RelativePath) + 1 + utf8.RuneCountInString(f.Name)
-		maxlen = int(math.Max(float64(maxlen), float64(strlen)))
+func writeResultToConsole() {
+	b, err := json.Marshal(analyzer.Result)
+	if err != nil {
+		fmt.Printf("Error: %s", err)
+		return
 	}
-	return maxlen
-}
-
-// PrintMemUsage outputs the current, total and OS memory being used. As well as the number
-// of garage collection cycles completed.
-func getMemoryUsage() (uint64, uint64) {
-	var m runtime.MemStats
-	runtime.ReadMemStats(&m)
-	return m.Sys, m.Alloc
-}
-
-func writeToYamlFile() error {
-	var err error
-	if writerToYaml != nil {
-		d, err := yaml.Marshal(filesToPrint)
-
-		if err != nil {
-			log.Fatalf("error: %v", err)
-		}
-
-		fmt.Fprintf(writerToYaml, "%s", string(d))
-	}
-	return err
+	fmt.Println(string(b))
 }

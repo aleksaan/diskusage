@@ -6,30 +6,39 @@ import (
 	"time"
 
 	"github.com/aleksaan/diskusage/config"
-	"github.com/aleksaan/diskusage/console"
 	"github.com/aleksaan/diskusage/files"
+	"github.com/aleksaan/diskusage/models"
 )
 
-var sortValues = map[string]float64{
-	"name_asc":  1,
-	"size_desc": 2,
-}
+const (
+	AppTitle   = "https://github.com/aleksaan/diskusage"
+	AppVersion = "2.8.0"
+	AppAuthor  = "Alexander Anufriev"
+	AppYear    = "2022"
+)
 
-//Files -
-var Files = &files.TFiles{}
+var Result = &models.TResult{}
 
 //FinalFiles -
-var FinalFiles = &files.TFiles{}
+var FinalFiles = &models.TFiles{}
 var cfg *config.Config
 var basePath string
-var c = make(chan int)
+
+//var c = make(chan int)
 var countFiles int
 
 //Run -
 func Run() {
+	Result.About = models.TAbout{
+		AppTitle:   AppTitle,
+		AppVersion: AppVersion,
+		AppAuthor:  AppAuthor,
+		AppYear:    AppYear,
+	}
+
 	startProcess()
 	cfg = config.Cfg
-	basePath = files.AddPathSeparator(cfg.Analyzer.Path)
+	basePath = files.AddPathSeparator(cfg.Path)
 	scanDir(basePath, 1)
 	calcAdaptedSizeInOverallInfo()
 	endProcess()
@@ -54,7 +63,7 @@ func scanDir(path string, depth int) int64 {
 		}
 
 		setAdaptedFileSize(file)
-		if cfg.Analyzer.SizeCalculatingMethod == "cumulative" || (cfg.Analyzer.SizeCalculatingMethod == "plain" && !file.IsDir) {
+		if cfg.SizeCalculatingMethod == "cumulative" || (cfg.SizeCalculatingMethod == "plain" && !file.IsDir) {
 			dirsize += file.Size
 		}
 
@@ -63,9 +72,9 @@ func scanDir(path string, depth int) int64 {
 
 		//increase count of processed files and folders and out it to console
 		countFiles++
-		c <- countFiles
+		//c <- countFiles
 
-		if depth <= cfg.Filter.Depth {
+		if depth <= cfg.Depth {
 			*FinalFiles = append(*FinalFiles, *file)
 		}
 	}
@@ -73,15 +82,15 @@ func scanDir(path string, depth int) int64 {
 	return dirsize
 }
 
-func setAdaptedFileSize(file *files.TFile) {
-	file.AdaptedSize, file.AdaptedUnit = files.GetAdaptedSize(file.Size, &cfg.Printer.Units)
+func setAdaptedFileSize(file *models.TFile) {
+	file.AdaptedSize, file.AdaptedUnit = files.GetAdaptedSize(file.Size, &cfg.Units)
 }
 
 //-----------------------------------------------------------------------------------------
 
 //ScanFile - scan dir/file parameters
-func scanFile(path string, name string, depth int) *files.TFile {
-	f := &files.TFile{}
+func scanFile(path string, name string, depth int) *models.TFile {
+	f := &models.TFile{}
 	f.Name = name
 	f.RelativePath = path[len(basePath):]
 	f.Depth = depth
@@ -114,11 +123,11 @@ func scanFile(path string, name string, depth int) *files.TFile {
 
 func startProcess() {
 	startTime = time.Now()
-	go console.PrintCountFilesToConsole(c)
+	//go console.PrintCountFilesToConsole(c)
 }
 
 func endProcess() {
 	t := time.Now()
-	OverallInfo.TotalTime = t.Sub(startTime)
-	close(c)
+	Result.Overall.TotalTime = t.Sub(startTime)
+	//close(c)
 }

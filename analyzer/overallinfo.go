@@ -4,48 +4,34 @@ import (
 	"time"
 
 	"github.com/aleksaan/diskusage/files"
+	"github.com/aleksaan/diskusage/models"
 )
-
-//TOverallInfo -
-type TOverallInfo struct {
-	TotalTime               time.Duration
-	TotalDirs               int64
-	TotalFiles              int64
-	TotalLinks              int64
-	TotalSize               int64
-	TotalAdaptedSize        float64
-	TotalAdaptedUnit        string
-	TotalNotAccessibleFiles int64
-}
 
 var startTime time.Time
 
-//OverallInfo - summary information about entire proccess
-var OverallInfo = &TOverallInfo{}
-
-func addToOverallInfo(file *files.TFile) {
+func addToOverallInfo(file *models.TFile) {
 
 	if file.Depth == 1 {
-		OverallInfo.TotalSize += file.Size
+		Result.Overall.TotalSize += file.Size
 	}
 
 	if file.IsNotAccessible {
-		OverallInfo.TotalNotAccessibleFiles++
+		Result.Overall.TotalNotAccessibleFiles++
 	}
 
 	if file.IsDir {
-		OverallInfo.TotalDirs++
+		Result.Overall.TotalDirs++
 	} else {
-		OverallInfo.TotalFiles++
+		Result.Overall.TotalFiles++
 	}
 
 	if file.IsLink {
-		OverallInfo.TotalLinks++
+		Result.Overall.TotalLinks++
 	}
 
 }
 
 func calcAdaptedSizeInOverallInfo() {
 	x := ""
-	OverallInfo.TotalAdaptedSize, OverallInfo.TotalAdaptedUnit = files.GetAdaptedSize(OverallInfo.TotalSize, &x)
+	Result.Overall.TotalAdaptedSize, Result.Overall.TotalAdaptedUnit = files.GetAdaptedSize(Result.Overall.TotalSize, &x)
 }
