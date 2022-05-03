@@ -1,165 +1,99 @@
- [![cover.run](https://cover.run/go/github.com/aleksaan/diskusage.svg?style=flat&tag=golang-1.10)](https://cover.run/go?tag=golang-1.10&repo=github.com%2Faleksaan%2Fdiskusage) 
- 
-# diskusage 
-diskusage is an FANTASTIC SPEED utility to find out top largest directories on the disk.
+# DUCK - (D)isk(U)sage(CK) 
+Duck is a very fast utility to find top<N> of largest directories or files
 
-## !!! 2021.09.24: Version 2.7.0 is now avaliable  !!!
-## Assignment input parameters as environment variables (rejection of using diskusage_config.yaml file) for better compatibility with a system level utilities
-## Renaming "path" parameter to "pathToScan" to avoid naming conflict with classic windows "PATH" system environment variable 
 
-```cmd
-About:
-   github/aleksaan/diskusage, 2.7.0, Alexander Anufriev, 2021
-
-Arguments:
-   pathToScan:            d:\_appl\go\src\
-   limit:                 20
-   units:                 Gb
-   depth:                 5
-   filterByObjectType:    folders&files
-   sizeCalculatingMethod: cumulative
-   toTextFile:            diskusage_out.txt
-   toYamlFile:            diskusage_out.yaml
-
-Results:
-     1.| PATH:   github.com                                | SIZE:   316.65 Mb   | DEPTH: 1 
-     2.| PATH:   github.com\aws                            | SIZE:   140.36 Mb   | DEPTH: 2 
-     3.| PATH:   github.com\aws\aws-sdk-go                 | SIZE:   140.36 Mb   | DEPTH: 3 
-     4.| PATH:   golang.org                                | SIZE:    73.65 Mb   | DEPTH: 1 
-     5.| PATH:   golang.org\x                              | SIZE:    73.65 Mb   | DEPTH: 2 
-     6.| PATH:   github.com\aws\aws-sdk-go\.git            | SIZE:    66.13 Mb   | DEPTH: 4 
-     7.| PATH:   github.com\aws\aws-sdk-go\.git\objects    | SIZE:    65.83 Mb   | DEPTH: 5 
-     8.| PATH:   github.com\aleksaan                       | SIZE:    63.05 Mb   | DEPTH: 2 
-     9.| PATH:   github.com\aleksaan\diskusage             | SIZE:    60.76 Mb   | DEPTH: 3 
-    10.| PATH:   github.com\aws\aws-sdk-go\service         | SIZE:    48.31 Mb   | DEPTH: 4 
-    11.| PATH:   golang.org\x\tools                        | SIZE:    32.83 Mb   | DEPTH: 3 
-    12.| PATH:   github.com\derekparker                    | SIZE:    32.60 Mb   | DEPTH: 2 
-    13.| PATH:   github.com\derekparker\delve              | SIZE:    32.60 Mb   | DEPTH: 3 
-    14.| PATH:   github.com\aleksaan\diskusage\dist        | SIZE:    28.30 Mb   | DEPTH: 4 
-    15.| PATH:   golang.org\x\sys                          | SIZE:    23.44 Mb   | DEPTH: 3 
-    16.| PATH:   golang.org\x\tools\.git                   | SIZE:    23.07 Mb   | DEPTH: 4 
-    17.| PATH:   golang.org\x\tools\.git\objects           | SIZE:    22.94 Mb   | DEPTH: 5 
-    18.| PATH:   github.com\hajimehoshi                    | SIZE:    22.04 Mb   | DEPTH: 2 
-    19.| PATH:   github.com\aws\aws-sdk-go\models          | SIZE:    21.92 Mb   | DEPTH: 4 
-    20.| PATH:   github.com\hajimehoshi\go-mp3             | SIZE:    21.81 Mb   | DEPTH: 3 
-
-Overall info:
-   Total time: 6.3016798s
-   Total dirs: 3674
-   Total files: 9646
-   Total links: 0
-   Total size: 414.98 Mb
-   Total size (bytes): 435138161
-   Unaccessible dirs & files: 0
-
-System resources:
-   Total used memory: 257.12 Mb
-```
 ## Features
-- A primitive tool for getting folder(s) sizes
-- Fantastic speed
-- Comfortable setup (yaml config)
-- Supports both folders and disks as arguments
-- Recursive passes through subfolders
-- Calculates size of each folder
-- Analyzes on defined depth of subfolders
-- Sets limit how much folders will be printed in a results
-- Fast
-- Saves results to csv-file
-
-## Main cons
-- No any dummies protection (also pros)
-- No any intelligents features (also pros)
+- Gathers directories/files sizes
+- Finds top of largest directories/files
+- Very fast
+- JSON compatible (for a service use)
+- Human readable mode of output (for a console use)
+- More accuracy than FAR manager
 
 ## Releases
-
 Releases available as single executable files – just [download latest release](https://github.com/aleksaan/diskusage/releases) for your platform, unpack and run.
 
-## Simple usage (Windows example)
+## How it works
+Since version **2.8.0** utility has a two parts:
+- ```Duck_a``` duck says **analyse**
+- ```Duck_f``` duck says **find**
 
-Put ```diskusage.exe``` into analyzed directory, run it and get results in ```diskusage_out.txt```
-It will be scanning current folder with a default settings
+```Duck_a``` gathers sizes of all directories and files under specific path.
+```Duck_f``` takes results of ```Duck_a``` and looking for top of largest objects among them.
 
-## Advanced usage (Windows example)
+You can scanning 1Tb disk only once by ```Duck_a``` (*some minutes*) and then many times looking for largest objects by ```Duck_f``` with different parameters (*some milliseconds*).
 
-You may define input parameters of diskusage by two ways:
-1. in a cmd|bash session define environment variables (like SET pathToScan=C:\) and run diskusage.exe (CLI MODE)
-2. or create .env file near diskusage.exe, fill it up by needed environment variables and run diskusage.exe (USER MODE)
+## ```Duck_a``` utility
 
-Example of USER MODE settings in the .env file:
-```cmd
-pathToScan=D:\_docs
-depth=5
-limit=20
-units=Gb
-filterByObjectType=folders&files
-sizeCalculatingMethod=cumulative
-toTextFile=diskusage_out.txt
-toYamlFile=diskusage_out.yaml
+```Duck_a``` calculates sizes of directories or files. 
+
+**Parameters**:
+- ```-path=c:\temp``` - starting point to analyse
+- ```-depth=2``` - depth of analysis (how deep does program come down under directories tree)
+- ```-hr``` - human readable results representation (text format), if omit that means JSON format
+
+By default program outputs results to ```console```.
+
+**Example a.1**. Scanning without limit by depth from c:\temp and saving results in JSON format to ```results_a.txt```
+```duck_a.exe -depth=0 -path c:\temp\ > .\results_a.txt```
+
+**Example a.2**. Scanning with limit by depth=2 from c:\temp and saving results in human readable format to ```console```
+```duck_a.exe -depth=2 -path c:\temp\ -hr``` 
+
+## ```Duck_f``` utility
+
+```Duck_f``` takes results of ```Duck_a```, iterates over them and finds top largest directories or files
+
+**Parameters**:
+- ```-top=20``` - how much directories or files will be founded
+- ```-depth=2``` - depth of analysis inside of results ```Duck_a```
+- ```-filter=df``` - filter by objects types (```f``` - files only, ```d``` - directories only, ```df``` - both of them)
+- ```-size=c``` - method of calculating directories size (```c``` clean size (excludes sizes of subdirectories) or ```f``` - full size (inludes subdirectories))
+- ```-path=abc``` - not the same what this parameters means in ```duck_a```. It's a filter by part of the path (will be outputed all rows which path includes this one)
+- ```-hr``` - human readable results representation (text format), if omit that will be JSON format
+
+By default program outputs results to ```console```.
+
+**Example f.1**. Searching top-10 largest directories or files on depth 2 and outputing results as JSON to file
+```duck_f.exe -depth=2 -size=c -top=10 -filter=df < .\results_a.txt > .\stdout_f.txt```
+
+**Example f.2**. Searching top-12 largest directories or files on depth 3 and outputing results in human readable format to ```console```
+```duck_f.exe -depth=3 -size=c -top=12 -filter=d -hr < .\results_a.txt```
+
+**Example f.3**. Like ib ```Example f.2``` but with filtering by path of file (for example, print only dir or files contains `.git` in their path & names)
+```duck_f.exe -depth=2 -size=c -top=12 -filter=d -path=.git -hr < .\results_a.txt```
+
+**So it is results of Example f.3**
+```-------------------
+Arguments:
+   filter:    d
+   depth:     3
+   top:       12
+   hr:        true
+   size:      c
+-------------------
+Results:
+     1.| PATH:   diskusage\.git\hooks     | FULL SIZE:    22.89 Kb   | CLEAN SIZE:    22.89 Kb   | DEPTH: 3
+     2.| PATH:   statusek\.git\hooks      | FULL SIZE:    22.89 Kb   | CLEAN SIZE:    22.89 Kb   | DEPTH: 3
+     3.| PATH:   statusek\.git            | FULL SIZE:   114.22 Mb   | CLEAN SIZE:     5.22 Kb   | DEPTH: 2
+     4.| PATH:   diskusage\.git           | FULL SIZE:    22.67 Mb   | CLEAN SIZE:     5.08 Kb   | DEPTH: 2
+     5.| PATH:   statusek\.git\logs       | FULL SIZE:     5.30 Kb   | CLEAN SIZE:     2.17 Kb   | DEPTH: 3
+     6.| PATH:   diskusage\.git\logs      | FULL SIZE:     1.79 Kb   | CLEAN SIZE:   741.00 b    | DEPTH: 3
+     7.| PATH:   diskusage\.git\info      | FULL SIZE:   240.00 b    | CLEAN SIZE:   240.00 b    | DEPTH: 3
+     8.| PATH:   statusek\.git\info       | FULL SIZE:   240.00 b    | CLEAN SIZE:   240.00 b    | DEPTH: 3
+     9.| PATH:   diskusage\.git\objects   | FULL SIZE:    22.64 Mb   | CLEAN SIZE:     0.00 b    | DEPTH: 3
+    10.| PATH:   diskusage\.git\refs      | FULL SIZE:   155.00 b    | CLEAN SIZE:     0.00 b    | DEPTH: 3
+    11.| PATH:   statusek\.git\objects    | FULL SIZE:   114.19 Mb   | CLEAN SIZE:     0.00 b    | DEPTH: 3
+    12.| PATH:   statusek\.git\refs       | FULL SIZE:   196.00 b    | CLEAN SIZE:     0.00 b    | DEPTH: 3
   ```
+* How you can see results are sorted by ```CLEAN SIZE``` (not included sizes of subdirectories). ```FULL SIZE``` is not sorted and has differents from ```CLEAN SIZE```.
 
-where:
-```cmd
-   pathToScan=D:\_docs
-``` 
-is a folder or disk name (required)
+**Note about ```FULL SIZE``` and ```CLEAN SIZE```**
+For example, if you have directories:
+- ```A (100Mb)\B (70Mb)\C (60Mb)```
 
-```cmd
-   depth=5
-```
-is depth of subfolders to analyze (optional)
+then ```CLEAN SIZE``` of this dirs will be:
+- ```A``` - ```30Mb``` (exclude size of ```B```)
+- ```B``` - ```10Mb``` (exclude size of ```C```)
+- ```C``` - ```60Mb``` (the same as ```FULL SIZE``` because no any subdirs inside)
 
-```cmd
-   limit=20
-```
-is how much biggest folders will be printed in the results (optional)
-if you set -limit to 0 it means limitless (no one row be cuted from results). Be warned it might be a huge list of files!
-```cmd
-   units=Gb
-```
-you can choose unit style to representing folder sizes. It can be fixed or dynamic-scaled.
-
-If you omit 'units' it means dynamic-scaled units style.
-
-Fixed scale values: b, Kb, Mb, Gb, Tb, Pb.
-
-You can use "units" in case you want to compare sizes afterward (optional).
-
-```cmd
-   filterByObjectType=folders&files
-```
-It is a filter to manage what type of objects will be analyzed.
-
-Possible values:
-   - files - select only files;
-   - folders - select only folders;
-   - folders&files - (default) select both of them.
-
-```cmd
-   sizeCalculatingMethod=cumulative
-```
-Possible values (optional):
-   - cumulative - (default) sizes of subfolders will be included into size of the parent folder
-   - plain - size of subfolders will not be included into size of the parent folder
-
-For example, if your directory tree seems like that:
-```cmd
-A(100Mb)\B(90Mb)\C(70Mb)
-```
-and output limit = 2 then
-* if sizeCalculatingMethod=cumulative then you get A(100Mb) and B(90Mb) as largest (by syze with nested subfolders)
-* if sizeCalculatingMethod=plain then you get B(20Mb) and C(70Mb) as largest (by size without nested subfolders)
-
-
-```cmd
-   toTextFile=diskusage_out.txt
-```
-
-File name to save results in human readable format. If value is empty file will not be created and you will see results in console window with prompt to exit at the end.
-
-```cmd
-   toYamlFile=diskusage_out.yaml
-```
-File name for saving results in YAML format for best compatibility with others programs.
-
-Run ```diskusage.exe```

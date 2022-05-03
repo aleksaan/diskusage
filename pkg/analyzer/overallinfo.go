@@ -3,17 +3,16 @@ package analyzer
 import (
 	"time"
 
-	"github.com/aleksaan/diskusage/files"
-	"github.com/aleksaan/diskusage/models"
+	"github.com/aleksaan/diskusage/pkg/models"
 )
 
 var startTime time.Time
 
 func addToOverallInfo(file *models.TFile) {
 
-	if file.Depth == 1 {
-		Result.Overall.TotalSize += file.Size
-	}
+	// if file.Depth == 1 {
+	// 	Result.Overall.TotalSize += file.Size
+	// }
 
 	if file.IsNotAccessible {
 		Result.Overall.TotalNotAccessibleFiles++
@@ -31,7 +30,7 @@ func addToOverallInfo(file *models.TFile) {
 
 }
 
-func calcAdaptedSizeInOverallInfo() {
-	x := ""
-	Result.Overall.TotalAdaptedSize, Result.Overall.TotalAdaptedUnit = files.GetAdaptedSize(Result.Overall.TotalSize, &x)
-}
+// func calcAdaptedSizeInOverallInfo() {
+// 	x := ""
+// 	Result.Overall.TotalAdaptedSize, Result.Overall.TotalAdaptedUnit = files.GetAdaptedSize(Result.Overall.TotalSize, &x)
+// }

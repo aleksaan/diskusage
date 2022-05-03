@@ -5,9 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/aleksaan/diskusage/config"
-	"github.com/aleksaan/diskusage/files"
-	"github.com/aleksaan/diskusage/models"
+	"github.com/aleksaan/diskusage/pkg/files"
+	"github.com/aleksaan/diskusage/pkg/models"
 )
 
 const (
@@ -17,18 +16,16 @@ const (
 	AppYear    = "2022"
 )
 
-var Result = &models.TResult{}
+var Result = &models.TAnalyserResult{}
 
 //FinalFiles -
 var FinalFiles = &models.TFiles{}
-var cfg *config.Config
-var basePath string
 
 //var c = make(chan int)
 var countFiles int
 
-//Run -
-func Run() {
+//Start -
+func Start() {
 	Result.About = models.TAbout{
 		AppTitle:   AppTitle,
 		AppVersion: AppVersion,
@@ -36,22 +33,26 @@ func Run() {
 		AppYear:    AppYear,
 	}
 
+	Result.Config = *cfg
+
 	startProcess()
-	cfg = config.Cfg
-	basePath = files.AddPathSeparator(cfg.Path)
-	scanDir(basePath, 1)
-	calcAdaptedSizeInOverallInfo()
+	scanDir(files.AddPathSeparator(cfg.Path), 1)
+	if cfg.Hr {
+		WriteHumanReadableToConsole()
+	} else {
+		WriteJSONToConsole()
+	}
 	endProcess()
 }
 
 //-----------------------------------------------------------------------------------------
 
 //ScanDir - scan directory and return its size
-func scanDir(path string, depth int) int64 {
+func scanDir(path string, depth uint) (int64, int64) {
 	//read content of folder
 	osfiles, _ := ioutil.ReadDir(path)
 
-	var dirsize int64
+	var dirSize, dirSizeNoSF int64
 
 	//calc total size throught folder content
 	for _, osfile := range osfiles {
@@ -59,44 +60,43 @@ func scanDir(path string, depth int) int64 {
 		file := scanFile(path, osfile.Name(), depth)
 		if file.IsDir {
 			newpath := files.AddPathSeparator(path + osfile.Name())
-			file.Size = scanDir(newpath, depth+1)
+			file.SizeSubFoldersExcludes, file.SizeSubFoldersIncludes = scanDir(newpath, depth+1)
 		}
 
-		setAdaptedFileSize(file)
-		if cfg.SizeCalculatingMethod == "cumulative" || (cfg.SizeCalculatingMethod == "plain" && !file.IsDir) {
-			dirsize += file.Size
+		dirSize += file.SizeSubFoldersIncludes
+		if !file.IsDir {
+			dirSizeNoSF += file.SizeSubFoldersExcludes
 		}
 
-		//*Files = append(*Files, *file)
 		addToOverallInfo(file)
 
 		//increase count of processed files and folders and out it to console
 		countFiles++
-		//c <- countFiles
 
-		if depth <= cfg.Depth {
-			*FinalFiles = append(*FinalFiles, *file)
+		if depth <= cfg.Depth || cfg.Depth <= 0 {
+			Result.Files = append(Result.Files, *file)
 		}
 	}
 
-	return dirsize
+	return dirSizeNoSF, dirSize
 }
 
-func setAdaptedFileSize(file *models.TFile) {
-	file.AdaptedSize, file.AdaptedUnit = files.GetAdaptedSize(file.Size, &cfg.Units)
-}
+// func setAdaptedFileSize(file *models.TFile) {
+// 	file.AdaptedSize, file.AdaptedUnit = files.GetAdaptedSize(file.Size, &cfg.Units)
+// }
 
 //-----------------------------------------------------------------------------------------
 
 //ScanFile - scan dir/file parameters
-func scanFile(path string, name string, depth int) *models.TFile {
+func scanFile(path string, name string, depth uint) *models.TFile {
 	f := &models.TFile{}
-	f.Name = name
-	f.RelativePath = path[len(basePath):]
+	//f.Name = name
+	f.RelativePath = path[len(cfg.Path):] + name
 	f.Depth = depth
 
 	//if file or folder is not accessible then return nil
 	pathName := files.CleanPath(&path, false) + name
+	//f.FullPath = pathName
 
 	//dirstat, _ := os.Stat(pathName)
 	dir, err := os.Lstat(pathName)
@@ -109,13 +109,13 @@ func scanFile(path string, name string, depth int) *models.TFile {
 
 	if dir.Mode()&os.ModeSymlink != 0 {
 		f.IsLink = true
-		f.LinkedDirPath = "Unknown"
+		//f.LinkedDirPath = "Unknown"
 	}
 
 	f.IsDir = dir.IsDir()
 
 	if !dir.IsDir() {
-		f.Size = dir.Size()
+		f.SizeSubFoldersExcludes, f.SizeSubFoldersIncludes = dir.Size(), dir.Size()
 	}
 
 	return f
