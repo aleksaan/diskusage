@@ -13,7 +13,7 @@ Duck is a very fast utility to find top<N> of largest directories or files
 ## Releases
 Releases available as single executable files – just [download latest release](https://github.com/aleksaan/diskusage/releases) for your platform, unpack and run.
 
-## How does it work
+## How it works
 Since version **2.8.0** utility has a two parts:
 - ```Duck_a``` duck says **analyse**
 - ```Duck_f``` duck says **find**
