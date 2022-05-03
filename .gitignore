@@ -9,3 +9,6 @@ docs/
 diskusage_out.yaml
 diskusage_config.yaml
 __debug_bin
+.vscode/diskusage-workspace.code-workspace
+.vscode/launch.json
+echo
