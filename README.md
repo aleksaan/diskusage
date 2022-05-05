@@ -1,6 +1,6 @@
 # DUCK - (D)isk(U)sage(CK) 
 Duck is a very fast utility to find top<N> of largest directories or files
-<img align=center src="./img/duck.jpg" width="200"><br>
+<br><img src="./img/duck.jpg" width="200"><br>
 Illustrator: Ekaterina [[t.me/@kateUV](https://t.me/kateUV)]
 
 ## Features
