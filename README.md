@@ -26,7 +26,7 @@ You can scanning 1Tb disk only once by ```Duck_a``` (*some minutes*) and then ma
 
 ## ```Duck_a``` utility
 
-```Duck_a``` calculates sizes of directories or files. 
+```Duck_a``` calculates sizes of directories and files. 
 
 **Parameters**:
 - ```-path=c:\temp``` - starting point to analyse
