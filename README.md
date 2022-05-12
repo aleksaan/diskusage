@@ -69,7 +69,7 @@ By default program outputs results to ```console```.
                                                                          
 ```duck_f.exe -depth=2 -size=c -top=12 -filter=d -path=.git -hr < .\results_a.txt```
 
-**So it is results of Example f.3**
+**So there are results of Example f.3**
 ```-------------------
 Arguments:
    filter:    d
