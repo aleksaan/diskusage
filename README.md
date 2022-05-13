@@ -92,7 +92,7 @@ Results:
     11.| PATH:   statusek\.git\objects    | FULL SIZE:   114.19 Mb   | CLEAN SIZE:     0.00 b    | DEPTH: 3
     12.| PATH:   statusek\.git\refs       | FULL SIZE:   196.00 b    | CLEAN SIZE:     0.00 b    | DEPTH: 3
   ```
-* How you can see results are sorted by ```CLEAN SIZE``` (not included sizes of subdirectories). ```FULL SIZE``` is not sorted and has differents from ```CLEAN SIZE```.
+* How you can see results are sorted by ```CLEAN SIZE``` (not included sizes of subdirectories). ```FULL SIZE``` is not sorted and not the same as ```CLEAN SIZE```.
 
 **Note about ```FULL SIZE``` and ```CLEAN SIZE```**
    
