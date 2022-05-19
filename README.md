@@ -30,7 +30,7 @@ You can scanning 1Tb disk only once by ```Duck_a``` (*some minutes*) and then ma
 
 **Parameters**:
 - ```-path=c:\temp``` - starting point to analyse
-- ```-depth=2``` - depth of analysis (it's a filter to exclude directories which level is more than 'depth'. It does not reduces time of analysis!)
+- ```-depth=2``` - depth of analysis (it's a filter to exclude directories which level is more than 'depth'. It does not reduce time of analysis!)
 - ```-hr``` - human readable results representation (text format), if omit that means JSON format
 
 By default program outputs results to ```console```.
