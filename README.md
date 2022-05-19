@@ -30,7 +30,7 @@ You can scanning 1Tb disk only once by ```Duck_a``` (*some minutes*) and then ma
 
 **Parameters**:
 - ```-path=c:\temp``` - starting point to analyse
-- ```-depth=2``` - depth of analysis (how deep does program come down under directories tree)
+- ```-depth=2``` - depth of analysis (it's a filter to exclude directories which level is more than 'depth'. It does not reduces time of analysis!)
 - ```-hr``` - human readable results representation (text format), if omit that means JSON format
 
 By default program outputs results to ```console```.
@@ -59,13 +59,13 @@ By default program outputs results to ```console```.
 
 **Example f.1**. Searching top-10 largest directories or files on depth 2 and outputing results as JSON to file
    
-```duck_f.exe -depth=2 -size=c -top=10 -filter=df < .\results_a.txt > .\stdout_f.txt```
+```duck_f.exe -depth=2 -size=c -top=10 -filter=df < .\results_a.txt > .\results_f.txt```
 
 **Example f.2**. Searching top-12 largest directories or files on depth 3 and outputing results in human readable format to ```console```
    
 ```duck_f.exe -depth=3 -size=c -top=12 -filter=d -hr < .\results_a.txt```
 
-**Example f.3**. Like ib ```Example f.2``` but with filtering by path of file (for example, print only dir or files contains `.git` in their path & names)
+**Example f.3**. Like as ```Example f.2``` but with filtering by path of file (for example, print only dir or files contains `.git` in their path & names)
                                                                          
 ```duck_f.exe -depth=2 -size=c -top=12 -filter=d -path=.git -hr < .\results_a.txt```
 
