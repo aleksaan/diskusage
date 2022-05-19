@@ -3,7 +3,8 @@ Duck is a very fast utility to find largest directories or files
 <br><img src="./img/duck.jpg" width="200"><br>
 Illustrator: Ekaterina [[t.me/@kateUV](https://t.me/kateUV)]
 
-## Elon Musk, I hope you will see it
+## To Elon Musk
+I hope you will see it and I have couple of quite well ideas to chat them with you
 
 ## Features
 - Gathers directories/files sizes
