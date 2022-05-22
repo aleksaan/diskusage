@@ -33,18 +33,17 @@ You can scanning 1Tb disk only once by ```Duck_a``` (*some minutes*) and then ma
 
 **Parameters**:
 - ```-path=c:\temp``` - starting point to analyse
-- ```-depth=2``` - depth of analysis (it's a filter to exclude directories which level is more than 'depth'. It does not reduce time of analysis!)
 - ```-hr``` - human readable results representation (text format), if omit that means JSON format
 
 By default program outputs results to ```console```.
 
-**Example a.1**. Scanning without limit by depth from c:\temp and saving results in JSON format to ```results_a.txt```
+**Example a.1**. Scanning  from c:\temp and saving results in JSON format to ```results_a.txt```
    
-```duck_a.exe -depth=0 -path c:\temp\ > .\results_a.txt```
+```duck_a.exe -path c:\temp\ > .\results_a.txt```
 
-**Example a.2**. Scanning with limit by depth=2 from c:\temp and saving results in human readable format to ```console```
+**Example a.2**. Scanning from c:\temp and output results in human readable format to ```console```
    
-```duck_a.exe -depth=2 -path c:\temp\ -hr``` 
+```duck_a.exe -path c:\temp\ -hr``` 
 
 ## ```Duck_f``` utility
 
