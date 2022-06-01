@@ -10,8 +10,8 @@ I hope you will see it and I have couple of quite well ideas to chat them with y
 - Gathers directories/files sizes
 - Finds top of largest directories/files
 - Very fast
-- JSON compatible (for a service use)
-- Human readable mode of output (for a console use)
+- JSON compatible (for a service using)
+- Human readable mode of output (for a console using)
 - More accuracy than FAR manager
 
 ## Releases
