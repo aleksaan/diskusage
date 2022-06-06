@@ -23,7 +23,7 @@ Since version **2.8.0** utility has a two parts:
 - ```Duck_f``` duck says **find**
 
 ```Duck_a``` gathers sizes of all directories and files under specific path.
-```Duck_f``` takes results of ```Duck_a``` and looking for top of largest objects among them.
+```Duck_f``` takes results of ```Duck_a``` and looks for top of largest objects among them.
 
 You can scanning 1Tb disk only once by ```Duck_a``` (*some minutes*) and then many times looking for largest objects by ```Duck_f``` with different parameters (*some milliseconds*).
 
