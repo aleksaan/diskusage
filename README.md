@@ -6,7 +6,7 @@ Illustrator: Ekaterina [[t.me/@kateUV](https://t.me/kateUV)]
 ## To Elon Musk
 I hope you will see it and I have couple of quite well ideas to chat them with you.
 
-My contact:[[t.me/@AngryMuscle](https://t.me/AngryMuscle)]
+Write to [[t.me/@AngryMuscle](https://t.me/AngryMuscle)]
 
 ## Features
 - Gathers directories/files sizes
