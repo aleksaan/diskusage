@@ -103,8 +103,8 @@ Results:
 For example, if you have directories:
 - ```A (100Mb)\B (70Mb)\C (60Mb)```
 
-then ```CLEAN SIZE``` of this dirs will be:
-- ```A``` - ```30Mb``` (exclude size of ```B```)
-- ```B``` - ```10Mb``` (exclude size of ```C```)
+then ```CLEAN SIZE``` of these dirs will be:
+- ```A``` - ```30Mb``` (excluded size of ```B```)
+- ```B``` - ```10Mb``` (excluded size of ```C```)
 - ```C``` - ```60Mb``` (the same as ```FULL SIZE``` because no any subdirs inside)
 
