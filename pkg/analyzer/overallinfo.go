@@ -1,12 +1,8 @@
 package analyzer
 
 import (
-	"time"
-
 	"github.com/aleksaan/diskusage/pkg/models"
 )
-
-var startTime time.Time
 
 func addToOverallInfo(file *models.TFile) {
 
@@ -26,6 +22,10 @@ func addToOverallInfo(file *models.TFile) {
 
 	if file.IsLink {
 		Result.Overall.TotalLinks++
+	}
+
+	if !file.IsNotAccessible && !file.IsDir {
+		Result.Overall.TotalSize = Result.Overall.TotalSize + file.SizeSubFoldersExcludes
 	}
 
 }

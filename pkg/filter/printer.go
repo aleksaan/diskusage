@@ -35,7 +35,7 @@ func WriteJSONToConsole() {
 
 func WriteHumanReadableToConsole() {
 	printConfig()
-	printer.PrintFiles(&fresults.Files, "")
+	printer.PrintFiles(&fresults.Files, "", 50)
 }
 
 func printConfig() {

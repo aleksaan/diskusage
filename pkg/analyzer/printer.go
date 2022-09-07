@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/aleksaan/diskusage/pkg/files"
 	"github.com/aleksaan/diskusage/pkg/models"
 	"github.com/aleksaan/diskusage/pkg/printer"
 )
@@ -19,7 +20,7 @@ func WriteJSONToConsole() {
 
 func WriteHumanReadableToConsole() {
 	printConfig(cfg)
-	printer.PrintFiles(&Result.Files, "")
+	printer.PrintFiles(&Result.Files, "", cfg.HrRows)
 	printOverall(&Result.Overall)
 }
 
@@ -28,6 +29,7 @@ func printConfig(cfg *models.TAnalyserConfig) {
 	fmt.Printf("   %-10s %s\n", "path:", cfg.Path)
 	fmt.Printf("   %-10s %d\n", "depth:", cfg.Depth)
 	fmt.Printf("   %-10s %v\n", "hr:", cfg.Hr)
+	fmt.Printf("   %-10s %d\n", "hrrows:", cfg.HrRows)
 }
 
 func printOverall(overallInfo *models.TOverallInfo) {
@@ -36,7 +38,9 @@ func printOverall(overallInfo *models.TOverallInfo) {
 	fmt.Printf("   Total dirs: %d\n", overallInfo.TotalDirs)
 	fmt.Printf("   Total files: %d\n", overallInfo.TotalFiles)
 	fmt.Printf("   Total links: %d\n", overallInfo.TotalLinks)
-	fmt.Printf("   Total size: %.2f %s\n", overallInfo.TotalAdaptedSize, overallInfo.TotalAdaptedUnit)
+	units := ""
+	adaptedSize, adaptedUnits := files.GetAdaptedSize(overallInfo.TotalSize, &units)
+	fmt.Printf("   Total size: %.2f %s\n", adaptedSize, adaptedUnits)
 	fmt.Printf("   Total size (bytes): %d\n", overallInfo.TotalSize)
 	fmt.Printf("   Unaccessible dirs & files: %d\n", overallInfo.TotalNotAccessibleFiles)
 	fmt.Printf("-------------------\n")
