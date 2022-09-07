@@ -1,7 +1,6 @@
 package analyzer
 
 import (
-	"io/ioutil"
 	"os"
 	"time"
 
@@ -11,20 +10,22 @@ import (
 
 const (
 	AppTitle   = "https://github.com/aleksaan/diskusage"
-	AppVersion = "2.8.0"
+	AppVersion = "2.9.0"
 	AppAuthor  = "Alexander Anufriev"
 	AppYear    = "2022"
 )
 
 var Result = &models.TAnalyserResult{}
 
-//FinalFiles -
+// FinalFiles -
 var FinalFiles = &models.TFiles{}
 
-//var c = make(chan int)
+// var c = make(chan int)
 var countFiles int
 
-//Start -
+var startTime time.Time
+
+// Start -
 func Start() {
 	Result.About = models.TAbout{
 		AppTitle:   AppTitle,
@@ -37,20 +38,21 @@ func Start() {
 
 	startProcess()
 	scanDir(files.AddPathSeparator(cfg.Path), 1)
+	endProcess()
 	if cfg.Hr {
 		WriteHumanReadableToConsole()
 	} else {
 		WriteJSONToConsole()
 	}
-	endProcess()
+
 }
 
 //-----------------------------------------------------------------------------------------
 
-//ScanDir - scan directory and return its size
+// ScanDir - scan directory and return its size
 func scanDir(path string, depth uint) (int64, int64) {
 	//read content of folder
-	osfiles, _ := ioutil.ReadDir(path)
+	osfiles, _ := os.ReadDir(path)
 
 	var dirSize, dirSizeNoSF int64
 
@@ -87,7 +89,7 @@ func scanDir(path string, depth uint) (int64, int64) {
 
 //-----------------------------------------------------------------------------------------
 
-//ScanFile - scan dir/file parameters
+// ScanFile - scan dir/file parameters
 func scanFile(path string, name string, depth uint) *models.TFile {
 	f := &models.TFile{}
 	//f.Name = name

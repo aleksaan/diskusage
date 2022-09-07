@@ -8,9 +8,9 @@
             "name": "DUCK_A DEBUG",
             "type": "go",
             "request": "launch",
-            "mode": "auto",
-            "program": "C:\\_goprojects\\diskusage\\cmd\\duck_a\\main.go",
-            "args": ["--path", "c:\\_goprojects", "--depth", "0", "-hr"]
+            "mode": "debug",
+            "program": "c:\\_goprojects\\diskusage\\cmd\\duck_a\\main.go",
+            "args": ["--path", "c:\\_goprojects", "--depth", "0", "-hr", "-hrrows", "50"]
         },
         {
             "name": "DUCK_A TO FILE",

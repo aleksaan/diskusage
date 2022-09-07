@@ -40,9 +40,10 @@ type TFile struct {
 
 //Config - utility configuration
 type TAnalyserConfig struct {
-	Path  string `json:"path"`
-	Depth uint   `json:"depth"`
-	Hr    bool   `json:"hr"`
+	Path   string `json:"path"`
+	Depth  uint   `json:"depth"`
+	Hr     bool   `json:"hr"`
+	HrRows uint   `json:"hrrows"`
 }
 
 //Config - utility configuration

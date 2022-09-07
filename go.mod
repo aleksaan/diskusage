@@ -1,7 +1,3 @@
 module github.com/aleksaan/diskusage
 
-go 1.16
-
-require (
-
-)
+go 1.19
