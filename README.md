@@ -36,6 +36,7 @@ You can scanning 1Tb disk only once by ```Duck_a``` (*some minutes*) and then ma
 **Parameters**:
 - ```-path=c:\temp``` - starting point to analyse
 - ```-hr``` - human readable results representation (text format), if omit that means JSON format
+- ```-hrrows``` - how many rows will be printed in a human readable mode (default - 50)
 
 By default program outputs results to ```console```.
 
